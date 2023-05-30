@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 public class PedidosPanel extends JPanel {
 	private static final long serialVersionUID = -596700861050796160L;
@@ -57,7 +58,7 @@ public class PedidosPanel extends JPanel {
 		panel.setLayout(gbl_panel);
 		
 		JPanel pnlCardapio = new JPanel();
-		pnlCardapio.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Card\u00E1pios", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlCardapio.setBorder(new TitledBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)), "Card\u00E1pios", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagConstraints gbc_pnlCardapio = new GridBagConstraints();
 		gbc_pnlCardapio.insets = new Insets(5, 5, 5, 5);
 		gbc_pnlCardapio.fill = GridBagConstraints.BOTH;
@@ -117,7 +118,7 @@ public class PedidosPanel extends JPanel {
 		panel_3.add(btnNewButton_3, gbc_btnNewButton_3);
 		
 		JPanel pnlList = new JPanel();
-		pnlList.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Pedido", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlList.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128)), "Pedido", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagConstraints gbc_pnlList = new GridBagConstraints();
 		gbc_pnlList.insets = new Insets(5, 5, 5, 0);
 		gbc_pnlList.fill = GridBagConstraints.BOTH;

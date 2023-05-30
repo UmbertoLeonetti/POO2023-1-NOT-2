@@ -54,7 +54,7 @@ public class Main extends JFrame {
 	 */
 	public Main() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 655, 516);
+		setBounds(100, 100, 655, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -98,12 +98,12 @@ public class Main extends JFrame {
 		gbc_tabbedPane.gridx = 0;
 		gbc_tabbedPane.gridy = 0;
 		panel_1.add(tabbedPane, gbc_tabbedPane);
+		
+				JPanel pnlCardapio = new CardapioPanel();
+				tabbedPane.addTab("Cardápio", null, pnlCardapio, null);
 
 		JPanel pnlPedido = new PedidosPanel(this);
 		tabbedPane.addTab("Pedido", null, pnlPedido, null);
-
-		JPanel pnlCardapio = new CardapioPanel();
-		tabbedPane.addTab("Cardápio", null, pnlCardapio, null);
 
 		JPanel pnlReserva = new JPanel();
 		tabbedPane.addTab("Reserva", null, pnlReserva, null);

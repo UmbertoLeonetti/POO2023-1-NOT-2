@@ -24,7 +24,7 @@ import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-public class PedidosPanel extends JPanel {
+public class PedidoPanel extends JPanel {
 	private static final long serialVersionUID = -596700861050796160L;
 	
 	private final JFrame mainFrame;
@@ -34,7 +34,7 @@ public class PedidosPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PedidosPanel(final JFrame mainFrame) {
+	public PedidoPanel(final JFrame mainFrame) {
 		this.mainFrame = mainFrame;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{220, 0};

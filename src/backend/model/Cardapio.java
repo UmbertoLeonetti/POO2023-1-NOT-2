@@ -1,4 +1,4 @@
-package backend;
+package backend.model;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,10 @@ public class Cardapio {
 	
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+	public String getNome() {
+		return nome;
 	}
 	
 	public void addProduto(Produto prod) {

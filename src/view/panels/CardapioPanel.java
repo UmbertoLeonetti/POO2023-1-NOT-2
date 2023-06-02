@@ -289,12 +289,13 @@ public class CardapioPanel extends JPanel {
 		JPanel pnlSubCardapio = new JPanel();
 		pnlSubCardapio.setBorder(new TitledBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)), "Sess\u00E3o", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		GridBagConstraints gbc_pnlSubCardapio = new GridBagConstraints();
+		gbc_pnlSubCardapio.insets = new Insets(0, 0, 5, 0);
 		gbc_pnlSubCardapio.fill = GridBagConstraints.BOTH;
 		gbc_pnlSubCardapio.gridx = 0;
 		gbc_pnlSubCardapio.gridy = 1;
 		pnlInfo.add(pnlSubCardapio, gbc_pnlSubCardapio);
 		GridBagLayout gbl_pnlSubCardapio = new GridBagLayout();
-		gbl_pnlSubCardapio.columnWidths = new int[]{0, 0, 0};
+		gbl_pnlSubCardapio.columnWidths = new int[]{612, 0, 0};
 		gbl_pnlSubCardapio.rowHeights = new int[]{0, 0};
 		gbl_pnlSubCardapio.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		gbl_pnlSubCardapio.rowWeights = new double[]{1.0, Double.MIN_VALUE};
@@ -317,7 +318,7 @@ public class CardapioPanel extends JPanel {
 		JPanel panel_2_1 = new JPanel();
 		GridBagConstraints gbc_panel_2_1 = new GridBagConstraints();
 		gbc_panel_2_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel_2_1.insets = new Insets(5, 5, 5, 10);
+		gbc_panel_2_1.insets = new Insets(5, 5, 5, 5);
 		gbc_panel_2_1.gridx = 0;
 		gbc_panel_2_1.gridy = 0;
 		panel_1_1.add(panel_2_1, gbc_panel_2_1);
@@ -362,7 +363,7 @@ public class CardapioPanel extends JPanel {
 		
 		JPanel panel_3_1 = new JPanel();
 		GridBagConstraints gbc_panel_3_1 = new GridBagConstraints();
-		gbc_panel_3_1.insets = new Insets(5, 5, 5, 0);
+		gbc_panel_3_1.insets = new Insets(5, 5, 0, 0);
 		gbc_panel_3_1.fill = GridBagConstraints.BOTH;
 		gbc_panel_3_1.gridheight = 3;
 		gbc_panel_3_1.gridx = 1;
@@ -390,7 +391,7 @@ public class CardapioPanel extends JPanel {
 		gbc_panel_5_1.ipady = 10;
 		gbc_panel_5_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_5_1.anchor = GridBagConstraints.SOUTH;
-		gbc_panel_5_1.insets = new Insets(5, 5, 5, 10);
+		gbc_panel_5_1.insets = new Insets(5, 5, 5, 5);
 		gbc_panel_5_1.gridx = 0;
 		gbc_panel_5_1.gridy = 1;
 		panel_1_1.add(panel_5_1, gbc_panel_5_1);
@@ -452,7 +453,7 @@ public class CardapioPanel extends JPanel {
 		JPanel panel_6_1 = new JPanel();
 		GridBagConstraints gbc_panel_6_1 = new GridBagConstraints();
 		gbc_panel_6_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_6_1.insets = new Insets(0, 5, 5, 10);
+		gbc_panel_6_1.insets = new Insets(0, 5, 5, 5);
 		gbc_panel_6_1.gridx = 0;
 		gbc_panel_6_1.gridy = 2;
 		panel_1_1.add(panel_6_1, gbc_panel_6_1);
@@ -480,7 +481,7 @@ public class CardapioPanel extends JPanel {
 		
 		JPanel panel_4_1 = new JPanel();
 		GridBagConstraints gbc_panel_4_1 = new GridBagConstraints();
-		gbc_panel_4_1.insets = new Insets(5, 5, 5, 5);
+		gbc_panel_4_1.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_4_1.fill = GridBagConstraints.BOTH;
 		gbc_panel_4_1.gridx = 1;
 		gbc_panel_4_1.gridy = 0;
@@ -488,7 +489,7 @@ public class CardapioPanel extends JPanel {
 		GridBagLayout gbl_panel_4_1 = new GridBagLayout();
 		gbl_panel_4_1.columnWidths = new int[]{0, 0};
 		gbl_panel_4_1.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_panel_4_1.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_4_1.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_4_1.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_4_1.setLayout(gbl_panel_4_1);
 		

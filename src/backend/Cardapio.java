@@ -8,7 +8,21 @@ public class Cardapio {
 	private ArrayList<Produto> produtos = new ArrayList<Produto>();
 	private ArrayList<Cardapio> sessoes = new ArrayList<Cardapio>();
 	
+	@Override
+	public String toString() {
+		
+		return nome;
+		
+	}
+	
 	public Cardapio(String nome) {
+		
+		if(nome.length() == 0) {
+			
+			throw new IllegalArgumentException("Nome de cardápio deve conter caracteres.");
+			
+		}
+		
 		setNome(nome);
 	}
 	
@@ -26,7 +40,7 @@ public class Cardapio {
 			
 			if (produto.getNome() == prod.getNome()) {
 				
-				throw new IllegalArgumentException("Já existe um produto com esse nome");
+				throw new IllegalArgumentException("Já existe um produto com esse nome.");
 				
 			}
 		}
@@ -35,6 +49,13 @@ public class Cardapio {
 	}
 	
 	public void addSessao(Cardapio sessao) {
+		
+		if (produtos.size() > 0) {
+			
+			throw new IllegalAccessError("Já há produtos nessa sessão");
+			
+		}
+		
 		sessoes.add(sessao);
 	}
 	

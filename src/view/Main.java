@@ -9,12 +9,17 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
+import backend.Restaurante;
+import view.panels.BebidaPanel;
 import view.panels.CardapioPanel;
-import view.panels.PedidosPanel;
+import view.panels.IngredientePanel;
+import view.panels.PedidoPanel;
+import view.panels.PratoPanel;
 
 public class Main extends JFrame {
 
 	private JPanel contentPane;
+	private Restaurante restaurante;
 
 	/**
 	 * Launch the application.
@@ -53,8 +58,10 @@ public class Main extends JFrame {
 	 * Create the frame.
 	 */
 	public Main() {
+		restaurante = new Restaurante();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 655, 550);
+		setBounds(100, 100, 655, 565);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -98,15 +105,27 @@ public class Main extends JFrame {
 		gbc_tabbedPane.gridx = 0;
 		gbc_tabbedPane.gridy = 0;
 		panel_1.add(tabbedPane, gbc_tabbedPane);
+				
+				JPanel panel_3 = new IngredientePanel(restaurante);
+				tabbedPane.addTab("Ingredientes", null, panel_3, null);
+				
+				JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
+				tabbedPane.addTab("Produtos", null, tabbedPane_1, null);
+				
+				JPanel panel_2 = new PratoPanel();
+				tabbedPane_1.addTab("Pratos", null, panel_2, null);
+				
+				JPanel panel_4 = new BebidaPanel();
+				tabbedPane_1.addTab("Bebidas", null, panel_4, null);
 		
 				JPanel pnlCardapio = new CardapioPanel();
-				tabbedPane.addTab("Cardápio", null, pnlCardapio, null);
+				tabbedPane.addTab("Cardápios", null, pnlCardapio, null);
 
-		JPanel pnlPedido = new PedidosPanel(this);
-		tabbedPane.addTab("Pedido", null, pnlPedido, null);
+		JPanel pnlPedido = new PedidoPanel(this);
+		tabbedPane.addTab("Pedidos", null, pnlPedido, null);
 
 		JPanel pnlReserva = new JPanel();
-		tabbedPane.addTab("Reserva", null, pnlReserva, null);
+		tabbedPane.addTab("Reservas", null, pnlReserva, null);
 
 		JPanel pnlRelatorios = new JPanel();
 		tabbedPane.addTab("Relatórios", null, pnlRelatorios, null);

@@ -1,4 +1,4 @@
-package backend;
+package backend.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -6,10 +6,12 @@ import java.time.LocalTime;
 public class Reserva extends Pedido {
 
 	private LocalDate data;
+	private LocalTime horario;
 	
 	public Reserva(String nome, int mesa, LocalDate data, LocalTime horario) {
 		
 		super(nome, mesa);
+		
 		setDataHorario(data, horario);
 		
 	}
@@ -31,7 +33,7 @@ public class Reserva extends Pedido {
 		}
 		
 		this.data = data;
-		super.horario = horario;
+		this.horario = horario;
 		
 	} 
 	
@@ -39,6 +41,8 @@ public class Reserva extends Pedido {
 		return data;
 	}
 	
-	
+	public LocalTime getHorario() {
+		return horario;
+	}
 
 }

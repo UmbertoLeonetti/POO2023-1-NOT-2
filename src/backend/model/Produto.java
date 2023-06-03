@@ -9,6 +9,7 @@ public abstract class Produto {
 	private ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	
 	public abstract String toString();
+	
 	public double calculaValor() {
 		return valor;
 	}
@@ -53,7 +54,7 @@ public abstract class Produto {
 		ingredientes.add(i);
 	}
 	
-	public void removeIngrediente(Ingrediente i) {
-		ingredientes.remove(i);
+	public boolean removeIngrediente(Ingrediente i) {
+		return ingredientes.remove(i);
 	}
 }

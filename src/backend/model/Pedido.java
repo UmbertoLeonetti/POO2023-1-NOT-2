@@ -3,12 +3,14 @@ package backend.model;
 import java.util.ArrayList;
 
 public class Pedido {
-	private String nome;
+	
+	private String nomeCliente;
+	private int mesa;
 
 	private ArrayList<Produto> produtos;
 
-	public Pedido(String mesa) {
-		setNome(mesa);
+	public Pedido(String nomeCliente, int mesa) {
+		setNome(nomeCliente);
 		produtos = new ArrayList<Produto>();
 	}
 
@@ -16,18 +18,18 @@ public class Pedido {
 		if (nome.length() < 4)
 			throw new IllegalArgumentException("Nome de cliente muito curto.");
 
-		this.nome = nome;
+		this.nomeCliente = nome;
 	}
 
 	public String getNome() {
-		return nome;
+		return nomeCliente;
 	}
 
-	public void addIngrediente(Produto p) {
+	public void addProduto(Produto p) {
 		produtos.add(p);
 	}
 
-	public void removeIngrediente(Produto p) {
-		produtos.remove(p);
+	public boolean removeProduto(Produto p) {
+		return produtos.remove(p);
 	}
 }

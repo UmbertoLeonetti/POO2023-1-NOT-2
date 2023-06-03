@@ -1,4 +1,4 @@
-package backend;
+package backend.model;
 
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class Cardapio {
 		
 		if (produtos.size() > 0) {
 			
-			throw new IllegalAccessError("Já há produtos nessa sessão");
+			throw new IllegalAccessError("Já há produtos nessa sessão.");
 			
 		}
 		

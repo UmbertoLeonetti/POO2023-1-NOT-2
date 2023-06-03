@@ -1,6 +1,6 @@
 package backend.model;
 
-public class Ingrediente extends Object {
+public class Ingrediente {
 	private String nome;
 	private int quantidade;
 	private float preco;
@@ -21,6 +21,13 @@ public class Ingrediente extends Object {
 	}
 
 	public void setPreco(float preco) {
+		
+		if (preco <= 0) {
+			
+			throw new IllegalArgumentException("Preço de ingrediente deve ser positivo.");
+			
+		}
+		
 		this.preco = preco;
 	}
 
@@ -29,6 +36,13 @@ public class Ingrediente extends Object {
 	}
 
 	public void setQuantidade(int quantidade) {
+		
+		if (quantidade < 1) {
+			
+			throw new IllegalArgumentException("A quantidade de ingrediente deve ser positiva.");
+			
+		}
+		
 		this.quantidade = quantidade;
 	}
 
@@ -37,6 +51,12 @@ public class Ingrediente extends Object {
 	}
 
 	public void setNome(String nome) {
+		
+		if (nome.length() == 0) {
+			
+			throw new IllegalArgumentException("Nome de ingrediente deve conter caracteres.");
+			
+		}
 		this.nome = nome;
 	}
 	

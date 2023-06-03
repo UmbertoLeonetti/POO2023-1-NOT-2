@@ -47,6 +47,13 @@ public abstract class Produto {
 	}
 
 	public void setNome(String nome) {
+		
+		if (nome.length() == 0) {
+			
+			throw new IllegalArgumentException("Nome de produto deve conter caracteres.");
+			
+		}
+		
 		this.nome = nome;		
 	}
 	

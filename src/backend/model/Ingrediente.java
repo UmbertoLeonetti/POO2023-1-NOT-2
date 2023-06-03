@@ -39,7 +39,7 @@ public class Ingrediente {
 		
 		if (quantidade < 1) {
 			
-			throw new IllegalArgumentException("A quantidade de ingrediente deve ser positiva.");
+			throw new IllegalArgumentException("A quantidade do ingrediente deve ser positiva.");
 			
 		}
 		

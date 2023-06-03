@@ -36,14 +36,18 @@ public class Cardapio {
 	
 	public void addProduto(Produto prod) {
 		
-		for (Produto produto : produtos) {
+		if (sessoes.size() > 0)  {
 			
-			if (produto.getNome() == prod.getNome()) {
-				
-				throw new IllegalArgumentException("Já existe um produto com esse nome.");
-				
-			}
+			throw new IllegalArgumentException("Adicione o produto em uma sessão do cardápio.");
+			
 		}
+		
+		if (produtos.contains(prod)) {
+			
+			throw new IllegalArgumentException("Este produto já está presente neste cardápio/sessão.");
+			
+		}
+		
 		
 		produtos.add(prod);
 	}

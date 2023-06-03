@@ -3,19 +3,23 @@ package backend.model;
 import java.util.ArrayList;
 
 public abstract class Produto {
-	private String nome;
-	private String desc;
-	private double valor;
-	private ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+	protected String nome;
+	protected String desc;
+	protected double valor;
+	protected ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	
 	public abstract String toString();
 	
 	public double calculaValor() {
+		
 		return valor;
+		
 	}
 	
-	public Produto(String nome) {
+	public Produto(String nome, String desc, float valor) {
 		setNome(nome);
+		setDesc(desc);
+		setValor(valor);
 	}
 	
 	public String getDesc() {
@@ -23,6 +27,13 @@ public abstract class Produto {
 	}
 
 	public void setDesc(String desc) {
+		
+		if (desc.length() == 0) {
+			
+			throw new IllegalArgumentException("Descrição de produto deve conter caracteres.");
+			
+		}
+		
 		this.desc = desc;
 	}
 
@@ -31,6 +42,13 @@ public abstract class Produto {
 	}
 
 	public void setValor(double valor) {
+		
+		if (valor <= 0) {
+			
+			throw new IllegalArgumentException("Valor de produto deve ser positivo.");
+			
+		}
+		
 		this.valor = valor;
 	}
 

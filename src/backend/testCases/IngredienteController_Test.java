@@ -13,9 +13,9 @@ class IngredienteController_Test {
 	@Test
 	void test() {
 		IngredienteController con = new IngredienteController();
-		con.add(new Ingrediente("Ing 1"));
-		con.add(new Ingrediente("Ing 2"));
-		Ingrediente i3 = new Ingrediente("Ing 3");
+		con.add(new Ingrediente("Ing 1", 0, 0));
+		con.add(new Ingrediente("Ing 2", 0, 0));
+		Ingrediente i3 = new Ingrediente("Ing 3", 0, 0);
 		con.add(i3);
 		
 		assertEquals(i3, con.get("Ing 3"));

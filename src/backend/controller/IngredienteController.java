@@ -43,7 +43,7 @@ public class IngredienteController {
 	
 	public void add() {		
 		ingCount++;
-		add(new Ingrediente("Ingrediente " + ingCount));
+		add(new Ingrediente("Ingrediente " + ingCount, 0, 0));
 	}
 	
 	public void remove(Ingrediente ing) {

@@ -5,10 +5,10 @@ public class Ingrediente {
 	private int quantidade;
 	private float preco;
 
-	public Ingrediente(String nome) {
+	public Ingrediente(String nome, int quantidade, float preco) {
 		setNome(nome);
-		quantidade = 0;
-		preco = 0.00f;
+		setQuantidade(quantidade);
+		setPreco(preco);
 	}
 	
 	@Override

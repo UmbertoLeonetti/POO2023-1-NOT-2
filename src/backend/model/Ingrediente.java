@@ -19,7 +19,7 @@ public class Ingrediente {
 	
 	@Override
 	public String toString() {
-		return null;
+		return getNome();
 	}
 
 	public float getPreco() {

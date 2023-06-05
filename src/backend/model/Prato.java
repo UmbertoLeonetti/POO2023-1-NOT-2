@@ -2,7 +2,7 @@ package backend.model;
 
 public class Prato extends Produto{
 
-	private float quilos;
+	private float quilo;
 	private boolean vegetariano;
 
 	public Prato(String nome, String desc, float valor, float quilos, boolean vegetariano) {

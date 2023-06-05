@@ -3,6 +3,7 @@ package backend.model;
 import java.util.ArrayList;
 
 public abstract class Produto {
+<<<<<<< HEAD
 	protected String nome;
 	protected String desc;
 	protected double valor;
@@ -20,6 +21,20 @@ public abstract class Produto {
 		setNome(nome);
 		setDesc(desc);
 		setValor(valor);
+=======
+	private String nome;
+	private String desc;
+	private double valor;
+	private ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+	
+	public abstract String toString();
+	public double calculaValor() {
+		return valor;
+	}
+	
+	public Produto(String nome) {
+		setNome(nome);
+>>>>>>> parent of 8d3c113 (Montando tela de Pratos)
 	}
 	
 	public String getDesc() {

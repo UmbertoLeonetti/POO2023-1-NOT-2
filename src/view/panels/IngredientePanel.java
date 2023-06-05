@@ -6,8 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -23,6 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 import backend.controller.IngredienteController;
 import backend.model.Ingrediente;
+
 import javax.swing.SpinnerNumberModel;
 
 public class IngredientePanel extends JPanel {
@@ -36,6 +40,57 @@ public class IngredientePanel extends JPanel {
 	private int ingSelec = 0;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
+	
+	
+	//Método contém que verifica se a String a contém a String b
+	private boolean contem(String a, String b) {
+		
+		int q1 = a.length();
+		int q2 = b.length();
+		
+		if (q1 < q2) {
+			
+			return false;
+			
+		}
+		
+		for (int i = 0; i < q2; i++) {
+			
+			char charA = a.toUpperCase().charAt(i);
+			char charB = b.toUpperCase().charAt(i);
+			
+			if (charA != charB) {
+				
+				return false;
+				
+			}
+			
+		}
+		
+		return true;
+		
+	}
+	
+	
+	//Método retorna os nomes de ingredientes que possuem a String nomePesquisa 
+	public ArrayList<String> getIngredientes(String nomePesquisa) {
+		
+		ArrayList<String> nomes = ingredientes.getNomes();
+		ArrayList<String> nomesPesquisa = new ArrayList<String>();
+		
+		for (String nome : nomes) {
+			
+			if (contem(nome, nomePesquisa)) {
+				
+				nomesPesquisa.add(nome);
+				
+			}
+			
+		}
+		
+		return nomesPesquisa;
+		
+	}
 	
 	private void novoIngrediente() {
 		ingredientes.add();
@@ -62,8 +117,10 @@ public class IngredientePanel extends JPanel {
 	}
 	
 	private void atualizaLista() {
+		
+
 		DefaultListModel model = new DefaultListModel();
-		ArrayList<String> elements = ingredientes.getNomes();
+		ArrayList<String> elements = getIngredientes(tfPesquisa.getText());
 		
 		for (String string : elements)
 			model.addElement(string);
@@ -140,6 +197,30 @@ public class IngredientePanel extends JPanel {
 		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
 		tfPesquisa = new JTextField();
+		
+		tfPesquisa.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+				
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+				atualizaLista();
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+	
+				
+				
+			}
+		});
 		GridBagConstraints gbc_tfPesquisa = new GridBagConstraints();
 		gbc_tfPesquisa.anchor = GridBagConstraints.NORTH;
 		gbc_tfPesquisa.insets = new Insets(7, 0, 0, 5);
@@ -171,6 +252,7 @@ public class IngredientePanel extends JPanel {
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 0;
 		pnlLista.add(scrollPane, gbc_scrollPane);
+
 		
 		list = new JList();
 		scrollPane.setViewportView(list);

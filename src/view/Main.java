@@ -106,7 +106,7 @@ public class Main extends JFrame {
 		gbc_tabbedPane.gridy = 0;
 		panel_1.add(tabbedPane, gbc_tabbedPane);
 				
-				JPanel panel_3 = new IngredientePanel(restaurante);
+				JPanel panel_3 = new IngredientePanel(restaurante.ingredientes);
 				tabbedPane.addTab("Ingredientes", null, panel_3, null);
 				
 				JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);

@@ -11,6 +11,12 @@ public class Ingrediente extends Object {
 		preco = 0.00f;
 	}
 	
+	public Ingrediente(String nome, float preco, int quantidade) {
+		setNome(nome);
+		setQuantidade(quantidade);
+		setPreco(preco);
+	}
+	
 	@Override
 	public String toString() {
 		return getNome();

@@ -37,6 +37,10 @@ public class IngredienteController {
 		return str;
 	}
 	
+	public void add(Ingrediente ing, int index) {
+		ingredientes.add(index, ing);
+	}
+	
 	public String[] getNomesArray() {
 		return getNomes().toArray(new String[getNomes().size()]);
 	}

@@ -21,52 +21,49 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import backend.Restaurante;
+import backend.controller.IngredienteController;
 import backend.model.Ingrediente;
+import javax.swing.SpinnerNumberModel;
 
 public class IngredientePanel extends JPanel {
 	private JTextField tfNome;
-	private JTextField tfPreco;
-	private Restaurante restaurante;
-	private JList list;
-	
-	public static int ingCount = 0;
+	private JTextField tfPreco;	
 	private JTextField tfPesquisa;
 	private JSpinner spQuantidade;
+	private JList list;
 
-	private void verificaCampos() {
-		
-	}
-	
-	private void salvaIngrediente() {
-		
-	}
+	private IngredienteController ingredientes;
+	private int ingSelec = 0;
+	private JButton btnSalvar;
+	private JButton btnCancelar;
 	
 	private void novoIngrediente() {
-		restaurante.ingredientes.add();
+		ingredientes.add();
 	}
 	
 	private void excluiIngrediente() {
 		String selected = (String) list.getSelectedValue();
 		
-		restaurante.ingredientes.remove(selected);
+		ingredientes.remove(selected);
 	}
 	
-	private void selecionaIngrediente() {
+	private int selecionaIngrediente() {
 		String nome = (String) list.getSelectedValue();
-		Ingrediente selecionado = restaurante.ingredientes.get(nome);
+		Ingrediente selecionado = ingredientes.get(nome);
 		
 		if(selecionado == null)
-			return;
+			return -1;
 		
 		tfNome.setText(selecionado.getNome());
 		tfPreco.setText(String.format("%.2f", selecionado.getPreco()));
 		spQuantidade.setValue(selecionado.getQuantidade());
+		
+		return list.getSelectedIndex();
 	}
 	
 	private void atualizaLista() {
 		DefaultListModel model = new DefaultListModel();
-		ArrayList<String> elements = restaurante.ingredientes.getNomes();
+		ArrayList<String> elements = ingredientes.getNomes();
 		
 		for (String string : elements)
 			model.addElement(string);
@@ -80,8 +77,25 @@ public class IngredientePanel extends JPanel {
 		spQuantidade.setValue(0);
 	}
 	
-	public IngredientePanel(Restaurante restaurante) {
-		this.restaurante = restaurante;
+	private void mudaSalvarCancelar(boolean mod) {
+		btnSalvar.setEnabled(mod);
+		btnCancelar.setEnabled(mod);
+	}
+	
+	private void salvaIngrediente() {
+		ingredientes.remove(ingSelec);
+		
+		String nome = tfNome.getText();
+		float preco = Float.parseFloat(tfPreco.getText().replace(',', '.'));
+		int qtd 	= Integer.parseInt(spQuantidade.getValue().toString());
+		
+		ingredientes.add(new Ingrediente(nome, preco, qtd), ingSelec);
+		
+		ingSelec = -1;
+	}
+	
+	public IngredientePanel(IngredienteController ingredientes) {
+		this.ingredientes = ingredientes;
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
@@ -163,7 +177,8 @@ public class IngredientePanel extends JPanel {
 		list.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				selecionaIngrediente();
+				ingSelec = selecionaIngrediente();
+				mudaSalvarCancelar(true);
 			}
 		});
 		
@@ -282,6 +297,7 @@ public class IngredientePanel extends JPanel {
 		panel_3.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
 		spQuantidade = new JSpinner();
+		spQuantidade.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		GridBagConstraints gbc_spQuantidade = new GridBagConstraints();
 		gbc_spQuantidade.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spQuantidade.gridx = 3;
@@ -302,22 +318,37 @@ public class IngredientePanel extends JPanel {
 		gbl_panel_5.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_5.setLayout(gbl_panel_5);
 		
-		JButton btnNewButton_2 = new JButton("Salvar");
-		btnNewButton_2.setEnabled(false);
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_2.gridx = 0;
-		gbc_btnNewButton_2.gridy = 0;
-		panel_5.add(btnNewButton_2, gbc_btnNewButton_2);
+		btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				salvaIngrediente();
+				limpaCampos();
+				atualizaLista();
+				mudaSalvarCancelar(false);
+			}
+		});
+		btnSalvar.setEnabled(false);
+		GridBagConstraints gbc_btnSalvar = new GridBagConstraints();
+		gbc_btnSalvar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnSalvar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnSalvar.gridx = 0;
+		gbc_btnSalvar.gridy = 0;
+		panel_5.add(btnSalvar, gbc_btnSalvar);
 		
-		JButton btnNewButton_3 = new JButton("Cancelar");
-		btnNewButton_3.setEnabled(false);
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_3.gridx = 1;
-		gbc_btnNewButton_3.gridy = 0;
-		panel_5.add(btnNewButton_3, gbc_btnNewButton_3);
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				mudaSalvarCancelar(false);
+				limpaCampos();
+				
+			}
+		});
+		btnCancelar.setEnabled(false);
+		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
+		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnCancelar.gridx = 1;
+		gbc_btnCancelar.gridy = 0;
+		panel_5.add(btnCancelar, gbc_btnCancelar);
 
 	}
 

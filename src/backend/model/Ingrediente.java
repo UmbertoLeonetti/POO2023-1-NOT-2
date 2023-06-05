@@ -11,12 +11,6 @@ public class Ingrediente {
 		setPreco(preco);
 	}
 	
-	public Ingrediente(String nome, float preco, int quantidade) {
-		setNome(nome);
-		setQuantidade(quantidade);
-		setPreco(preco);
-	}
-	
 	@Override
 	public String toString() {
 		return getNome();

@@ -3,57 +3,26 @@ package backend.model;
 import java.util.ArrayList;
 
 public abstract class Produto {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 	protected String nome;
 	protected String desc;
 	protected double valor;
 	protected ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	
-	public abstract String toString();
-	
-	public double calculaValor() {
-		
-		return valor;
-		
-	}
-	
 	public Produto(String nome, String desc, float valor) {
 		setNome(nome);
 		setDesc(desc);
 		setValor(valor);
-=======
-=======
->>>>>>> parent of 8d3c113 (Montando tela de Pratos)
-=======
->>>>>>> parent of 8d3c113 (Montando tela de Pratos)
-=======
->>>>>>> parent of 8d3c113 (Montando tela de Pratos)
-	private String nome;
-	private String desc;
-	private double valor;
-	private ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+	}
 	
 	public abstract String toString();
+	
 	public double calculaValor() {
+		
 		return valor;
+		
 	}
 	
-	public Produto(String nome) {
-		setNome(nome);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of 8d3c113 (Montando tela de Pratos)
-=======
->>>>>>> parent of 8d3c113 (Montando tela de Pratos)
-=======
->>>>>>> parent of 8d3c113 (Montando tela de Pratos)
-=======
->>>>>>> parent of 8d3c113 (Montando tela de Pratos)
-	}
 	
 	public String getDesc() {
 		return desc;

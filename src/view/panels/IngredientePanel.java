@@ -89,7 +89,7 @@ public class IngredientePanel extends JPanel {
 		float preco = Float.parseFloat(tfPreco.getText().replace(',', '.'));
 		int qtd 	= Integer.parseInt(spQuantidade.getValue().toString());
 		
-		ingredientes.add(new Ingrediente(nome, preco, qtd), ingSelec);
+		ingredientes.add(new Ingrediente(nome, qtd, preco), ingSelec);
 		
 		ingSelec = -1;
 	}

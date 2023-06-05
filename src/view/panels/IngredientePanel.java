@@ -62,6 +62,7 @@ public class IngredientePanel extends JPanel {
 	}
 	
 	private void atualizaLista() {
+		
 		DefaultListModel model = new DefaultListModel();
 		ArrayList<String> elements = ingredientes.getNomes();
 		

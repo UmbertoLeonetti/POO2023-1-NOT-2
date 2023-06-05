@@ -14,7 +14,7 @@ public class IngredienteController {
 	
 	public Ingrediente get(String nome) {
 		for (Ingrediente ingrediente : ingredientes) {
-			if(ingrediente.toString() == nome)
+			if(ingrediente.getNome() == nome)
 				return ingrediente;
 		}
 		
@@ -22,17 +22,17 @@ public class IngredienteController {
 	}
 	
 	public void add(Ingrediente ing) throws IllegalArgumentException {		
-		if(get(ing.toString()) == null)
+		if(get(ing.getNome()) == null)
 			ingredientes.add(ing);
 		else
-			throw new IllegalArgumentException("Ingrediente com nome '" + ing + "' já existe");
+			throw new IllegalArgumentException("Ingrediente com nome '" + ing.getNome() + "' já existe");
 	}
 	
 	public ArrayList<String> getNomes() {
 		ArrayList<String> str = new ArrayList<String>();
 		
 		for (Ingrediente ingrediente : ingredientes) 
-			str.add(ingrediente.toString());
+			str.add(ingrediente.getNome());
 		
 		return str;
 	}

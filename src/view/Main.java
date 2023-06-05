@@ -15,6 +15,10 @@ import view.panels.CardapioPanel;
 import view.panels.IngredientePanel;
 import view.panels.PedidoPanel;
 import view.panels.PratoPanel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class Main extends JFrame {
 
@@ -61,7 +65,7 @@ public class Main extends JFrame {
 		restaurante = new Restaurante();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 655, 565);
+		setBounds(100, 100, 731, 565);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -106,17 +110,17 @@ public class Main extends JFrame {
 		gbc_tabbedPane.gridy = 0;
 		panel_1.add(tabbedPane, gbc_tabbedPane);
 				
-				JPanel panel_3 = new IngredientePanel(restaurante.ingredientes);
-				tabbedPane.addTab("Ingredientes", null, panel_3, null);
-				
 				JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 				tabbedPane.addTab("Produtos", null, tabbedPane_1, null);
 				
-				JPanel panel_2 = new PratoPanel();
+				JPanel panel_2 = new PratoPanel(restaurante.pratos, restaurante.ingredientes);
 				tabbedPane_1.addTab("Pratos", null, panel_2, null);
 				
 				JPanel panel_4 = new BebidaPanel();
 				tabbedPane_1.addTab("Bebidas", null, panel_4, null);
+				
+				JPanel panel_3 = new IngredientePanel(restaurante.ingredientes);
+				tabbedPane.addTab("Ingredientes", null, panel_3, null);
 		
 				JPanel pnlCardapio = new CardapioPanel();
 				tabbedPane.addTab("Cardápios", null, pnlCardapio, null);

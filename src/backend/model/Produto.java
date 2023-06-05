@@ -2,19 +2,34 @@ package backend.model;
 
 import java.util.ArrayList;
 
-public abstract class Produto {
+import backend.controller.IngredienteController;
+
+public class Produto {
 	private String nome;
 	private String desc;
 	private double valor;
-	private ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+	private IngredienteController ingredientes;
 	
-	public abstract String toString();
-	public double calculaValor() {
-		return valor;
+	public String toString() {
+		return null;
 	}
 	
 	public Produto(String nome) {
 		setNome(nome);
+		ingredientes = new IngredienteController();
+		desc = "";
+		valor = 0.00f;
+	}
+	
+	public Produto(String nome, String desc, double valor, IngredienteController ingredientes) {
+		setNome(nome);
+		setDesc(desc);
+		setValor(valor);
+		setIngredientes(ingredientes);
+	}
+	
+	public double calculaValor() {
+		return valor;
 	}
 	
 	public String getDesc() {
@@ -33,11 +48,11 @@ public abstract class Produto {
 		this.valor = valor;
 	}
 
-	public ArrayList<Ingrediente> getIngredientes() {
+	public IngredienteController getIngredientes() {
 		return ingredientes;
 	}
 
-	public void setIngredientes(ArrayList<Ingrediente> ingredientes) {
+	public void setIngredientes(IngredienteController ingredientes) {
 		this.ingredientes = ingredientes;
 	}
 

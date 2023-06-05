@@ -19,7 +19,7 @@ public class Ingrediente extends Object {
 	
 	@Override
 	public String toString() {
-		return getNome();
+		return null;
 	}
 
 	public float getPreco() {

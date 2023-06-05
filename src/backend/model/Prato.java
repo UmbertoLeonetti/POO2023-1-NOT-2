@@ -5,6 +5,11 @@ public class Prato extends Produto{
 
 	private float quilos;
 	private boolean vegetariano;
+	
+	public Prato (String nome) {
+		super (nome, null, 0);
+		
+	}
 
 	public Prato(String nome, String desc, float valor, float quilos, boolean vegetariano) {
 		super(nome, desc, valor);

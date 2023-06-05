@@ -90,6 +90,7 @@ public class PratoPanel extends JPanel {
 		}
 		
 		Prato prato = pratos.get(pratoIndex);
+		prato.addIngrediente(ingredientes.get(ingIndex));
 		listPratoIngrediente.setModel(atualizaLista(prato.getIngredientes().getNomes()));
 	}
 	

@@ -6,6 +6,7 @@ public abstract class Produto {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	protected String nome;
 	protected String desc;
 	protected double valor;
@@ -28,6 +29,8 @@ public abstract class Produto {
 >>>>>>> parent of 8d3c113 (Montando tela de Pratos)
 =======
 >>>>>>> parent of 8d3c113 (Montando tela de Pratos)
+=======
+>>>>>>> parent of 8d3c113 (Montando tela de Pratos)
 	private String nome;
 	private String desc;
 	private double valor;
@@ -42,6 +45,9 @@ public abstract class Produto {
 		setNome(nome);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 8d3c113 (Montando tela de Pratos)
+=======
 >>>>>>> parent of 8d3c113 (Montando tela de Pratos)
 =======
 >>>>>>> parent of 8d3c113 (Montando tela de Pratos)

@@ -1,17 +1,19 @@
 package backend.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import backend.controller.IngredienteController;
 
-public class Produto {
+public class Produto implements Serializable{
 	private String nome;
 	private String desc;
 	private double valor;
 	private IngredienteController ingredientes;
 	
-	public String toString() {
-		return null;
+	
+	public Produto() {
+		
 	}
 	
 	public Produto(String nome) {

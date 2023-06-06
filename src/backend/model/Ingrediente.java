@@ -1,6 +1,8 @@
 package backend.model;
 
-public class Ingrediente extends Object {
+import java.io.Serializable;
+
+public class Ingrediente extends Object implements Serializable {
 	private String nome;
 	private int quantidade;
 	private float preco;

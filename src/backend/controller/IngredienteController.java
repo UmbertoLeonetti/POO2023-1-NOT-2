@@ -61,4 +61,5 @@ public class IngredienteController {
 	public void remove(String nome) {
 		remove(get(nome));
 	}
+
 }

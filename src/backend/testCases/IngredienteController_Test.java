@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import backend.controller.IngredienteController;
+import backend.controller.PratoController;
 import backend.model.Ingrediente;
+import backend.model.Prato;
 
 class IngredienteController_Test {
 
@@ -26,6 +28,24 @@ class IngredienteController_Test {
 		String[] nomes = con.getNomes().toArray(new String[con.getNomes().size()]);
 		assertTrue("Ing 1".compareTo(nomes[0]) == 0);
 		assertTrue("Ing 2".compareTo(nomes[1]) == 0);
+	}
+	
+	@Test
+	void testPrato() {
+		IngredienteController con = new IngredienteController();
+		con.add(new Ingrediente("Ing 1"));
+		con.add(new Ingrediente("Ing 2"));
+		Ingrediente i3 = new Ingrediente("Ing 3");
+		con.add(i3);
+		
+		PratoController prato = new PratoController();
+		prato.add();
+		PratoController.carregarPratos();
+//		//System.out.println(prato.getListaPratos());
+//		//prato.add();
+//		//prato.add();
+		System.out.println(prato.getListaPratos());
+		prato.add();
 	}
 
 }

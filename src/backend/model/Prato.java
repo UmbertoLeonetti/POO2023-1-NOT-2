@@ -1,9 +1,19 @@
 package backend.model;
 
+import java.io.Serializable;
+
 import backend.controller.IngredienteController;
 
-public class Prato extends Produto {
+public class Prato extends Produto implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1438057443229834943L;
 	private double quilo;
+	
+	public Prato() {
+		super();
+	}
 	
 	public Prato(String nome) {
 		super(nome);
@@ -25,7 +35,9 @@ public class Prato extends Produto {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Prato [getNome()=" + getNome() + ", getValor()=" + getValor() + ", getIngredientes()="
+				+ getIngredientes() + ", quilo=" + quilo + "]";
 	}
+
+	
 }

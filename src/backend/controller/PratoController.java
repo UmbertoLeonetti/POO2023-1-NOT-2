@@ -85,7 +85,6 @@ public class PratoController implements Serializable {
 			FileOutputStream fileOut = new FileOutputStream("pratos_serializados.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
-			// Serializa o ArrayList de objetos
 			out.writeObject(pratos);
 
 			out.close();
@@ -102,7 +101,6 @@ public class PratoController implements Serializable {
 		 File arquivo = new File("pratos_serializados.txt");
 
 		    if (!arquivo.exists()) {
-		        System.out.println("O arquivo não existe. Nenhum objeto foi carregado.");
 		        return;
 		    }
 
@@ -112,8 +110,10 @@ public class PratoController implements Serializable {
 
 			Object obj = in.readObject();
 			if (obj instanceof ArrayList) {
+				
 				pratos = ((ArrayList<Prato>) obj);
-				System.out.println("Objetos desserializados foram carregados com sucesso.");
+				
+				System.out.println("Os pratos foram carregados com sucesso.");
 			} else {
 				System.out.println("O arquivo não pode ser aberto.");
 			}

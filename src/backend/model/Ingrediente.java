@@ -3,6 +3,8 @@ package backend.model;
 import java.io.Serializable;
 
 public class Ingrediente extends Object implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	private String nome;
 	private int quantidade;
 	private float preco;
@@ -18,10 +20,11 @@ public class Ingrediente extends Object implements Serializable {
 		setQuantidade(quantidade);
 		setPreco(preco);
 	}
-	
+
 	@Override
 	public String toString() {
-		return null;
+		return "Ingrediente [getNome()=" + getNome() + ", getPreco()=" + getPreco() + ", getQuantidade()="
+				+ getQuantidade() + "]";
 	}
 
 	public float getPreco() {

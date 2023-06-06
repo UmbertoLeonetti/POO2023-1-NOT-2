@@ -73,4 +73,6 @@ public class Produto implements Serializable{
 	public void removeIngrediente(Ingrediente i) {
 		ingredientes.remove(i);
 	}
+	
+	
 }

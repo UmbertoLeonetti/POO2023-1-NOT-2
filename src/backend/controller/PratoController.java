@@ -21,7 +21,7 @@ public class PratoController implements Serializable {
 
 	public PratoController() {
 		pratos = new ArrayList<Prato>();
-		//PratoController.carregarPratos();
+		PratoController.carregarPratos();
 
 	}
 
@@ -73,8 +73,8 @@ public class PratoController implements Serializable {
 	public String getListaPratos() {
         StringBuilder sb = new StringBuilder();
 
-        for (Prato objeto : pratos) {
-            sb.append(objeto.toString()).append("\n");
+        for (Prato prato : pratos) {
+            sb.append(prato.toString()).append("\n");
         }
 
         return sb.toString();
@@ -120,8 +120,7 @@ public class PratoController implements Serializable {
 
 			in.close();
 			fileIn.close();
-
-			System.out.println("Objetos desserializados foram carregados com sucesso.");
+			
 		} catch (IOException | ClassNotFoundException e) {
 			System.out.println("Ocorreu um erro ao desserializar o arquivo: " + e);
 		}

@@ -32,20 +32,20 @@ class IngredienteController_Test {
 	
 	@Test
 	void testPrato() {
-		IngredienteController con = new IngredienteController();
-		con.add(new Ingrediente("Ing 1"));
-		con.add(new Ingrediente("Ing 2"));
+		
+		IngredienteController listaIngrediente = new IngredienteController();
+		listaIngrediente.add(new Ingrediente("Ing 1"));
+		listaIngrediente.add(new Ingrediente("Ing 2"));
 		Ingrediente i3 = new Ingrediente("Ing 3");
-		con.add(i3);
+		listaIngrediente.add(i3);
 		
 		PratoController prato = new PratoController();
-		prato.add();
-		PratoController.carregarPratos();
-//		//System.out.println(prato.getListaPratos());
-//		//prato.add();
-//		//prato.add();
 		System.out.println(prato.getListaPratos());
-		prato.add();
+		System.out.println("---------");
+		//prato.add();
+		System.out.println(prato.getListaPratos());
+		System.out.println(prato.get(1));
+		
 	}
 
 }

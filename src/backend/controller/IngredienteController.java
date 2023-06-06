@@ -1,10 +1,16 @@
 package backend.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import backend.model.Ingrediente;
 
-public class IngredienteController {
+public class IngredienteController implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	private static int ingCount = 0;
 	

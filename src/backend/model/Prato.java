@@ -9,7 +9,7 @@ public class Prato extends Produto implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1438057443229834943L;
-	private double quilo;
+	private double gramas;
 	
 	public Prato() {
 		super();
@@ -17,26 +17,26 @@ public class Prato extends Produto implements Serializable {
 	
 	public Prato(String nome) {
 		super(nome);
-		quilo = 0.00f;
+		gramas = 0.00f;
 	}
 	
-	public Prato(String nome, String desc, double valor, double quilo, IngredienteController ingredientes) {
+	public Prato(String nome, String desc, double valor, double gramas, IngredienteController ingredientes) {
 		super(nome, desc, valor, ingredientes);
-		setQuilo(quilo);
+		setGramas(gramas);
 	}
 
-	public double getQuilo() {
-		return quilo;
+	public double getGramas() {
+		return gramas;
 	}
 
-	public void setQuilo(double quilo) {
-		this.quilo = quilo;
+	public void setGramas(double gramas) {
+		this.gramas = gramas;
 	}
 
 	@Override
 	public String toString() {
 		return "Prato [getNome()=" + getNome() + ", getValor()=" + getValor() + ", getIngredientes()="
-				+ getIngredientes() + ", quilo=" + quilo + "]";
+				+ getIngredientes() + ", gramas=" + gramas + "]";
 	}
 
 	

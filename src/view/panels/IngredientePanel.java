@@ -20,6 +20,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -203,29 +205,22 @@ public class IngredientePanel extends JPanel {
 		panel_1.add(tfPesquisa, gbc_tfPesquisa);
 		tfPesquisa.setColumns(10);
 		
-		tfPesquisa.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				
-				
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				
-				atualizaLista();
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-	
-				
-				
-			}
-		});
+        tfPesquisa.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+               atualizaLista();
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            	atualizaLista();
+            }
+            
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                
+            }
+        });
 		
 		JPanel pnlLista = new JPanel();
 		GridBagConstraints gbc_pnlLista = new GridBagConstraints();

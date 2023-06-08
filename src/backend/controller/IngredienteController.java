@@ -17,6 +17,13 @@ public class IngredienteController implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	private static int ingCount = 0;
+	
+	public IngredienteController() {
+		
+		ingredientes = new ArrayList<Ingrediente>();
+		IngredienteController.carregarIngredientes();
+		
+	}
 
 	public Ingrediente get(int index) {
 		return ingredientes.get(index);
@@ -88,7 +95,7 @@ public class IngredienteController implements Serializable {
 
 	public static void salvarIngredientes(ArrayList<Ingrediente> pratos) {
 		try {
-			FileOutputStream fileOut = new FileOutputStream("pratos_serializados.txt");
+			FileOutputStream fileOut = new FileOutputStream("ingredientes_serializados.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
 			out.writeObject(pratos);

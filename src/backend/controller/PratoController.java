@@ -28,7 +28,7 @@ public class PratoController implements Serializable {
 	public void add() {
 		prodCount++;
 		pratos.add(new Prato("Prato " + prodCount));
-		salvarPratos(pratos);
+		salvarPratos();
 	}
 
 	public void add(Prato produto) throws IllegalArgumentException {
@@ -48,10 +48,12 @@ public class PratoController implements Serializable {
 
 	public void remove(int index) {
 		pratos.remove(index);
+		salvarPratos();
 	}
 
 	public void remove(Prato prato) {
 		pratos.remove(prato);
+		salvarPratos();
 	}
 
 	public void remove(String nome) {
@@ -80,7 +82,7 @@ public class PratoController implements Serializable {
         return sb.toString();
     }
 
-	public static void salvarPratos(ArrayList<Prato> pratos) {
+	public static void salvarPratos() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("pratos_serializados.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);

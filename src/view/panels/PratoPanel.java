@@ -12,6 +12,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -32,6 +33,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class PratoPanel extends JPanel {
+	
+	private JPanel panel;
 	private JTextField tfNome;
 	private JTextField tfPreco;
 	private JList listPrato;
@@ -39,6 +42,7 @@ public class PratoPanel extends JPanel {
 	private JTextArea taObservacao;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
+	private JButton btnExcluir;
 	private JList<String> listIngrediente;
 	private JList listPratoIngrediente;
 	
@@ -46,23 +50,48 @@ public class PratoPanel extends JPanel {
 	private IngredienteController ingredientes;
 	private int pratoSelec = -1;
 	
-	private DefaultListModel<String> atualizaLista(ArrayList<String> elements) {
+	private void atualizaLista(ArrayList<String> elements, JList list) {
 		DefaultListModel model = new DefaultListModel();
 		
-		for (String string : elements)
-			model.addElement(string);
+		for (String str : elements)
+			model.addElement(str);
 		
-		return model;
+		list.setModel(model);
 	}
 
 	private void adicionaPrato() {
 		pratos.add();
+		atualizaLista(pratos.getNomes(), listPrato);
 	}
 
 	private void removePrato() {
-		String selected = (String) listPrato.getSelectedValue();
+
+		ArrayList<String> selected = (ArrayList<String>) listPrato.getSelectedValuesList();
 		
-		pratos.remove(selected);
+		int opcao;
+		int tamanho = selected.size();
+		
+		if (tamanho == 1) {
+			
+			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir o prato \"" + selected.get(0) + "\"?");
+			
+		} else {
+			
+			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir os " + tamanho + " pratos selecionados?");
+			
+		}
+		
+		if (opcao != 0) return;
+		
+		for (String string : selected) {
+			
+			pratos.remove(string);
+			
+		}
+		
+		atualizaLista(pratos.getNomes(), listPrato);
+		limpaSelecao();
+		
 	}
 	
 	private int selecionaPrato() {
@@ -74,7 +103,7 @@ public class PratoPanel extends JPanel {
 		
 		tfNome.setText(selecionado.getNome());
 		tfPreco.setText(String.format("%.2f", selecionado.getValor()));
-		spPeso.setValue(selecionado.getQuilo());
+		spPeso.setValue(selecionado.getGramas());
 		taObservacao.setText(selecionado.getDesc());
 		
 		return listPrato.getSelectedIndex();
@@ -85,13 +114,13 @@ public class PratoPanel extends JPanel {
 		int pratoIndex = listPrato.getSelectedIndex();
 		
 		if(ingIndex < 0 || pratoIndex < 0) {
-			System.out.println("IMPLEMENTAR TELA PARA AVISAR PARA SELECIONAR UM PRATO/INGREDIENTE");
+			JOptionPane.showMessageDialog(panel, "Ingrediente e prato devem ser selecionados.");
 			return;
 		}
 		
 		Prato prato = pratos.get(pratoIndex);
 		prato.addIngrediente(ingredientes.get(ingIndex));
-		listPratoIngrediente.setModel(atualizaLista(prato.getIngredientes().getNomes()));
+		atualizaLista(prato.getIngredientes().getNomes(), listPratoIngrediente);
 	}
 	
 	private void limpaCampos() {		
@@ -100,22 +129,32 @@ public class PratoPanel extends JPanel {
 		spPeso.setValue(0);
 		taObservacao.setText("");
 	}
+	
+	private void limpaSelecao() {
+		
+		listPrato.clearSelection();
+		limpaCampos();
+		mudaSalvarCancelar(false);
+		
+	}
 
 	private void mudaSalvarCancelar(boolean mod) {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
+		btnExcluir.setEnabled(mod);
 	}
 
 	public PratoPanel(PratoController pratos, IngredienteController ingredientes) {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				listIngrediente.setModel(atualizaLista(ingredientes.getNomes()));
+				atualizaLista(ingredientes.getNomes(), listIngrediente);
 			}
 		});
 		this.pratos = pratos;
 		this.ingredientes = ingredientes;
-		
+
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0};
@@ -123,7 +162,7 @@ public class PratoPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.insets = new Insets(8, 8, 8, 8);
 		gbc_panel.fill = GridBagConstraints.BOTH;
@@ -195,7 +234,7 @@ public class PratoPanel extends JPanel {
 		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
 		spPeso = new JSpinner();
-		spPeso.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(10)));
+		spPeso.setModel(new SpinnerNumberModel(0, 0, 10000, 50));
 		GridBagConstraints gbc_spPeso = new GridBagConstraints();
 		gbc_spPeso.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spPeso.insets = new Insets(0, 0, 5, 0);
@@ -268,6 +307,7 @@ public class PratoPanel extends JPanel {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				adicionaIngrediente();
+				atualizaLista(ingredientes.getNomes(), listIngrediente);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
@@ -312,6 +352,42 @@ public class PratoPanel extends JPanel {
 		panel_2.setLayout(gbl_panel_2);
 		
 		btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				Prato p = pratos.get((String)listPrato.getSelectedValue());
+				
+				p.setNome(tfNome.getText());
+				p.setDesc(taObservacao.getText());
+				
+				Object peso = spPeso.getValue();
+				int pesoInt;
+				
+				if (peso instanceof Double) {
+					
+					Double pesoDouble = (Double) peso;
+					pesoInt = pesoDouble.intValue();
+					
+				} else {
+					
+					pesoInt = (Integer) peso;
+					
+				}
+
+				p.setGramas(pesoInt);
+				
+				
+				String precoString = tfPreco.getText();
+
+
+				precoString = precoString.replace(",", ".");
+				p.setValor(Float.parseFloat(precoString));
+				atualizaLista(pratos.getNomes(), listPrato);
+				pratos.salvarPratos();
+				limpaSelecao();
+
+			}
+		});
 		btnSalvar.setEnabled(false);
 		GridBagConstraints gbc_btnSalvar = new GridBagConstraints();
 		gbc_btnSalvar.fill = GridBagConstraints.HORIZONTAL;
@@ -321,6 +397,13 @@ public class PratoPanel extends JPanel {
 		panel_2.add(btnSalvar, gbc_btnSalvar);
 		
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				limpaSelecao();
+				
+			}
+		});
 		btnCancelar.setEnabled(false);
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
@@ -351,6 +434,8 @@ public class PratoPanel extends JPanel {
 		panel_3.add(scrollPane, gbc_scrollPane);
 		
 		listPrato = new JList();
+		atualizaLista(pratos.getNomes(), listPrato);
+		atualizaLista(ingredientes.getNomes(), listIngrediente);
 		scrollPane.setViewportView(listPrato);
 		listPrato.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -360,35 +445,36 @@ public class PratoPanel extends JPanel {
 			}
 		});
 		
-		JButton btnNewButton = new JButton("Adicionar");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				adicionaPrato();
-				listPrato.setModel(atualizaLista(pratos.getNomes()));
+
 			}
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 1;
-		panel_3.add(btnNewButton, gbc_btnNewButton);
+		GridBagConstraints gbc_btnAdicionar = new GridBagConstraints();
+		gbc_btnAdicionar.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnAdicionar.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAdicionar.gridx = 0;
+		gbc_btnAdicionar.gridy = 1;
+		panel_3.add(btnAdicionar, gbc_btnAdicionar);
 		
-		JButton btnNewButton_1 = new JButton("Excluir");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		btnExcluir = new JButton("Excluir");
+		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				removePrato();
-				listPrato.setModel(atualizaLista(pratos.getNomes()));
-				mudaSalvarCancelar(false);
-				limpaCampos();
+
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 1);
-		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_1.gridx = 1;
-		gbc_btnNewButton_1.gridy = 1;
-		panel_3.add(btnNewButton_1, gbc_btnNewButton_1);
+		btnExcluir.setEnabled(false);
+		GridBagConstraints gbc_btnExcluir = new GridBagConstraints();
+		gbc_btnExcluir.insets = new Insets(0, 0, 0, 1);
+		gbc_btnExcluir.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnExcluir.gridx = 1;
+		gbc_btnExcluir.gridy = 1;
+		panel_3.add(btnExcluir, gbc_btnExcluir);
 
 	}
 

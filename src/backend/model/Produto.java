@@ -23,11 +23,10 @@ public class Produto implements Serializable{
 		valor = 0.00f;
 	}
 	
-	public Produto(String nome, String desc, double valor, IngredienteController ingredientes) {
+	public Produto(String nome, String desc, double valor) {
 		setNome(nome);
 		setDesc(desc);
 		setValor(valor);
-		setIngredientes(ingredientes);
 	}
 	
 	public double calculaValor() {

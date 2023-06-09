@@ -112,7 +112,7 @@ public class Main extends JFrame {
 				JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 				tabbedPane.addTab("Produtos", null, tabbedPane_1, null);
 				
-				JPanel panel_2 = new PratoPanel();
+				JPanel panel_2 = new PratoPanel(restaurante.pratos, restaurante.ingredientes);
 				tabbedPane_1.addTab("Pratos", null, panel_2, null);
 				
 				JPanel panel_4 = new BebidaPanel();

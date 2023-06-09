@@ -29,8 +29,6 @@ import backend.controller.PratoController;
 import backend.model.Prato;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PratoPanel extends JPanel {
 	

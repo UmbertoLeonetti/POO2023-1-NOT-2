@@ -13,8 +13,8 @@ import backend.model.Ingrediente;
 import backend.model.Prato;
 
 public class IngredienteController implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+	
+	private static final long serialVersionUID = 4517401700842185348L;
 	private static ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	private static int ingCount = 0;
 	
@@ -133,7 +133,8 @@ public class IngredienteController implements Serializable {
 			fileIn.close();
 
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println("Ocorreu um erro ao desserializar o arquivo: " + e);
+			System.out.println("Ocorreu um erro ao desserializar o arquivo: ");
+			e.printStackTrace();
 		}
 	}
 }

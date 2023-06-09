@@ -20,8 +20,8 @@ public class Prato extends Produto implements Serializable {
 		gramas = 0.00f;
 	}
 	
-	public Prato(String nome, String desc, double valor, double gramas, IngredienteController ingredientes) {
-		super(nome, desc, valor, ingredientes);
+	public Prato(String nome, String desc, double valor, double gramas) {
+		super(nome, desc, valor);
 		setGramas(gramas);
 	}
 

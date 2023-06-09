@@ -1,48 +1,43 @@
 package backend.model;
 
-public class Prato extends Produto{
+import java.io.Serializable;
 
+import backend.controller.IngredienteController;
 
-	private float quilos;
-	private boolean vegetariano;
+public class Prato extends Produto implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1438057443229834943L;
+	private double gramas;
 	
-	public Prato (String nome) {
-		super (nome, null, 0);
-		
+	public Prato() {
+		super();
+	}
+	
+	public Prato(String nome) {
+		super(nome);
+		gramas = 0.00f;
+	}
+	
+	public Prato(String nome, String desc, double valor, double gramas, IngredienteController ingredientes) {
+		super(nome, desc, valor, ingredientes);
+		setGramas(gramas);
 	}
 
-	public Prato(String nome, String desc, float valor, float quilos, boolean vegetariano) {
-		super(nome, desc, valor);
-		setQuilos(quilos);
-		this.vegetariano = vegetariano;
+	public double getGramas() {
+		return gramas;
+	}
+
+	public void setGramas(double gramas) {
+		this.gramas = gramas;
 	}
 
 	@Override
-	//Sem implementação específica da classe.
 	public String toString() {
-		return nome;
+		return "Prato [getNome()=" + getNome() + ", getValor()=" + getValor() + ", getIngredientes()="
+				+ getIngredientes() + ", gramas=" + gramas + "]";
 	}
 
-	public void setQuilos(float quilos) {
-		if (quilos <= 0) {
-			
-			throw new IllegalArgumentException("O valor de quilos do prato deve ser positivo");
-			
-		}
-		
-		this.quilos = quilos;
-	}
 	
-	public float getQuilos() {
-		return quilos;
-	}
-
-	public void setVegetariano(boolean vegetariano) {
-		this.vegetariano = vegetariano;
-	}
-	
-	public boolean isVegetariano() {
-		return vegetariano;
-	}
-
 }

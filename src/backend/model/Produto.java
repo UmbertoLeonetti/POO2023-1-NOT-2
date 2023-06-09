@@ -1,41 +1,44 @@
 package backend.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Produto {
+import backend.controller.IngredienteController;
 
-	protected String nome;
-	protected String desc;
-	protected double valor;
-	protected ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+public class Produto implements Serializable{
+	private String nome;
+	private String desc;
+	private double valor;
+	private IngredienteController ingredientes;
 	
-	public Produto(String nome, String desc, float valor) {
+	
+	public Produto() {
+		
+	}
+	
+	public Produto(String nome) {
+		setNome(nome);
+		ingredientes = new IngredienteController();
+		desc = "";
+		valor = 0.00f;
+	}
+	
+	public Produto(String nome, String desc, double valor, IngredienteController ingredientes) {
 		setNome(nome);
 		setDesc(desc);
 		setValor(valor);
+		setIngredientes(ingredientes);
 	}
-	
-	public abstract String toString();
 	
 	public double calculaValor() {
-		
 		return valor;
-		
 	}
-	
 	
 	public String getDesc() {
 		return desc;
 	}
 
 	public void setDesc(String desc) {
-		
-		if (desc.length() == 0) {
-			
-			throw new IllegalArgumentException("Descrição de produto deve conter caracteres.");
-			
-		}
-		
 		this.desc = desc;
 	}
 
@@ -44,21 +47,14 @@ public abstract class Produto {
 	}
 
 	public void setValor(double valor) {
-		
-		if (valor <= 0) {
-			
-			throw new IllegalArgumentException("Valor de produto deve ser positivo.");
-			
-		}
-		
 		this.valor = valor;
 	}
 
-	public ArrayList<Ingrediente> getIngredientes() {
+	public IngredienteController getIngredientes() {
 		return ingredientes;
 	}
 
-	public void setIngredientes(ArrayList<Ingrediente> ingredientes) {
+	public void setIngredientes(IngredienteController ingredientes) {
 		this.ingredientes = ingredientes;
 	}
 
@@ -67,13 +63,6 @@ public abstract class Produto {
 	}
 
 	public void setNome(String nome) {
-		
-		if (nome.length() == 0) {
-			
-			throw new IllegalArgumentException("Nome de produto deve conter caracteres.");
-			
-		}
-		
 		this.nome = nome;		
 	}
 	
@@ -81,7 +70,9 @@ public abstract class Produto {
 		ingredientes.add(i);
 	}
 	
-	public boolean removeIngrediente(Ingrediente i) {
-		return ingredientes.remove(i);
+	public void removeIngrediente(Ingrediente i) {
+		ingredientes.remove(i);
 	}
+	
+	
 }

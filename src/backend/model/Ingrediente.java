@@ -1,19 +1,30 @@
 package backend.model;
 
-public class Ingrediente {
+import java.io.Serializable;
+
+public class Ingrediente extends Object implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 	private String nome;
 	private int quantidade;
 	private float preco;
 
-	public Ingrediente(String nome, int quantidade, float preco) {
+	public Ingrediente(String nome) {
+		setNome(nome);
+		quantidade = 0;
+		preco = 0.00f;
+	}
+	
+	public Ingrediente(String nome, float preco, int quantidade) {
 		setNome(nome);
 		setQuantidade(quantidade);
 		setPreco(preco);
 	}
-	
+
 	@Override
 	public String toString() {
-		return getNome();
+		return "Ingrediente [getNome()=" + getNome() + ", getPreco()=" + getPreco() + ", getQuantidade()="
+				+ getQuantidade() + "]";
 	}
 
 	public float getPreco() {
@@ -21,13 +32,6 @@ public class Ingrediente {
 	}
 
 	public void setPreco(float preco) {
-		
-		if (preco <= 0) {
-			
-			throw new IllegalArgumentException("Preço de ingrediente deve ser positivo.");
-			
-		}
-		
 		this.preco = preco;
 	}
 
@@ -36,13 +40,6 @@ public class Ingrediente {
 	}
 
 	public void setQuantidade(int quantidade) {
-		
-		if (quantidade < 1) {
-			
-			throw new IllegalArgumentException("A quantidade do ingrediente deve ser positiva.");
-			
-		}
-		
 		this.quantidade = quantidade;
 	}
 
@@ -51,12 +48,6 @@ public class Ingrediente {
 	}
 
 	public void setNome(String nome) {
-		
-		if (nome.length() == 0) {
-			
-			throw new IllegalArgumentException("Nome de ingrediente deve conter caracteres.");
-			
-		}
 		this.nome = nome;
 	}
 	

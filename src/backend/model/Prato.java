@@ -5,15 +5,9 @@ import java.io.Serializable;
 import backend.controller.IngredienteController;
 
 public class Prato extends Produto implements Serializable {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -1438057443229834943L;
 	private double gramas;
-	
-	public Prato() {
-		super();
-	}
 	
 	public Prato(String nome) {
 		super(nome);

@@ -3,7 +3,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-class JTextFieldFilter extends PlainDocument {
+public class JTextFieldFilter extends PlainDocument {
    public static final String FLOAT = "0123456789,";
    protected String acceptedChars = null;
    protected boolean negativeAccepted = false;

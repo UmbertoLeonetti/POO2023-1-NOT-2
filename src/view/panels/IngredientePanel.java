@@ -6,8 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -18,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
@@ -27,7 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 import backend.controller.IngredienteController;
 import backend.model.Ingrediente;
-import javax.swing.SpinnerNumberModel;
+import view.JTextFieldFilter;
 
 public class IngredientePanel extends JPanel {
 	private JTextField tfNome;
@@ -278,7 +277,6 @@ public class IngredientePanel extends JPanel {
 				atualizaLista();
 				limpaCampos();
 				mudaSalvarCancelar(false);
-				ingredientes.salvarIngredientes(null);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
@@ -349,6 +347,7 @@ public class IngredientePanel extends JPanel {
 		panel_3.add(lblNewLabel_1, gbc_lblNewLabel_1);
 
 		tfPreco = new JTextField();
+		tfPreco.setDocument(new JTextFieldFilter());
 		GridBagConstraints gbc_tfPreco = new GridBagConstraints();
 		gbc_tfPreco.insets = new Insets(0, 0, 0, 5);
 		gbc_tfPreco.fill = GridBagConstraints.HORIZONTAL;

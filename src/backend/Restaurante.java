@@ -8,7 +8,7 @@ public class Restaurante {
 	public PratoController 			pratos;
 	
 	public Restaurante() {
-		ingredientes	= new IngredienteController();
+		ingredientes	= new IngredienteController(true);
 		pratos 			= new PratoController();
 	}
 }

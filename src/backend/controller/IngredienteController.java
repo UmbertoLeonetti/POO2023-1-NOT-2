@@ -15,14 +15,18 @@ import backend.model.Prato;
 public class IngredienteController implements Serializable {
 	
 	private static final long serialVersionUID = 4517401700842185348L;
-	private static ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
-	private static int ingCount = 0;
+	private ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+	private int ingCount = 0;
+	private boolean serializar = true;
 	
-	public IngredienteController() {
-		
+	public void deveSerializar(boolean serializar) {
+		this.serializar = serializar;
+	}
+	
+	public IngredienteController(boolean serializar) {
 		ingredientes = new ArrayList<Ingrediente>();
-		IngredienteController.carregarIngredientes();
-		
+		deveSerializar(serializar);
+		carregarIngredientes();
 	}
 
 	public Ingrediente get(int index) {
@@ -41,7 +45,7 @@ public class IngredienteController implements Serializable {
 	public void add(Ingrediente ing) throws IllegalArgumentException {
 		if (get(ing.getNome()) == null) {
 			ingredientes.add(ing);
-			salvarIngredientes(ingredientes);
+			salvarIngredientes();
 		} else {
 			throw new IllegalArgumentException("Ingrediente com nome '" + ing.getNome() + "' já existe");
 		}
@@ -59,7 +63,7 @@ public class IngredienteController implements Serializable {
 
 	public void add(Ingrediente ing, int index) {
 		ingredientes.add(index, ing);
-		salvarIngredientes(ingredientes);
+		salvarIngredientes();
 	}
 
 	public String[] getNomesArray() {
@@ -73,10 +77,12 @@ public class IngredienteController implements Serializable {
 
 	public void remove(Ingrediente ing) {
 		ingredientes.remove(ing);
+		salvarIngredientes();
 	}
 
 	public void remove(int index) {
 		ingredientes.remove(index);
+		salvarIngredientes();
 	}
 
 	public void remove(String nome) {
@@ -93,24 +99,30 @@ public class IngredienteController implements Serializable {
         return sb.toString();
     }
 
-	public static void salvarIngredientes(ArrayList<Ingrediente> pratos) {
+	public void salvarIngredientes() {
+		if(!serializar)
+			return;
+		
 		try {
 			FileOutputStream fileOut = new FileOutputStream("ingredientes_serializados.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
-			out.writeObject(pratos);
+			out.writeObject(ingredientes);
 
 			out.close();
 			fileOut.close();
 			System.out.println("Os ingredientes foram salvos com sucesso.");
+			
 		} catch (IOException e) {
 			System.out.println("Ocorreu um erro ao escrever no arquivo: " + e);
 		}
 
 	}
 
-	public static void carregarIngredientes() {
-
+	public void carregarIngredientes() {
+		if(!serializar)
+			return;
+		
 		File arquivo = new File("ingredientes_serializados.txt");
 
 		if (!arquivo.exists()) {
@@ -125,6 +137,7 @@ public class IngredienteController implements Serializable {
 			if (obj instanceof ArrayList) {
 				ingredientes = ((ArrayList<Ingrediente>) obj);
 				System.out.println("Os ingredientes foram carregados com sucesso.");
+				
 			} else {
 				System.out.println("O arquivo não pode ser aberto.");
 			}

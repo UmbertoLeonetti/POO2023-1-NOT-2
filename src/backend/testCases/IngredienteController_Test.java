@@ -14,7 +14,7 @@ class IngredienteController_Test {
 
 	@Test
 	void test() {
-		IngredienteController listaIngredientes = new IngredienteController();
+		IngredienteController listaIngredientes = new IngredienteController(false);
 		listaIngredientes.add(new Ingrediente("Ing 1"));
 		listaIngredientes.add(new Ingrediente("Ing 2"));
 		Ingrediente i3 = new Ingrediente("Ing 3");

@@ -11,14 +11,9 @@ public class Produto implements Serializable{
 	private double valor;
 	private IngredienteController ingredientes;
 	
-	
-	public Produto() {
-		
-	}
-	
 	public Produto(String nome) {
 		setNome(nome);
-		ingredientes = new IngredienteController();
+		ingredientes = new IngredienteController(false);
 		desc = "";
 		valor = 0.00f;
 	}
@@ -27,6 +22,7 @@ public class Produto implements Serializable{
 		setNome(nome);
 		setDesc(desc);
 		setValor(valor);
+		ingredientes = new IngredienteController(false);
 	}
 	
 	public double calculaValor() {

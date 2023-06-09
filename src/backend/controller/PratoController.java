@@ -11,18 +11,14 @@ import java.util.ArrayList;
 import backend.model.Prato;
 
 public class PratoController implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7414305687116640292L;
 
-	private static ArrayList<Prato> pratos;
-	private static int prodCount = 0;
+	private ArrayList<Prato> pratos;
+	private int prodCount = 0;
 
 	public PratoController() {
 		pratos = new ArrayList<Prato>();
-		PratoController.carregarPratos();
-
+		carregarPratos();
 	}
 
 	public void add() {
@@ -82,7 +78,7 @@ public class PratoController implements Serializable {
         return sb.toString();
     }
 
-	public static void salvarPratos() {
+	public void salvarPratos() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("pratos_serializados.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -93,18 +89,18 @@ public class PratoController implements Serializable {
 			fileOut.close();
 			System.out.println("Pratos foram salvos com sucesso.");
 		} catch (IOException e) {
-			System.out.println("Ocorreu um erro ao escrever no arquivo: " + e);
+			System.out.println("Ocorreu um erro ao escrever em pratos_serializados.txt: " + e);
 		}
 
 	}
 
-	public static void carregarPratos() {
-		
-		 File arquivo = new File("pratos_serializados.txt");
+	public void carregarPratos() {
 
-		    if (!arquivo.exists()) {
-		        return;
-		    }
+		File arquivo = new File("pratos_serializados.txt");
+
+		if (!arquivo.exists()) {
+			return;
+		}
 
 		try {
 			FileInputStream fileIn = new FileInputStream(arquivo);
@@ -112,19 +108,21 @@ public class PratoController implements Serializable {
 
 			Object obj = in.readObject();
 			if (obj instanceof ArrayList) {
-				
+
 				pratos = ((ArrayList<Prato>) obj);
+
+				System.out.println("O arquivo pratos_serializados.txt não foi carregado com sucesso.");
 				
-				System.out.println("Os pratos foram carregados com sucesso.");
 			} else {
-				System.out.println("O arquivo não pode ser aberto.");
+				
+				System.out.println("O arquivo pratos_serializados.txt não pode ser aberto.");
 			}
 
 			in.close();
 			fileIn.close();
-			
+
 		} catch (IOException | ClassNotFoundException e) {
-			System.out.println("Ocorreu um erro ao desserializar o arquivo: " + e);
+			System.out.println("Ocorreu um erro ao desserializar pratos_serializados.txt: " + e);
 		}
 
 	}

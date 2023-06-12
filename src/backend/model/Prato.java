@@ -11,10 +11,6 @@ public class Prato extends Produto implements Serializable {
 	private static final long serialVersionUID = -1438057443229834943L;
 	private double gramas;
 	
-	public Prato() {
-		super();
-	}
-	
 	public Prato(String nome) {
 		super(nome);
 		gramas = 0.00f;

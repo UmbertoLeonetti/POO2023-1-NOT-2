@@ -10,18 +10,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import backend.model.Ingrediente;
-import backend.model.Prato;
 
 public class IngredienteController implements Serializable {
 	
 	private static final long serialVersionUID = 4517401700842185348L;
-	private static ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
-	private static int ingCount = 0;
+	private ArrayList<Ingrediente> ingredientes;
+	private int ingCount = 0;
+	private boolean serializar = true;
 	
-	public IngredienteController() {
-		
+	public IngredienteController(boolean serializar) {
+		this.serializar = serializar;
 		ingredientes = new ArrayList<Ingrediente>();
-		IngredienteController.carregarIngredientes();
+		carregarIngredientes();
 		
 	}
 
@@ -30,8 +30,11 @@ public class IngredienteController implements Serializable {
 	}
 
 	public Ingrediente get(String nome) {
+		if(nome == null)
+			return null;
+		
 		for (Ingrediente ingrediente : ingredientes) {
-			if (ingrediente.getNome() == nome)
+			if (ingrediente.getNome().compareTo(nome) == 0)
 				return ingrediente;
 		}
 
@@ -73,10 +76,12 @@ public class IngredienteController implements Serializable {
 
 	public void remove(Ingrediente ing) {
 		ingredientes.remove(ing);
+		salvarIngredientes(ingredientes);
 	}
 
 	public void remove(int index) {
 		ingredientes.remove(index);
+		salvarIngredientes(ingredientes);
 	}
 
 	public void remove(String nome) {
@@ -93,7 +98,10 @@ public class IngredienteController implements Serializable {
         return sb.toString();
     }
 
-	public static void salvarIngredientes(ArrayList<Ingrediente> pratos) {
+	public void salvarIngredientes(ArrayList<Ingrediente> pratos) {
+		if(!serializar)
+			return;
+		
 		try {
 			FileOutputStream fileOut = new FileOutputStream("ingredientes_serializados.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -109,8 +117,10 @@ public class IngredienteController implements Serializable {
 
 	}
 
-	public static void carregarIngredientes() {
-
+	public void carregarIngredientes() {
+		if(!serializar)
+			return;
+		
 		File arquivo = new File("ingredientes_serializados.txt");
 
 		if (!arquivo.exists()) {

@@ -16,12 +16,12 @@ public class PratoController implements Serializable {
 	 */
 	private static final long serialVersionUID = 7414305687116640292L;
 
-	private static ArrayList<Prato> pratos;
-	private static int prodCount = 0;
+	private ArrayList<Prato> pratos;
+	private int prodCount = 0;
 
 	public PratoController() {
 		pratos = new ArrayList<Prato>();
-		PratoController.carregarPratos();
+		carregarPratos();
 
 	}
 
@@ -65,8 +65,11 @@ public class PratoController implements Serializable {
 	}
 
 	public Prato get(String nome) {
+		if(nome == null)
+			return null;
+		
 		for (Prato prato : pratos)
-			if (prato.getNome() == nome)
+			if (prato.getNome().compareTo(nome) == 0)
 				return prato;
 
 		return null;
@@ -74,15 +77,14 @@ public class PratoController implements Serializable {
 	
 	public String getListaPratos() {
         StringBuilder sb = new StringBuilder();
-
-        for (Prato prato : pratos) {
+        
+        for (Prato prato : pratos)
             sb.append(prato.toString()).append("\n");
-        }
 
         return sb.toString();
     }
 
-	public static void salvarPratos() {
+	public void salvarPratos() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("pratos_serializados.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -98,7 +100,7 @@ public class PratoController implements Serializable {
 
 	}
 
-	public static void carregarPratos() {
+	public void carregarPratos() {
 		
 		 File arquivo = new File("pratos_serializados.txt");
 

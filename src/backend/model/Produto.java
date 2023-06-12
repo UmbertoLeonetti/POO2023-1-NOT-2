@@ -11,14 +11,9 @@ public class Produto implements Serializable{
 	private double valor;
 	private IngredienteController ingredientes;
 	
-	
-	public Produto() {
-		
-	}
-	
 	public Produto(String nome) {
 		setNome(nome);
-		ingredientes = new IngredienteController();
+		ingredientes = new IngredienteController(false);
 		desc = "";
 		valor = 0.00f;
 	}
@@ -71,6 +66,10 @@ public class Produto implements Serializable{
 	
 	public void removeIngrediente(Ingrediente i) {
 		ingredientes.remove(i);
+	}
+	
+	public void removeIngrediente(String nome) {
+		ingredientes.remove(nome);
 	}
 	
 	

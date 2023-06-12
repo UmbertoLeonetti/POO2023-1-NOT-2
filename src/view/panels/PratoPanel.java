@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -26,9 +28,8 @@ import javax.swing.event.ListSelectionListener;
 
 import backend.controller.IngredienteController;
 import backend.controller.PratoController;
+import backend.model.Ingrediente;
 import backend.model.Prato;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 public class PratoPanel extends JPanel {
 	
@@ -63,37 +64,31 @@ public class PratoPanel extends JPanel {
 	}
 
 	private void removePrato() {
-
 		ArrayList<String> selected = (ArrayList<String>) listPrato.getSelectedValuesList();
 		
 		int opcao;
 		int tamanho = selected.size();
 		
-		if (tamanho == 1) {
-			
+		if (tamanho == 1)
 			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir o prato \"" + selected.get(0) + "\"?");
-			
-		} else {
-			
+		else
 			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir os " + tamanho + " pratos selecionados?");
-			
-		}
-		
-		if (opcao != 0) return;
-		
-		for (String string : selected) {
-			
+
+		if (opcao != 0)
+			return;
+	
+		for (String string : selected)
 			pratos.remove(string);
-			
-		}
 		
 		atualizaLista(pratos.getNomes(), listPrato);
 		limpaSelecao();
-		
 	}
 	
 	private int selecionaPrato() {
 		String nome = (String) listPrato.getSelectedValue();
+		if(nome == null)
+			return -1;
+		
 		Prato selecionado = pratos.get(nome);
 		
 		if(selecionado == null)
@@ -117,7 +112,25 @@ public class PratoPanel extends JPanel {
 		}
 		
 		Prato prato = pratos.get(pratoIndex);
-		prato.addIngrediente(ingredientes.get(ingIndex));
+		try {
+			prato.addIngrediente(ingredientes.get(ingIndex));
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "O ingrediente '" + ingredientes.get(ingIndex).getNome() + "' Já está no prato '" + prato.getNome() + "'");
+		}
+		atualizaLista(prato.getIngredientes().getNomes(), listPratoIngrediente);
+	}
+	
+	private void removeIngrediente() {
+		int ingIndex = listPratoIngrediente.getSelectedIndex();
+		int pratoIndex = listPrato.getSelectedIndex();
+		
+		if(ingIndex < 0 || pratoIndex < 0) {
+			JOptionPane.showMessageDialog(panel, "Ingrediente e prato devem ser selecionados.");
+			return;
+		}
+		
+		Prato prato = pratos.get(pratoIndex);
+		prato.removeIngrediente(ingredientes.get(ingIndex).getNome());
 		atualizaLista(prato.getIngredientes().getNomes(), listPratoIngrediente);
 	}
 	
@@ -129,11 +142,9 @@ public class PratoPanel extends JPanel {
 	}
 	
 	private void limpaSelecao() {
-		
 		listPrato.clearSelection();
 		limpaCampos();
 		mudaSalvarCancelar(false);
-		
 	}
 
 	private void mudaSalvarCancelar(boolean mod) {
@@ -328,6 +339,11 @@ public class PratoPanel extends JPanel {
 		scrollPane_2.setViewportView(listPratoIngrediente);
 		
 		JButton btnNewButton_3 = new JButton("<<");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeIngrediente();
+			}
+		});
 		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
 		gbc_btnNewButton_3.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_3.anchor = GridBagConstraints.NORTH;
@@ -352,7 +368,6 @@ public class PratoPanel extends JPanel {
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				Prato p = pratos.get((String)listPrato.getSelectedValue());
 				
 				p.setNome(tfNome.getText());
@@ -362,28 +377,21 @@ public class PratoPanel extends JPanel {
 				int pesoInt;
 				
 				if (peso instanceof Double) {
-					
 					Double pesoDouble = (Double) peso;
 					pesoInt = pesoDouble.intValue();
-					
-				} else {
-					
+		
+				} else 
 					pesoInt = (Integer) peso;
-					
-				}
-
+				
 				p.setGramas(pesoInt);
 				
-				
 				String precoString = tfPreco.getText();
-
 
 				precoString = precoString.replace(",", ".");
 				p.setValor(Float.parseFloat(precoString));
 				atualizaLista(pratos.getNomes(), listPrato);
 				pratos.salvarPratos();
 				limpaSelecao();
-
 			}
 		});
 		btnSalvar.setEnabled(false);
@@ -397,9 +405,7 @@ public class PratoPanel extends JPanel {
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				limpaSelecao();
-				
 			}
 		});
 		btnCancelar.setEnabled(false);
@@ -440,15 +446,17 @@ public class PratoPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				pratoSelec = selecionaPrato();
 				mudaSalvarCancelar(true);
+				if(pratoSelec == -1)
+					return;
+				
+				atualizaLista(pratos.get(pratoSelec).getIngredientes().getNomes(), listPratoIngrediente);
 			}
 		});
 		
 		JButton btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				adicionaPrato();
-
 			}
 		});
 		GridBagConstraints gbc_btnAdicionar = new GridBagConstraints();
@@ -461,9 +469,7 @@ public class PratoPanel extends JPanel {
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				removePrato();
-
 			}
 		});
 		btnExcluir.setEnabled(false);

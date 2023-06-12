@@ -28,8 +28,8 @@ import javax.swing.event.ListSelectionListener;
 
 import backend.Persiste;
 import backend.Restaurante;
-import backend.controller.IngredienteController;
-import backend.controller.PratoController;
+import backend.controller.Controller;
+import backend.model.Ingrediente;
 import backend.model.Prato;
 
 public class PratoPanel extends JPanel {
@@ -47,9 +47,10 @@ public class PratoPanel extends JPanel {
 	private JList listPratoIngrediente;
 	
 	private Restaurante restaurante;
-	private PratoController pratos;
-	private IngredienteController ingredientes;
+	private Controller<Prato> pratos;
+	private Controller<Ingrediente> ingredientes;
 	private int pratoSelec = -1;
+	private int nomeCount = 0;
 	
 	private void atualizaLista(ArrayList<String> elements, JList list) {
 		DefaultListModel model = new DefaultListModel();
@@ -61,7 +62,8 @@ public class PratoPanel extends JPanel {
 	}
 
 	private void adicionaPrato() {
-		pratos.add();
+		nomeCount++;
+		pratos.add(new Prato("Prato " + nomeCount));
 		atualizaLista(pratos.getNomes(), listPrato);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}

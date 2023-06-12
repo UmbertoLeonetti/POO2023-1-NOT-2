@@ -1,8 +1,6 @@
 package backend.model;
 
-import java.io.Serializable;
-
-public class Ingrediente extends Object implements Serializable {
+public class Ingrediente implements Item {
 	
 	private static final long serialVersionUID = 1L;
 	private String nome;

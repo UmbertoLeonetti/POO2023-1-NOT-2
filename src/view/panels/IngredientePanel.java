@@ -26,7 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 import backend.Persiste;
 import backend.Restaurante;
-import backend.controller.IngredienteController;
+import backend.controller.Controller;
 import backend.model.Ingrediente;
 
 public class IngredientePanel extends JPanel {
@@ -35,12 +35,13 @@ public class IngredientePanel extends JPanel {
 	private JTextField tfPesquisa;
 	private JSpinner spQuantidade;
 	private JList list;
-
-	private Restaurante restaurante;
-	private IngredienteController ingredientes;
-	private int ingSelec = 0;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
+
+	private Restaurante restaurante;
+	private Controller<Ingrediente> ingredientes;
+	private int ingSelec = 0;
+	private int nomeCount = 0;
 
 	// Método contém que verifica se a String a contém a String b
 	private boolean contem(String a, String b) {
@@ -80,7 +81,8 @@ public class IngredientePanel extends JPanel {
 	}
 
 	private void novoIngrediente() {
-		ingredientes.add();
+		nomeCount++;
+		ingredientes.add(new Ingrediente("Ingrediente " + nomeCount));
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 

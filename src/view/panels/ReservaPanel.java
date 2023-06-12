@@ -32,6 +32,8 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+//Para finalizar.
+
 public class ReservaPanel extends JPanel {
 
 	private JTextField tfCliente;

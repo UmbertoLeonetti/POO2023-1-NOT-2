@@ -13,7 +13,7 @@ public class Produto implements Serializable{
 	
 	public Produto(String nome) {
 		setNome(nome);
-		ingredientes = new IngredienteController(false);
+		ingredientes = new IngredienteController();
 		desc = "";
 		valor = 0.00f;
 	}

@@ -26,9 +26,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import backend.Persiste;
+import backend.Restaurante;
 import backend.controller.IngredienteController;
 import backend.controller.PratoController;
-import backend.model.Ingrediente;
 import backend.model.Prato;
 
 public class PratoPanel extends JPanel {
@@ -45,6 +46,7 @@ public class PratoPanel extends JPanel {
 	private JList<String> listIngrediente;
 	private JList listPratoIngrediente;
 	
+	private Restaurante restaurante;
 	private PratoController pratos;
 	private IngredienteController ingredientes;
 	private int pratoSelec = -1;
@@ -61,6 +63,7 @@ public class PratoPanel extends JPanel {
 	private void adicionaPrato() {
 		pratos.add();
 		atualizaLista(pratos.getNomes(), listPrato);
+		Persiste.salva(restaurante, "restaurante.txt");
 	}
 
 	private void removePrato() {
@@ -82,6 +85,7 @@ public class PratoPanel extends JPanel {
 		
 		atualizaLista(pratos.getNomes(), listPrato);
 		limpaSelecao();
+		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
 	private int selecionaPrato() {
@@ -118,6 +122,7 @@ public class PratoPanel extends JPanel {
 			JOptionPane.showMessageDialog(this, "O ingrediente '" + ingredientes.get(ingIndex).getNome() + "' Já está no prato '" + prato.getNome() + "'");
 		}
 		atualizaLista(prato.getIngredientes().getNomes(), listPratoIngrediente);
+		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
 	private void removeIngrediente() {
@@ -132,6 +137,7 @@ public class PratoPanel extends JPanel {
 		Prato prato = pratos.get(pratoIndex);
 		prato.removeIngrediente(prato.getIngredientes().get(ingIndex).getNome());
 		atualizaLista(prato.getIngredientes().getNomes(), listPratoIngrediente);
+		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
 	private void limpaCampos() {		
@@ -153,16 +159,17 @@ public class PratoPanel extends JPanel {
 		btnExcluir.setEnabled(mod);
 	}
 
-	public PratoPanel(PratoController pratos, IngredienteController ingredientes) {
+	public PratoPanel(Restaurante restaurante) {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				atualizaLista(ingredientes.getNomes(), listIngrediente);
 			}
 		});
-		this.pratos = pratos;
-		this.ingredientes = ingredientes;
-
+		
+		this.restaurante = restaurante;
+		this.pratos = restaurante.pratos;
+		this.ingredientes = restaurante.ingredientes;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
@@ -390,7 +397,6 @@ public class PratoPanel extends JPanel {
 				precoString = precoString.replace(",", ".");
 				p.setValor(Float.parseFloat(precoString));
 				atualizaLista(pratos.getNomes(), listPrato);
-				pratos.salvarPratos();
 				limpaSelecao();
 			}
 		});

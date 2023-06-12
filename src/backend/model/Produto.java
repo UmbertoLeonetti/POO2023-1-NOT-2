@@ -1,19 +1,16 @@
 package backend.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import backend.controller.Controller;;
 
-import backend.controller.IngredienteController;
-
-public class Produto implements Serializable{
+public abstract class Produto implements Item{
 	private String nome;
 	private String desc;
 	private double valor;
-	private IngredienteController ingredientes;
+	private Controller<Ingrediente> ingredientes;
 	
 	public Produto(String nome) {
 		setNome(nome);
-		ingredientes = new IngredienteController(false);
+		ingredientes = new Controller<Ingrediente>();
 		desc = "";
 		valor = 0.00f;
 	}
@@ -44,16 +41,21 @@ public class Produto implements Serializable{
 		this.valor = valor;
 	}
 
-	public IngredienteController getIngredientes() {
+	public Controller<Ingrediente> getIngredientes() {
 		return ingredientes;
 	}
 
-	public void setIngredientes(IngredienteController ingredientes) {
+	public void setIngredientes(Controller<Ingrediente> ingredientes) {
 		this.ingredientes = ingredientes;
 	}
 
 	public String getNome() {
 		return nome;
+	}
+	
+	@Override
+	public String toString() {
+		return getNome();
 	}
 
 	public void setNome(String nome) {
@@ -62,10 +64,6 @@ public class Produto implements Serializable{
 	
 	public void addIngrediente(Ingrediente i) {
 		ingredientes.add(i);
-	}
-	
-	public void removeIngrediente(Ingrediente i) {
-		ingredientes.remove(i);
 	}
 	
 	public void removeIngrediente(String nome) {

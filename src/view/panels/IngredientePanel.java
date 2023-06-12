@@ -6,8 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -18,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
@@ -25,9 +24,10 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import backend.controller.IngredienteController;
+import backend.Persiste;
+import backend.Restaurante;
+import backend.controller.Controller;
 import backend.model.Ingrediente;
-import javax.swing.SpinnerNumberModel;
 
 public class IngredientePanel extends JPanel {
 	private JTextField tfNome;
@@ -35,11 +35,13 @@ public class IngredientePanel extends JPanel {
 	private JTextField tfPesquisa;
 	private JSpinner spQuantidade;
 	private JList list;
-
-	private IngredienteController ingredientes;
-	private int ingSelec = 0;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
+
+	private Restaurante restaurante;
+	private Controller<Ingrediente> ingredientes;
+	private int ingSelec = 0;
+	private int nomeCount = 0;
 
 	// Método contém que verifica se a String a contém a String b
 	private boolean contem(String a, String b) {
@@ -79,13 +81,16 @@ public class IngredientePanel extends JPanel {
 	}
 
 	private void novoIngrediente() {
-		ingredientes.add();
+		nomeCount++;
+		ingredientes.add(new Ingrediente("Ingrediente " + nomeCount));
+		Persiste.salva(restaurante, "restaurante.txt");
 	}
 
 	private void excluiIngrediente() {
 		String selected = (String) list.getSelectedValue();
 
 		ingredientes.remove(selected);
+		Persiste.salva(restaurante, "restaurante.txt");
 	}
 
 	private int selecionaIngrediente() {
@@ -103,7 +108,6 @@ public class IngredientePanel extends JPanel {
 	}
 
 	private void atualizaLista() {
-
 		DefaultListModel model = new DefaultListModel();
 		ArrayList<String> elements = getIngredientes(tfPesquisa.getText());
 
@@ -134,10 +138,12 @@ public class IngredientePanel extends JPanel {
 		ingredientes.add(new Ingrediente(nome, preco, qtd), ingSelec);
 
 		ingSelec = -1;
+		Persiste.salva(restaurante, "restaurante.txt");
 	}
 
-	public IngredientePanel(IngredienteController ingredientes) {
-		this.ingredientes = ingredientes;
+	public IngredientePanel(Restaurante restaurante) {
+		this.ingredientes = restaurante.ingredientes;
+		this.restaurante = restaurante;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0 };
@@ -278,7 +284,6 @@ public class IngredientePanel extends JPanel {
 				atualizaLista();
 				limpaCampos();
 				mudaSalvarCancelar(false);
-				ingredientes.salvarIngredientes(null);
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();

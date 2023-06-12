@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
 
+import backend.Persiste;
 import backend.Restaurante;
 import view.panels.BebidaPanel;
 import view.panels.CardapioPanel;
@@ -59,7 +60,9 @@ public class Main extends JFrame {
 	 * Create the frame.
 	 */
 	public Main() {
-		restaurante = new Restaurante();
+		restaurante = (Restaurante) Persiste.carrega("restaurante.txt");
+		if(restaurante == null)
+			restaurante = new Restaurante();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 655, 565);
@@ -107,13 +110,13 @@ public class Main extends JFrame {
 		gbc_tabbedPane.gridy = 0;
 		panel_1.add(tabbedPane, gbc_tabbedPane);
 				
-				JPanel panel_3 = new IngredientePanel(restaurante.ingredientes);
+				JPanel panel_3 = new IngredientePanel(restaurante);
 				tabbedPane.addTab("Ingredientes", null, panel_3, null);
 				
 				JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 				tabbedPane.addTab("Produtos", null, tabbedPane_1, null);
 				
-				JPanel panel_2 = new PratoPanel(restaurante.pratos, restaurante.ingredientes);
+				JPanel panel_2 = new PratoPanel(restaurante);
 				tabbedPane_1.addTab("Pratos", null, panel_2, null);
 				
 				JPanel panel_4 = new BebidaPanel();

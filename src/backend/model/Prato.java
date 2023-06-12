@@ -1,10 +1,6 @@
 package backend.model;
 
-import java.io.Serializable;
-
-import backend.controller.IngredienteController;
-
-public class Prato extends Produto implements Serializable {
+public class Prato extends Produto {
 	/**
 	 * 
 	 */

@@ -1,14 +1,18 @@
 package backend;
 
-import backend.controller.IngredienteController;
-import backend.controller.PratoController;
+import java.io.Serializable;
 
-public class Restaurante {
-	public IngredienteController	ingredientes;
-	public PratoController 			pratos;
+import backend.controller.Controller;
+import backend.model.Ingrediente;
+import backend.model.Prato;
+
+public class Restaurante implements Serializable {
+	private static final long serialVersionUID = 1L;
+	public Controller<Ingrediente>	ingredientes;
+	public Controller<Prato>	 	pratos;
 	
 	public Restaurante() {
-		ingredientes	= new IngredienteController(true);
-		pratos 			= new PratoController();
+		ingredientes	= new Controller<Ingrediente>();
+		pratos 			= new Controller<Prato>();
 	}
 }

@@ -1,12 +1,8 @@
 package backend.testCases;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
 
-import backend.controller.IngredienteController;
-import backend.controller.PratoController;
+import backend.controller.Controller;
 import backend.model.Ingrediente;
 import backend.model.Prato;
 
@@ -14,13 +10,12 @@ class IngredienteController_Test {
 
 	@Test
 	void test() {
-		IngredienteController listaIngredientes = new IngredienteController(false);
+		Controller<Ingrediente> listaIngredientes = new Controller<Ingrediente>();
 		listaIngredientes.add(new Ingrediente("Ing 1"));
 		listaIngredientes.add(new Ingrediente("Ing 2"));
 		Ingrediente i3 = new Ingrediente("Ing 3");
 		listaIngredientes.add(i3);
-		System.out.println(listaIngredientes.getListaIngredientes());
-		PratoController prato = new PratoController();
+		Controller<Prato> prato = new Controller<Prato>();
 		//System.out.println(prato.get(1));
 
 //		assertEquals(i3, listaIngredientes.get("Ing 3"));

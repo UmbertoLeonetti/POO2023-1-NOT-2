@@ -34,6 +34,7 @@ import java.awt.event.ActionEvent;
 
 //Para finalizar.
 // adicionar salvamento
+// adicionar um controller de reserva no restaurante
 
 public class ReservaPanel extends JPanel {
 

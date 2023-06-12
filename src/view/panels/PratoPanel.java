@@ -130,7 +130,7 @@ public class PratoPanel extends JPanel {
 		}
 		
 		Prato prato = pratos.get(pratoIndex);
-		prato.removeIngrediente(ingredientes.get(ingIndex).getNome());
+		prato.removeIngrediente(prato.getIngredientes().get(ingIndex).getNome());
 		atualizaLista(prato.getIngredientes().getNomes(), listPratoIngrediente);
 	}
 	

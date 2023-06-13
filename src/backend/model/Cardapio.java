@@ -1,28 +1,33 @@
 package backend.model;
 
-import java.util.ArrayList;
+import backend.controller.Controller;
 
-public class Cardapio {
+public class Cardapio implements Item {
 	
 	private String nome;
-	private ArrayList<Produto> produtos = new ArrayList<Produto>();
-	private ArrayList<Cardapio> sessoes = new ArrayList<Cardapio>();
+	private Controller<Produto> produtos = new Controller<Produto>();
+	private Controller<Cardapio> sessoes = new Controller<Cardapio>();
 	
 	@Override
 	public String toString() {
-		
-		return nome;
-		
+		return getNome();
 	}
 	
-	public Cardapio(String nome) {
+	public Cardapio getSessao(String nome) {		
+		return sessoes.get(nome);
+	}
+	
+	public Produto getProduto(String produto) {
+		produtos.get(produto);
 		
-		if(nome.length() == 0) {
-			
-			throw new IllegalArgumentException("Nome de cardápio deve conter caracteres.");
-			
-		}
-		
+		return null;
+	}
+	
+	public Produto getProduto(String sessao, String produto) {		
+		return getSessao(sessao).produtos.get(produto);
+	}
+	
+	public Cardapio(String nome) {			
 		setNome(nome);
 	}
 	
@@ -35,39 +40,18 @@ public class Cardapio {
 	}
 	
 	public void addProduto(Produto prod) {
-		
-		if (sessoes.size() > 0)  {
-			
-			throw new IllegalArgumentException("Adicione o produto em uma sessão do cardápio.");
-			
-		}
-		
-		if (produtos.contains(prod)) {
-			
-			throw new IllegalArgumentException("Este produto já está presente neste cardápio/sessão.");
-			
-		}
-		
-		
 		produtos.add(prod);
 	}
 	
-	public void addSessao(Cardapio sessao) {
-		
-		if (produtos.size() > 0) {
-			
-			throw new IllegalAccessError("Já há produtos neste cardápio/sessão.");
-			
-		}
-		
+	public void addSessao(Cardapio sessao) {		
 		sessoes.add(sessao);
 	}
 	
-	public boolean removeProduto(Produto prod) {
-		return produtos.remove(prod);
+	public void removeProduto(String nome) {
+		produtos.remove(nome);
 	}
 	
-	public boolean removeSessao(Cardapio sessao) {
-		return sessoes.remove(sessao);
+	public void removeSessao(String nome) {
+		sessoes.remove(nome);
 	}
 }

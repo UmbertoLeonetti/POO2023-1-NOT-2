@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import backend.Persiste;
+import backend.Restaurante;
 import backend.controller.Controller;
 import backend.model.Prato;
 import backend.model.Reserva;
@@ -27,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -55,8 +57,10 @@ public class ReservaPanel extends JPanel {
 	private JButton btnConsultar;
 	private JSpinner spinnerHora;
 	private JSpinner spinnerMinuto;
+
+	private Restaurante restaurante;
 	private ArrayList<String> reservas;
-	private Controller<Reserva> reservasList = new Controller<Reserva>();
+	private Controller<Reserva> reservasList;
 
 	private void atualizaLista(ArrayList<String> reservas, JList list) {
 		DefaultListModel model = new DefaultListModel();
@@ -97,7 +101,10 @@ public class ReservaPanel extends JPanel {
 		btnConsultar.setEnabled(mod);
 	}
 
-	public ReservaPanel() {
+	public ReservaPanel(Restaurante restaurante) {
+		this.restaurante = restaurante;
+		this.reservasList = restaurante.reservas;
+
 		reservas = new ArrayList<String>();
 		LocalDate hoje = LocalDate.now();
 		LocalTime agora = LocalTime.now();
@@ -308,6 +315,7 @@ public class ReservaPanel extends JPanel {
 		panel_4.add(scrollPane, gbc_scrollPane);
 
 		list = new JList();
+
 		scrollPane.setViewportView(list);
 		list.addListSelectionListener(new ListSelectionListener() {
 
@@ -337,6 +345,7 @@ public class ReservaPanel extends JPanel {
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				String element = tfCliente.getText();
 				if (element.length() == 0)
 					return;
@@ -349,13 +358,19 @@ public class ReservaPanel extends JPanel {
 				int hora = (int) spinnerHora.getValue();
 				int minuto = (int) spinnerMinuto.getValue();
 
-				LocalDate data = LocalDate.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia));
-				LocalTime horario = LocalTime.of(hora, minuto);
+				try {
+					LocalDate data = LocalDate.of(Integer.parseInt(ano), Integer.parseInt(mes), Integer.parseInt(dia));
+					LocalTime horario = LocalTime.of(hora, minuto);
+					Reserva rsv = new Reserva(nome, data, horario);
+					reservasList.add(rsv);
 
-				Reserva rsv = new Reserva(nome, data, horario);
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao adicionar a reserva:\n" + ex.getMessage(),
+							"Erro", JOptionPane.ERROR_MESSAGE);
+				}
 
-				reservasList.add(rsv);
-				Persiste.salva(reservasList, "reservas.txt");
+				Persiste.salva(restaurante, "restaurante.txt");
+
 				reservas.add(element);
 				atualizaLista(reservas, list);
 			}

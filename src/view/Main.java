@@ -128,7 +128,7 @@ public class Main extends JFrame {
 		JPanel pnlPedido = new PedidoPanel(this);
 		tabbedPane.addTab("Pedidos", null, pnlPedido, null);
 
-		JPanel pnlReserva = new ReservaPanel();
+		JPanel pnlReserva = new ReservaPanel(restaurante);
 		tabbedPane.addTab("Reservas", null, pnlReserva, null);
 
 		JPanel pnlRelatorios = new JPanel();

@@ -18,7 +18,7 @@ public class Reserva implements Item {
         this.horaAtual = LocalTime.now();
 	}
 
-	public void setDataHorario(LocalDate data, LocalTime horario) {
+	public void setDataHorario(LocalDate data, LocalTime horario) throws IllegalArgumentException {
 		LocalDate hoje = LocalDate.now();
 		if (data.isBefore(hoje))
 			throw new IllegalArgumentException("Data não pode ser anterior.");

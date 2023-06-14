@@ -3,6 +3,7 @@ package backend.controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 import backend.model.Item;
+import backend.model.Reserva;
 
 public class Controller<T extends Item> implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +30,8 @@ public class Controller<T extends Item> implements Serializable {
 	}
 	
 	public void add(T obj) throws IllegalArgumentException {
-		if(get(obj.getNome()) == null)
+		
+		if(get(obj.getNome()) == null || obj instanceof Reserva)
 			list.add(obj);
 		else
 			throw new IllegalArgumentException("Item com nome '" + obj.getNome() + "' já existe");

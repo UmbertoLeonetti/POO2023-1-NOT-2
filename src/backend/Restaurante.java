@@ -12,11 +12,16 @@ public class Restaurante implements Serializable {
 	private static final long serialVersionUID = 1L;
 	public Controller<Ingrediente>	ingredientes;
 	public Controller<Prato>	 	pratos;
+<<<<<<< Updated upstream
 	public Controller<Cardapio>	 	cardapios;
 	public Controller<Reserva>		reservas;
+=======
+	public Controller<Reserva>	 	reserva;
+>>>>>>> Stashed changes
 	
 	public Restaurante() {
 		ingredientes	= new Controller<Ingrediente>();
 		pratos 			= new Controller<Prato>();
+		reserva 		= new Controller<Reserva>();
 	}
 }

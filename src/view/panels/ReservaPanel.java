@@ -78,9 +78,7 @@ public class ReservaPanel extends JPanel {
 		tfMesa.setText("");
 		cbDia.setSelectedIndex(hoje.getDayOfMonth() - 1);
 		cbMes.setSelectedIndex(hoje.getMonthValue() - 1);
-
-		int firstYear = (Integer) cbAno.getItemAt(0);
-		cbAno.setSelectedIndex(hoje.getYear() - firstYear);
+		cbAno.setSelectedIndex(0);
 
 		int hora = agora.getHour();
 		int minuto = agora.getMinute();
@@ -239,16 +237,16 @@ public class ReservaPanel extends JPanel {
 
 		DefaultComboBoxModel<Integer> anos = new DefaultComboBoxModel<Integer>();
 
-		int firstYear = 1900;
+		int lastYear = 2024;
 
-		for (int i = firstYear; i <= hoje.getYear(); i++) {
+		for (int i = hoje.getYear(); i <= lastYear; i++) {
 			anos.addElement(i);
 		}
 		cbAno.setModel(anos);
 
 		cbDia.setSelectedIndex(hoje.getDayOfMonth() - 1);
 		cbMes.setSelectedIndex(hoje.getMonthValue() - 1);
-		cbAno.setSelectedIndex(hoje.getYear() - firstYear);
+		cbAno.setSelectedIndex(0);
 
 		JLabel lblHorario = new JLabel("Horário:");
 		GridBagConstraints gbc_lblHorario = new GridBagConstraints();
@@ -363,16 +361,16 @@ public class ReservaPanel extends JPanel {
 					LocalTime horario = LocalTime.of(hora, minuto);
 					Reserva rsv = new Reserva(nome, data, horario);
 					reservasList.add(rsv);
+					reservas.add(element);
+					atualizaLista(reservas, list);
+					Persiste.salva(restaurante, "restaurante.txt");
 
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao adicionar a reserva:\n" + ex.getMessage(),
 							"Erro", JOptionPane.ERROR_MESSAGE);
 				}
 
-				Persiste.salva(restaurante, "restaurante.txt");
 
-				reservas.add(element);
-				atualizaLista(reservas, list);
 			}
 		});
 		GridBagConstraints gbc_btnSalvar = new GridBagConstraints();

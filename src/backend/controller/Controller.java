@@ -67,4 +67,20 @@ public class Controller<T extends Item> implements Serializable {
 	public void remove(int index) {
 		list.remove(index);
 	}
+	
+	@Override
+	public String toString() {
+		
+		String itens = "{";
+		if (list.size() == 0) return null;
+		
+		for (T obj : list) {
+			
+			itens += obj.getNome() + ", ";
+		}
+		
+		itens = itens.substring(0, itens.length() - 2) + '}';
+		return itens;
+		
+	}
 }

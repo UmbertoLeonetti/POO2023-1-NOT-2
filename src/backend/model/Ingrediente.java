@@ -19,6 +19,8 @@ public class Ingrediente implements Item {
 
 	@Override
 	public String toString() {
+		
+		//return nome + ", " + quantidade + " unidades";
 		return "Ingrediente [getNome()=" + getNome() + ", getPreco()=" + getPreco() + ", getQuantidade()="
 				+ getQuantidade() + "]";
 	}

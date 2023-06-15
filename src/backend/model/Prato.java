@@ -23,8 +23,8 @@ public class Prato extends Produto {
 
 	@Override
 	public String toString() {
-		return "Prato [getNome()=" + getNome() + ", getValor()=" + getValor() + ", getIngredientes()="
-				+ getIngredientes() + ", gramas=" + gramas + "]";
+		return "Prato" + super.toString() + ", getGramas()=" + getGramas() + "]";
+		//return getNome() + ": " + gramas + " g";
 	}
 
 	

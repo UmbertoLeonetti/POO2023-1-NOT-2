@@ -17,6 +17,7 @@ public abstract class Produto implements Item{
 	
 	public Produto(String nome, String desc, double valor) {
 		setNome(nome);
+		ingredientes = new Controller<Ingrediente>();
 		setDesc(desc);
 		setValor(valor);
 	}
@@ -55,7 +56,8 @@ public abstract class Produto implements Item{
 	
 	@Override
 	public String toString() {
-		return getNome();
+		return " [getNome()=" + getNome() + ", getDesc()=" + getDesc() + ", getValor()=" + getValor() +
+			   ", getIngredientes()=" + getIngredientes();
 	}
 
 	public void setNome(String nome) {

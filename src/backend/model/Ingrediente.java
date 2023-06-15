@@ -1,8 +1,6 @@
 package backend.model;
 
 public class Ingrediente implements Item {
-	
-	private static final long serialVersionUID = 1L;
 	private String nome;
 	private int quantidade;
 	private float preco;

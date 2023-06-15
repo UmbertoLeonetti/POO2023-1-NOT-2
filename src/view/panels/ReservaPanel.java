@@ -419,7 +419,7 @@ public class ReservaPanel extends JPanel {
 
 			private void mostrarObjeto() {
 
-				for (Reserva rsv : reservasList) {
+				for (Reserva rsv : reservasList.getLista()) {
 
 					atualizaLista(reservas, list);
 					limpaCampos();

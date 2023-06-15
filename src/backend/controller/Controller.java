@@ -6,11 +6,14 @@ import backend.model.Item;
 import backend.model.Reserva;
 
 public class Controller<T extends Item> implements Serializable {
-	private static final long serialVersionUID = 1L;
 	private ArrayList<T> list;
 	
 	public Controller(){
 		list = new ArrayList<T>();
+	}
+	
+	public ArrayList<T> getLista() {
+		return list;
 	}
 	
 	public T get(int index) {

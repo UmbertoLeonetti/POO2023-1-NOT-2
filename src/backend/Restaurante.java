@@ -9,7 +9,7 @@ import backend.model.Prato;
 import backend.model.Reserva;
 
 public class Restaurante implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -9013641685562420877L;
 	public Controller<Ingrediente>	ingredientes;
 	public Controller<Prato>	 	pratos;
 	public Controller<Cardapio>	 	cardapios;

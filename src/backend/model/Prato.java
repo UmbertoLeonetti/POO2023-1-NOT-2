@@ -1,10 +1,6 @@
 package backend.model;
 
 public class Prato extends Produto {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1438057443229834943L;
 	private double gramas;
 	
 	public Prato(String nome) {

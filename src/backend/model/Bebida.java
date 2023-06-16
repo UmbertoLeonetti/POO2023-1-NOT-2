@@ -6,7 +6,7 @@ public class Bebida extends Produto {
 	private boolean alcoolica;
 	public Bebida(String nome, String desc, float valor, float mL, boolean alcoolica) {
 		
-		super(nome);
+		super(nome, desc, valor);
 		setmL(mL);
 		this.alcoolica = alcoolica;
 	}
@@ -20,9 +20,10 @@ public class Bebida extends Produto {
 	}
 	
 	@Override
-	//Sem implementação específica da classe.
 	public String toString() {
-		return getNome();
+		
+		return "Bebida" + super.toString() + ", getmL()=" + getmL() + ", isAlcoolica()=" + isAlcoolica() + "]";
+		//return getNome() + ": " + mL + " mL, " + alcoolicaString();
 	}
 	
 	public float getmL() {
@@ -35,6 +36,12 @@ public class Bebida extends Produto {
 	
 	public boolean isAlcoolica() {
 		return alcoolica;
+	}
+	
+	public String alcoolicaString() {
+		
+		if (alcoolica) return "alcoólica";
+		return "não alcoólica";
 	}
 
 }

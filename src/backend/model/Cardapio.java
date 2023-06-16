@@ -10,7 +10,7 @@ public class Cardapio implements Item {
 	
 	@Override
 	public String toString() {
-		return getNome();
+		return "Cardápio [getNome()=" + getNome() + "]";
 	}
 	
 	public Controller<Cardapio> getSessoes(){
@@ -62,4 +62,6 @@ public class Cardapio implements Item {
 	public void removeSessao(String nome) {
 		sessoes.remove(nome);
 	}
+	
+	
 }

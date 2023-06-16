@@ -3,13 +3,30 @@ package backend.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import backend.controller.Controller;
+
 public class Reserva implements Item {
 
 	private LocalDate data;
 	private LocalTime horario;
 	private String nomeCliente;
 
+	private Controller<Produto> produtos;
+	
+	public Controller<Produto> getProdutos(){
+		return produtos;
+	}
+    
+    public Reserva(String nomeCliente) {
+    	produtos = new Controller<Produto>();
+    	setNomeCliente(nomeCliente);
+		this.data = LocalDate.now();
+        this.horario = LocalTime.now();
+    }
+
+
 	public Reserva(String nomeCliente,LocalDate data, LocalTime horario) {
+    	produtos = new Controller<Produto>();
 		setNomeCliente(nomeCliente);
 		setDataHorario(data, horario);
 	}
@@ -42,5 +59,12 @@ public class Reserva implements Item {
 	public String getNome() {
 		return nomeCliente;
 	}
-
+	
+	@Override
+	public String toString() {
+		
+		return "Reserva [getNome()=" + getNome() + ", getData()=" + getData() + ", getHorario()="
+		+ getHorario() + ", getProdutos()=" + getProdutos() + "]";
+		//return nomeCliente + ", " + getData() + " às " + getHorario();
+	}
 }

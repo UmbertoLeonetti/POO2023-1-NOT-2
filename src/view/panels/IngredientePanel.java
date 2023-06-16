@@ -173,7 +173,7 @@ public class IngredientePanel extends JPanel {
 		gbc_panel_1.gridy = 0;
 		panel.add(panel_1, gbc_panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[] { 0, 294, 321, 0 };
+		gbl_panel_1.columnWidths = new int[] { 0, 75, 348, 0 };
 		gbl_panel_1.rowHeights = new int[] { 0, 0, 0 };
 		gbl_panel_1.columnWeights = new double[] { 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		gbl_panel_1.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };

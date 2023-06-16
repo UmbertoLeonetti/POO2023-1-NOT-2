@@ -326,6 +326,7 @@ public class PratoPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				adicionaIngrediente();
 				atualizaLista(ingredientes.getNomes(), listIngrediente);
+				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
@@ -351,6 +352,7 @@ public class PratoPanel extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeIngrediente();
+				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
 		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
@@ -400,6 +402,7 @@ public class PratoPanel extends JPanel {
 				p.setValor(Float.parseFloat(precoString));
 				atualizaLista(pratos.getNomes(), listPrato);
 				limpaSelecao();
+				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
 		btnSalvar.setEnabled(false);

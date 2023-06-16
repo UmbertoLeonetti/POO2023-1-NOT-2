@@ -2,7 +2,9 @@ package backend.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
 import backend.model.Item;
+import backend.model.Prato;
 import backend.model.Reserva;
 
 public class Controller<T extends Item> implements Serializable {
@@ -12,8 +14,26 @@ public class Controller<T extends Item> implements Serializable {
 		list = new ArrayList<T>();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <S extends Item> Controller<S> geInstanciasDe(S classe){
+		Controller<S> control = new Controller<S>();
+		
+		for (T t : list)
+			if(t.getClass() == classe.getClass())
+				control.add((S) t);
+		
+		if(control.list.isEmpty())
+			return null;
+		
+		return control;				
+	}
+	
 	public ArrayList<T> getLista() {
 		return list;
+	}
+	
+	public int getTamanho() {
+		return list.size();
 	}
 	
 	public T get(int index) {

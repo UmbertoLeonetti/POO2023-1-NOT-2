@@ -13,6 +13,14 @@ public class Cardapio implements Item {
 		return getNome();
 	}
 	
+	public Controller<Cardapio> getSessoes(){
+		return sessoes;
+	}
+	
+	public Controller<Produto> getProdutos(){
+		return produtos;
+	}
+	
 	public Cardapio getSessao(String nome) {		
 		return sessoes.get(nome);
 	}

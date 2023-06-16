@@ -110,6 +110,9 @@ public class Main extends JFrame {
 		gbc_tabbedPane.gridy = 0;
 		panel_1.add(tabbedPane, gbc_tabbedPane);
 				
+						JPanel pnlCardapio = new CardapioPanel(this, restaurante, restaurante.cardapios);
+						tabbedPane.addTab("Cardápios", null, pnlCardapio, null);
+				
 				JPanel panel_3 = new IngredientePanel(restaurante);
 				tabbedPane.addTab("Ingredientes", null, panel_3, null);
 				
@@ -121,9 +124,6 @@ public class Main extends JFrame {
 				
 				JPanel panel_4 = new BebidaPanel();
 				tabbedPane_1.addTab("Bebidas", null, panel_4, null);
-		
-				JPanel pnlCardapio = new CardapioPanel();
-				tabbedPane.addTab("Cardápios", null, pnlCardapio, null);
 
 		JPanel pnlPedido = new PedidoPanel(this);
 		tabbedPane.addTab("Pedidos", null, pnlPedido, null);

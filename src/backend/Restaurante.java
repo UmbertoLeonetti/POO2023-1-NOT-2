@@ -7,7 +7,6 @@ import backend.model.Bebida;
 import backend.model.Cardapio;
 import backend.model.Funcionario;
 import backend.model.Ingrediente;
-import backend.model.Pedido;
 import backend.model.Prato;
 import backend.model.Reserva;
 
@@ -18,7 +17,6 @@ public class Restaurante implements Serializable {
 	public Controller<Cardapio>	 	cardapios;
 	public Controller<Reserva>		reservas;
 	public Controller<Bebida>		bebidas;
-	public Controller<Pedido>		pedidos;
 	public Controller<Funcionario>	funcionarios;
 	
 	public Restaurante() {

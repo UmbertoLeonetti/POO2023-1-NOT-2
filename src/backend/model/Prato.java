@@ -27,5 +27,9 @@ public class Prato extends Produto {
 		//return getNome() + ": " + gramas + " g";
 	}
 
+	@Override
+	public String getClassName() {
+		return "Prato";
+	}
 	
 }

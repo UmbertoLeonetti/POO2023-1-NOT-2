@@ -41,7 +41,7 @@ public class IngredientePanel extends JPanel {
 	private Restaurante restaurante;
 	private Controller<Ingrediente> ingredientes;
 	private int ingSelec = 0;
-	private int nomeCount = 0;
+
 
 	// Método contém que verifica se a String a contém a String b
 	private boolean contem(String a, String b) {
@@ -81,8 +81,7 @@ public class IngredientePanel extends JPanel {
 	}
 
 	private void novoIngrediente() {
-		nomeCount++;
-		ingredientes.add(new Ingrediente("Ingrediente " + nomeCount));
+		ingredientes.add(new Ingrediente());
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 
@@ -129,13 +128,16 @@ public class IngredientePanel extends JPanel {
 	}
 
 	private void salvaIngrediente() {
-		ingredientes.remove(ingSelec);
-
+		int index = list.getSelectedIndex();
 		String nome = tfNome.getText();
 		float preco = Float.parseFloat(tfPreco.getText().replace(',', '.'));
 		int qtd = Integer.parseInt(spQuantidade.getValue().toString());
-
-		ingredientes.add(new Ingrediente(nome, preco, qtd), ingSelec);
+		
+		Ingrediente i = ingredientes.get(index);
+		
+		i.setNome(nome);
+		i.setPreco(preco);
+		i.setQuantidade(qtd);
 
 		ingSelec = -1;
 		Persiste.salva(restaurante, "restaurante.txt");

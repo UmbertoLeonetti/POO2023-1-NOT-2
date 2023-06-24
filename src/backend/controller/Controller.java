@@ -29,16 +29,19 @@ public class Controller<T extends Item> implements Serializable {
 		return control;				
 	}
 	
-	private String defaultName() {
+	private String defaultName(T obj) {
 		
-		String defaultName = "Item";
+		String className = obj.getClassName();
+		
+		
+		String defaultName = "";
 		
 		int n = 1;
 		boolean hasName = false;	
 		do {
 			
 			hasName = false;
-			defaultName = "Item " + n;
+			defaultName = className + " " + n;
 			for (T t : list) {
 				
 				if (t.getNome().equals(defaultName)) {
@@ -77,8 +80,11 @@ public class Controller<T extends Item> implements Serializable {
 	
 	public void add(T obj) throws IllegalArgumentException {
 		
-		if(obj.getNome().equals(""))
-			obj.setNome(defaultName());
+		if(obj.getNome().equals("")) {
+			obj.setNome(defaultName(obj));
+			list.add(obj);
+			return;
+		}
 		
 		if(get(obj.getNome()) == null || obj instanceof Reserva || obj instanceof Pedido)
 			list.add(obj);

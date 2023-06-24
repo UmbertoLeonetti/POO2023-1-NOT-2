@@ -52,4 +52,10 @@ public class Funcionario implements Item {
     public String toString() {
     	return super.toString();
     }
+
+	@Override
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

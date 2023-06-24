@@ -57,8 +57,10 @@ public class Pedido implements Item {
 	}
 
 
-	
-	
+	@Override
+	public String getClassName() {
+		return "Pedido";
+	}
 	
 	
 }

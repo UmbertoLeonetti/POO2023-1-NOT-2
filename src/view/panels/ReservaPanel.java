@@ -236,6 +236,32 @@ public class ReservaPanel extends JPanel {
 		gbc_cbAno.gridy = 0;
 		panel_3.add(cbAno, gbc_cbAno);
 		
+		DefaultComboBoxModel<Integer> dias = new DefaultComboBoxModel<Integer>();
+
+		for (int i = 1; i <= 31; i++) {
+			dias.addElement(i);
+		}
+		cbDia.setModel(dias);
+		
+		DefaultComboBoxModel<Integer> meses = new DefaultComboBoxModel<Integer>();
+
+		for (int i = 1; i <= 12; i++) {
+			meses.addElement(i);
+		}
+		cbMes.setModel(meses);
+		
+		DefaultComboBoxModel<Integer> anos = new DefaultComboBoxModel<Integer>();
+
+		int lastYear = hoje.getYear() + 1;
+
+		for (int i = hoje.getYear(); i <= lastYear; i++) {
+			anos.addElement(i);
+		}
+		
+		cbAno.setModel(anos);
+		
+		mudaSalvarCancelar(false);
+		
 		lblHorario = new JLabel("Horário:");
 		GridBagConstraints gbc_lblHorario = new GridBagConstraints();
 		gbc_lblHorario.anchor = GridBagConstraints.EAST;
@@ -297,7 +323,9 @@ public class ReservaPanel extends JPanel {
 		gbc_scrollPane.gridy = 0;
 		panel_5.add(scrollPane, gbc_scrollPane);
 		
-		listReserva = new JList();
+		limpaCampos();
+		
+		list = new JList();
 		scrollPane.setViewportView(list);
 		
 		panel_6 = new JPanel();
@@ -346,28 +374,6 @@ public class ReservaPanel extends JPanel {
 		gbc_btnConsultar.gridy = 0;
 		panel_6.add(btnConsultar, gbc_btnConsultar);
 
-		DefaultComboBoxModel<Integer> dias = new DefaultComboBoxModel<Integer>();
 
-		for (int i = 1; i <= 31; i++) {
-			dias.addElement(i);
-		}
-
-		DefaultComboBoxModel<Integer> meses = new DefaultComboBoxModel<Integer>();
-
-		for (int i = 1; i <= 12; i++) {
-			meses.addElement(i);
-		}
-
-		DefaultComboBoxModel<Integer> anos = new DefaultComboBoxModel<Integer>();
-
-		int lastYear = hoje.getYear() + 1;
-
-		for (int i = hoje.getYear(); i <= lastYear; i++) {
-			anos.addElement(i);
-		}
-
-		int hora = agora.getHour();
-		int minuto = agora.getMinute();
-		mudaSalvarCancelar(false);
 	}
 }

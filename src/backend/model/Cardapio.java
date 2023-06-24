@@ -63,5 +63,9 @@ public class Cardapio implements Item {
 		sessoes.remove(nome);
 	}
 	
-	
+	@Override
+	public String getClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

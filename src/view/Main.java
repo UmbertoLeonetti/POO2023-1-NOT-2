@@ -15,6 +15,7 @@ import view.panels.BebidaPanel;
 import view.panels.IngredientePanel;
 import view.panels.PedidoPanel;
 import view.panels.PratoPanel;
+import view.panels.RelatorioPanel;
 import view.panels.ReservaPanel;
 
 public class Main extends JFrame {
@@ -127,7 +128,7 @@ public class Main extends JFrame {
 		JPanel pnlReserva = new ReservaPanel(restaurante);
 		tabbedPane.addTab("Reservas", null, pnlReserva, null);
 
-		JPanel pnlRelatorios = new JPanel();
+		JPanel pnlRelatorios = new RelatorioPanel();
 		tabbedPane.addTab("Relatórios", null, pnlRelatorios, null);
 	}
 

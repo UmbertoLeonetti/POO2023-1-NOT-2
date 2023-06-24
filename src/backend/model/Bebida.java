@@ -48,5 +48,10 @@ public class Bebida extends Produto {
 		if (alcoolica) return "alcoólica";
 		return "não alcoólica";
 	}
+	
+	@Override
+	public String getClassName() {
+		return "Bebida";
+	}
 
 }

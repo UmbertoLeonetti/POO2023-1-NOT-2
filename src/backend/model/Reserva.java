@@ -72,4 +72,10 @@ public class Reserva implements Item {
 		+ getHorario() + ", getProdutos()=" + getProdutos() + "]";
 		//return nomeCliente + ", " + getData() + " às " + getHorario();
 	}
+	
+	@Override
+	public String getClassName() {
+		return "Reserva";
+	}
+	
 }

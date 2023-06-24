@@ -5,8 +5,8 @@ public class Ingrediente implements Item {
 	private int quantidade;
 	private float preco;
 
-	public Ingrediente(String nome) {
-		setNome(nome);
+	public Ingrediente() {
+		setNome("");
 		quantidade = 0;
 		preco = 0.00f;
 	}
@@ -48,5 +48,11 @@ public class Ingrediente implements Item {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	@Override
+	public String getClassName() {
+		return "Ingrediente";
+	}
+
 	
 }

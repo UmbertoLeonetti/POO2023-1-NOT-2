@@ -1,0 +1,17 @@
+[
+  {
+    "nome": "Daniel",
+    "cargo": "Chef",
+    "horarioTrabalho": "09:00"
+  },
+  {
+    "nome": "Mateus",
+    "cargo": "Gerente",
+    "horarioTrabalho": "08:30"
+  },
+  {
+    "nome": "Caue",
+    "cargo": "Cozinheiro",
+    "horarioTrabalho": "10:00"
+  }
+]

@@ -1,6 +1,8 @@
 package backend.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import backend.controller.Controller;
 
@@ -21,7 +23,6 @@ public class Pedido implements Item {
 	public Controller<Produto> getProdutos(){
 		return produtos;
 	}
-	
 
 	@Override
 	public String getNome() {
@@ -43,6 +44,14 @@ public class Pedido implements Item {
 		}
 		this.mesa = mesa;
 	}
+	
+	public LocalDate getData() {
+		return dataHorario.toLocalDate();
+	}
+
+	public LocalTime getHorario() {
+		return dataHorario.toLocalTime();
+	}
 
 	public LocalDateTime getDataHorario() {
 		return dataHorario;
@@ -55,7 +64,6 @@ public class Pedido implements Item {
 	public void setProdutos(Controller<Produto> produtos) {
 		this.produtos = produtos;
 	}
-
 
 	@Override
 	public String getClassName() {

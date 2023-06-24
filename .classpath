@@ -6,12 +6,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/danie/Desktop/Drive/Documentos/FURB/3 - SEMESTRE/POO/jar_files/json-20230618.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="C:/Users/danie/Desktop/Drive/Documentos/FURB/3 - SEMESTRE/POO/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mateus/Documents/GitHub/POO2023-1-NOT-2/jar_files (1)/gson-2.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

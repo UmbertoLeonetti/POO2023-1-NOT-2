@@ -53,7 +53,6 @@ public class PratoPanel extends JPanel {
 	private Controller<Prato> pratos;
 	private Controller<Ingrediente> ingredientes;
 	private int pratoSelec = -1;
-	private int nomeCount = 0;
 	
 	private void atualizaLista(ArrayList<String> elements, JList list) {
 		DefaultListModel model = new DefaultListModel();
@@ -79,7 +78,6 @@ public class PratoPanel extends JPanel {
 	}
 
 	private void adicionaPrato() {
-		nomeCount++;
 		pratos.add(new Prato());
 		atualizaLista(pratos.getNomes(), listPrato);
 		Persiste.salva(restaurante, "restaurante.txt");

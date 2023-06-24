@@ -1,58 +1,78 @@
 package backend.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import backend.controller.Controller;
 
 public class Reserva implements Item {
 
-	private LocalDate data;
-	private LocalTime horario;
 	private String nomeCliente;
+	private int mesa;
+	private LocalDateTime dataHorario;
 
 	private Controller<Produto> produtos;
 	
 	public Controller<Produto> getProdutos(){
 		return produtos;
 	}
+	
+	public Reserva() {
+		produtos = new Controller<Produto>();
+		setNome("");
+		dataHorario = LocalDateTime.now();
+	}
     
     public Reserva(String nomeCliente) {
     	produtos = new Controller<Produto>();
-    	setNomeCliente(nomeCliente);
-		this.data = LocalDate.now();
-        this.horario = LocalTime.now();
+    	setNome(nomeCliente);
+		dataHorario = LocalDateTime.now();
     }
 
 
-	public Reserva(String nomeCliente,LocalDate data, LocalTime horario) {
+	public Reserva(String nomeCliente, LocalDateTime dataHorario) {
     	produtos = new Controller<Produto>();
-		setNomeCliente(nomeCliente);
-		setDataHorario(data, horario);
+		setNome(nomeCliente);
+		setDataHorario(dataHorario);
+	}
+	
+	public Reserva(String nomeCliente, LocalDate data, LocalTime horario) {
+		produtos = new Controller<Produto>();
+		setNome(nomeCliente);
+		setDataHorario(dataHorario);
 	}
 
-	public void setDataHorario(LocalDate data, LocalTime horario) throws IllegalArgumentException {
-		LocalDate hoje = LocalDate.now();
-		if (data.isBefore(hoje))
-			throw new IllegalArgumentException("Data não pode ser anterior à data atual.");
-
-		if (data.isEqual(hoje) && horario.isBefore(LocalTime.now()))
-			throw new IllegalArgumentException("Horário não pode ser anterior ao horário atual.");
-
-		this.data = data;
-		this.horario = horario;
+	public void setDataHorario(LocalDateTime dataHorario) throws IllegalArgumentException {
+		
+		if (dataHorario.isBefore(LocalDateTime.now().withSecond(0).withNano(0)))
+			throw new IllegalArgumentException("Data ou horário não podem ser anteriores.");
+		
+		this.dataHorario = dataHorario;
+		
+	}
+	
+	public void setDataHorario(LocalDate data, LocalTime horario) {
+		
+		LocalDateTime dataHorario = LocalDateTime.of(data, horario);
+		
+		if (dataHorario.isBefore(LocalDateTime.now().withSecond(0).withNano(0)))
+			throw new IllegalArgumentException("Data ou horário não podem ser anteriores.");
+		
+		this.dataHorario = dataHorario;
+		
 	}
 
 	public LocalDate getData() {
-		return data;
+		return dataHorario.toLocalDate();
 	}
 
 	public LocalTime getHorario() {
-		return horario;
+		return dataHorario.toLocalTime();
 	}
 	
-	public void setNomeCliente(String nomeCliente) {
-		this.nomeCliente = nomeCliente;
+	public LocalDateTime getDataHorario() {
+		return dataHorario;
 	}
 	
 	@Override
@@ -76,6 +96,14 @@ public class Reserva implements Item {
 	@Override
 	public String getClassName() {
 		return "Reserva";
+	}
+	
+	public int getMesa() {
+		return mesa;
+	}
+	
+	public void setMesa(int mesa) {
+		this.mesa = mesa;
 	}
 	
 }

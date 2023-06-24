@@ -46,8 +46,7 @@ public class ReservaPanel extends JPanel {
 	private JList listReserva;
 
 	private Restaurante restaurante;
-	private ArrayList<String> reservas;
-	private Controller<Reserva> reservasList;
+	private Controller<Reserva> reservas;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
@@ -57,9 +56,9 @@ public class ReservaPanel extends JPanel {
 	private JTextField tfMesa;
 	private JLabel lblData;
 	private JPanel panel_3;
-	private JComboBox cbDia;
-	private JComboBox cbMes;
-	private JComboBox cbAno;
+	private JComboBox<Integer> cbDia;
+	private JComboBox<Integer> cbMes;
+	private JComboBox<Integer> cbAno;
 	private JLabel lblHorario;
 	private JPanel panel_4;
 	private JSpinner spinnerHora;
@@ -71,16 +70,49 @@ public class ReservaPanel extends JPanel {
 	private JButton btnSalvar;
 	private JButton btnCancelar;
 	private JButton btnExcluir;
-	private JButton btnConsultar;
 	private JList list;
+	private JButton btnAdd;
 
-	private void atualizaLista(ArrayList<String> reservas, JList list) {
+	private void atualizaLista(Controller controller, JList list) {
+		
+		ArrayList<String> elements = controller.getNomes();
+		
 		DefaultListModel model = new DefaultListModel();
 
-		for (String str : reservas)
+		for (String str : elements)
 			model.addElement(str);
 
 		list.setModel(model);
+	}
+	
+	private void removeReserva() {
+		ArrayList<String> selected = (ArrayList<String>) list.getSelectedValuesList();
+		
+		int opcao;
+		int tamanho = selected.size();
+		
+		if (tamanho == 1)
+			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir a reserva de \"" + selected.get(0) + "\"?");
+		else
+			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir as " + tamanho + " reservas selecionadas?");
+
+		if (opcao != 0)
+			return;
+	
+		for (String string : selected)
+			reservas.remove(string);
+		
+		atualizaLista(reservas, list);
+		limpaSelecao();
+		Persiste.salva(restaurante, "restaurante.txt");
+		
+	}
+	
+	private void limpaSelecao() {
+		list.clearSelection();
+		atualizaLista(reservas, list);
+		mudaSalvarCancelar(false);
+		limpaCampos();
 	}
 
 	private void limpaCampos() {
@@ -96,16 +128,45 @@ public class ReservaPanel extends JPanel {
 		int minuto = agora.getMinute();
 		spinnerHora.setModel(new SpinnerNumberModel(hora, 0, 23, 1));
 		spinnerMinuto.setModel(new SpinnerNumberModel(minuto, 0, 59, 1));
+
+	}
+	
+	private int selecionaReserva() {
+		String nome = (String) list.getSelectedValue();
+		if(nome == null)
+			return -1;
+		
+		Reserva selecionado = reservas.get(nome);
+		
+		if(selecionado == null)
+			return -1;
+		
+		LocalDate hoje = LocalDate.now();
+		LocalTime agora = LocalTime.now();
+		tfCliente.setText(selecionado.getNome());
+		tfMesa.setText("" + selecionado.getMesa());
+		cbDia.setSelectedIndex(selecionado.getData().getDayOfMonth() - 1);
+		cbMes.setSelectedIndex(selecionado.getData().getMonthValue() - 1);
+		cbAno.setSelectedItem(selecionado.getData().getYear());
+		
+		spinnerHora.setModel(new SpinnerNumberModel(selecionado.getHorario().getHour(), 0, 23, 1));
+		spinnerMinuto.setModel(new SpinnerNumberModel(selecionado.getHorario().getMinute(), 0, 59, 1));
+		
+		mudaSalvarCancelar(true);
+		return list.getSelectedIndex();
 	}
 
 	private void mudaSalvarCancelar(boolean mod) {
+		btnSalvar.setEnabled(mod);
+		btnCancelar.setEnabled(mod);
+		btnExcluir.setEnabled(mod);
+		btnAdd.setEnabled(!mod);
 	}
 
 	public ReservaPanel(Restaurante restaurante) {
 		this.restaurante = restaurante;
-		this.reservasList = restaurante.reservas;
+		this.reservas = restaurante.reservas;
 
-		reservas = new ArrayList<String>();
 		LocalDate hoje = LocalDate.now();
 		LocalTime agora = LocalTime.now();
 
@@ -221,7 +282,7 @@ public class ReservaPanel extends JPanel {
 		gbc_cbDia.gridy = 0;
 		panel_3.add(cbDia, gbc_cbDia);
 		
-		cbMes = new JComboBox();
+		cbMes = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbMes = new GridBagConstraints();
 		gbc_cbMes.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbMes.insets = new Insets(0, 0, 0, 5);
@@ -229,7 +290,7 @@ public class ReservaPanel extends JPanel {
 		gbc_cbMes.gridy = 0;
 		panel_3.add(cbMes, gbc_cbMes);
 		
-		cbAno = new JComboBox();
+		cbAno = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbAno = new GridBagConstraints();
 		gbc_cbAno.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbAno.gridx = 2;
@@ -259,8 +320,6 @@ public class ReservaPanel extends JPanel {
 		}
 		
 		cbAno.setModel(anos);
-		
-		mudaSalvarCancelar(false);
 		
 		lblHorario = new JLabel("Horário:");
 		GridBagConstraints gbc_lblHorario = new GridBagConstraints();
@@ -323,10 +382,18 @@ public class ReservaPanel extends JPanel {
 		gbc_scrollPane.gridy = 0;
 		panel_5.add(scrollPane, gbc_scrollPane);
 		
-		limpaCampos();
 		
 		list = new JList();
+		list.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				
+				selecionaReserva();
+			}
+		});
 		scrollPane.setViewportView(list);
+
 		
 		panel_6 = new JPanel();
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
@@ -338,42 +405,96 @@ public class ReservaPanel extends JPanel {
 		GridBagLayout gbl_panel_6 = new GridBagLayout();
 		gbl_panel_6.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gbl_panel_6.rowHeights = new int[]{0, 0};
-		gbl_panel_6.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_6.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_6.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_6.setLayout(gbl_panel_6);
 		
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.setEnabled(true);
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Reserva reserva = reservas.get(list.getSelectedIndex());
+				reserva.setNome(tfCliente.getText());
+				LocalDate data = LocalDate.of((int) cbAno.getSelectedItem(), cbMes.getSelectedIndex() + 1, cbDia.getSelectedIndex() + 1);
+				Object hora = spinnerHora.getValue();
+				int horaInt;
+				
+				if (hora instanceof Double) {
+					Double horaDouble = (Double) hora;
+					horaInt = horaDouble.intValue();
+
+				} else 
+					horaInt = (Integer) hora;
+				
+				Object minuto = spinnerMinuto.getValue();
+				int minutoInt;
+				
+				if (minuto instanceof Double) {
+					Double minutoDouble = (Double) minuto;
+					minutoInt = minutoDouble.intValue();
+		
+				} else 
+					minutoInt = (Integer) minuto;
+				
+				
+				LocalTime horaLocalTime = LocalTime.of(horaInt, minutoInt);
+				reserva.setDataHorario(data, horaLocalTime);
+				reserva.setMesa(Integer.parseInt(tfMesa.getText()));
+				limpaSelecao();
+				Persiste.salva(restaurante, "restaurante.txt");
+			}
+		});
+		
+		btnAdd = new JButton("Adicionar");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				reservas.add(new Reserva());
+				atualizaLista(reservas, list);
+				Persiste.salva(restaurante, "restaurante.txt");
+			}
+		});
+		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
+		gbc_btnAdd.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAdd.gridx = 0;
+		gbc_btnAdd.gridy = 0;
+		panel_6.add(btnAdd, gbc_btnAdd);
+		btnSalvar.setEnabled(false);
 		GridBagConstraints gbc_btnSalvar = new GridBagConstraints();
+		gbc_btnSalvar.anchor = GridBagConstraints.EAST;
 		gbc_btnSalvar.insets = new Insets(0, 0, 0, 5);
-		gbc_btnSalvar.gridx = 0;
+		gbc_btnSalvar.gridx = 1;
 		gbc_btnSalvar.gridy = 0;
 		panel_6.add(btnSalvar, gbc_btnSalvar);
 		
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				limpaSelecao();
+			}
+		});
 		btnCancelar.setEnabled(false);
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.insets = new Insets(0, 0, 0, 5);
-		gbc_btnCancelar.gridx = 1;
+		gbc_btnCancelar.gridx = 2;
 		gbc_btnCancelar.gridy = 0;
 		panel_6.add(btnCancelar, gbc_btnCancelar);
 		
 		btnExcluir = new JButton("Excluir");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeReserva();
+				atualizaLista(reservas, list);
+				limpaSelecao();
+			}
+		});
 		btnExcluir.setEnabled(false);
 		GridBagConstraints gbc_btnExcluir = new GridBagConstraints();
-		gbc_btnExcluir.insets = new Insets(0, 0, 0, 5);
-		gbc_btnExcluir.gridx = 2;
+		gbc_btnExcluir.gridx = 3;
 		gbc_btnExcluir.gridy = 0;
 		panel_6.add(btnExcluir, gbc_btnExcluir);
 		
-		btnConsultar = new JButton("Consultar");
-		btnConsultar.setEnabled(false);
-		GridBagConstraints gbc_btnConsultar = new GridBagConstraints();
-		gbc_btnConsultar.anchor = GridBagConstraints.EAST;
-		gbc_btnConsultar.gridx = 3;
-		gbc_btnConsultar.gridy = 0;
-		panel_6.add(btnConsultar, gbc_btnConsultar);
-
+		limpaSelecao();
 
 	}
 }

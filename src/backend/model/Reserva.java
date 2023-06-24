@@ -54,6 +54,11 @@ public class Reserva implements Item {
 	public void setNomeCliente(String nomeCliente) {
 		this.nomeCliente = nomeCliente;
 	}
+	
+	@Override
+	public void setNome(String nome) {
+		this.nomeCliente = nome;
+	}
 
 	@Override
 	public String getNome() {

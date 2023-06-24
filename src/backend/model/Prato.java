@@ -3,8 +3,8 @@ package backend.model;
 public class Prato extends Produto {
 	private double gramas;
 	
-	public Prato(String nome) {
-		super(nome);
+	public Prato() {
+		super();
 		gramas = 0.00f;
 	}
 	

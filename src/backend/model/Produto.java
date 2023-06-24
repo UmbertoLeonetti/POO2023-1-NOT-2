@@ -8,8 +8,8 @@ public abstract class Produto implements Item{
 	private double valor;
 	private Controller<Ingrediente> ingredientes;
 	
-	public Produto(String nome) {
-		setNome(nome);
+	public Produto() {
+		nome = "";
 		ingredientes = new Controller<Ingrediente>();
 		desc = "";
 		valor = 0.00f;

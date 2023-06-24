@@ -11,8 +11,13 @@ public class Funcionario implements Item {
 
 	@Override
 	public String getNome() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public void setNome(String nome) {
+		
+		
 	}
 
 }

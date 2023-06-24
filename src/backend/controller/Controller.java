@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import backend.model.Item;
+import backend.model.Pedido;
 import backend.model.Prato;
 import backend.model.Reserva;
 
@@ -26,6 +27,28 @@ public class Controller<T extends Item> implements Serializable {
 			return null;
 		
 		return control;				
+	}
+	
+	private String defaultName() {
+		
+		String defaultName = "Item";
+		
+		int n = 1;
+		boolean hasName = false;	
+		do {
+			
+			hasName = false;
+			defaultName = "Item " + n;
+			for (T t : list) {
+				
+				if (t.getNome().equals(defaultName)) {
+					hasName = true;
+					n++;
+					break;
+				}
+			}
+		} while (hasName); 
+		return defaultName;
 	}
 	
 	public ArrayList<T> getLista() {
@@ -54,7 +77,10 @@ public class Controller<T extends Item> implements Serializable {
 	
 	public void add(T obj) throws IllegalArgumentException {
 		
-		if(get(obj.getNome()) == null || obj instanceof Reserva)
+		if(obj.getNome().equals(""))
+			obj.setNome(defaultName());
+		
+		if(get(obj.getNome()) == null || obj instanceof Reserva || obj instanceof Pedido)
 			list.add(obj);
 		else
 			throw new IllegalArgumentException("Item com nome '" + obj.getNome() + "' já existe");

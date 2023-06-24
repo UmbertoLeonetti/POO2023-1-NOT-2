@@ -4,6 +4,11 @@ public class Bebida extends Produto {
 	
 	private float mL;
 	private boolean alcoolica;
+	
+	 public Bebida() {
+		 super();
+	}
+	
 	public Bebida(String nome, String desc, float valor, float mL, boolean alcoolica) {
 		
 		super(nome, desc, valor);

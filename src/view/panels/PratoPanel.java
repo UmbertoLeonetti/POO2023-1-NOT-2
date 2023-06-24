@@ -31,15 +31,18 @@ import backend.Restaurante;
 import backend.controller.Controller;
 import backend.model.Ingrediente;
 import backend.model.Prato;
+import javax.swing.JEditorPane;
+import javax.swing.JCheckBox;
+import javax.swing.UIManager;
 
 public class PratoPanel extends JPanel {
 	
 	private JPanel panel;
 	private JTextField tfNome;
 	private JTextField tfPreco;
+	private JEditorPane taObservacao;
 	private JList listPrato;
 	private JSpinner spPeso;
-	private JTextArea taObservacao;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
 	private JButton btnExcluir;
@@ -60,10 +63,24 @@ public class PratoPanel extends JPanel {
 		
 		list.setModel(model);
 	}
+	
+	private void atualizaListaIngrediente(Prato p) {
+		
+		DefaultListModel model = new DefaultListModel();
+		
+		for (String str : ingredientes.getNomes())
+			model.addElement(str);
+		
+		for (String str : p.getIngredientes().getNomes()) 
+			model.removeElement(str);
+		
+		listIngrediente.setModel(model);
+		
+	}
 
 	private void adicionaPrato() {
 		nomeCount++;
-		pratos.add(new Prato("Prato " + nomeCount));
+		pratos.add(new Prato());
 		atualizaLista(pratos.getNomes(), listPrato);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
@@ -119,7 +136,7 @@ public class PratoPanel extends JPanel {
 		
 		Prato prato = pratos.get(pratoIndex);
 		try {
-			prato.addIngrediente(ingredientes.get(ingIndex));
+			prato.addIngrediente(ingredientes.get(listIngrediente.getSelectedValue()));
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "O ingrediente '" + ingredientes.get(ingIndex).getNome() + "' Já está no prato '" + prato.getNome() + "'");
 		}
@@ -188,7 +205,7 @@ public class PratoPanel extends JPanel {
 		gbc_panel.gridy = 0;
 		add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{429, 233, 0};
+		gbl_panel.columnWidths = new int[]{0, 0, 0};
 		gbl_panel.rowHeights = new int[]{0, 0};
 		gbl_panel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
@@ -202,9 +219,9 @@ public class PratoPanel extends JPanel {
 		gbc_panel_1.gridy = 0;
 		panel.add(panel_1, gbc_panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{20, 102, 36, 91, 0};
-		gbl_panel_1.rowHeights = new int[]{0, 0, 143, 301, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_panel_1.rowHeights = new int[]{30, 30, 30, 200, 0, 0};
+		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
@@ -218,7 +235,7 @@ public class PratoPanel extends JPanel {
 		
 		tfNome = new JTextField();
 		GridBagConstraints gbc_tfNome = new GridBagConstraints();
-		gbc_tfNome.gridwidth = 3;
+		gbc_tfNome.gridwidth = 4;
 		gbc_tfNome.insets = new Insets(0, 0, 5, 0);
 		gbc_tfNome.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tfNome.gridx = 1;
@@ -243,7 +260,7 @@ public class PratoPanel extends JPanel {
 		panel_1.add(tfPreco, gbc_tfPreco);
 		tfPreco.setColumns(10);
 		
-		JLabel lblNewLabel_3 = new JLabel("Peso(g):");
+		JLabel lblNewLabel_3 = new JLabel("mL:");
 		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
 		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
@@ -255,7 +272,7 @@ public class PratoPanel extends JPanel {
 		spPeso.setModel(new SpinnerNumberModel(0, 0, 10000, 50));
 		GridBagConstraints gbc_spPeso = new GridBagConstraints();
 		gbc_spPeso.fill = GridBagConstraints.HORIZONTAL;
-		gbc_spPeso.insets = new Insets(0, 0, 5, 0);
+		gbc_spPeso.insets = new Insets(0, 0, 5, 5);
 		gbc_spPeso.gridx = 3;
 		gbc_spPeso.gridy = 1;
 		panel_1.add(spPeso, gbc_spPeso);
@@ -268,10 +285,10 @@ public class PratoPanel extends JPanel {
 		gbc_lblNewLabel_2.gridy = 2;
 		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		taObservacao = new JTextArea();
-		taObservacao.setWrapStyleWord(true);
+		taObservacao = new JEditorPane();
+		taObservacao.setBorder(UIManager.getBorder("TextField.border"));
 		GridBagConstraints gbc_taObservacao = new GridBagConstraints();
-		gbc_taObservacao.gridwidth = 3;
+		gbc_taObservacao.gridwidth = 4;
 		gbc_taObservacao.insets = new Insets(0, 0, 5, 0);
 		gbc_taObservacao.fill = GridBagConstraints.BOTH;
 		gbc_taObservacao.gridx = 1;
@@ -282,7 +299,7 @@ public class PratoPanel extends JPanel {
 		panel_4.setBorder(new TitledBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)), "Ingredientes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
 		gbc_panel_4.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_4.gridwidth = 4;
+		gbc_panel_4.gridwidth = 5;
 		gbc_panel_4.fill = GridBagConstraints.BOTH;
 		gbc_panel_4.gridx = 0;
 		gbc_panel_4.gridy = 3;
@@ -325,7 +342,7 @@ public class PratoPanel extends JPanel {
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				adicionaIngrediente();
-				atualizaLista(ingredientes.getNomes(), listIngrediente);
+				atualizaListaIngrediente(pratos.get(selecionaPrato()));
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
@@ -352,6 +369,7 @@ public class PratoPanel extends JPanel {
 		btnNewButton_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeIngrediente();
+				atualizaListaIngrediente(pratos.get(selecionaPrato()));
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
@@ -364,7 +382,7 @@ public class PratoPanel extends JPanel {
 		
 		JPanel panel_2 = new JPanel();
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		gbc_panel_2.gridwidth = 4;
+		gbc_panel_2.gridwidth = 5;
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
 		gbc_panel_2.gridx = 0;
 		gbc_panel_2.gridy = 4;
@@ -461,6 +479,7 @@ public class PratoPanel extends JPanel {
 					return;
 				
 				atualizaLista(pratos.get(pratoSelec).getIngredientes().getNomes(), listPratoIngrediente);
+				atualizaListaIngrediente(pratos.get(pratoSelec));
 			}
 		});
 		

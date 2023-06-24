@@ -12,7 +12,6 @@ import javax.swing.border.EmptyBorder;
 import backend.Persiste;
 import backend.Restaurante;
 import view.panels.BebidaPanel;
-import view.panels.CardapioPanel;
 import view.panels.IngredientePanel;
 import view.panels.PedidoPanel;
 import view.panels.PratoPanel;
@@ -110,9 +109,6 @@ public class Main extends JFrame {
 		gbc_tabbedPane.gridy = 0;
 		panel_1.add(tabbedPane, gbc_tabbedPane);
 				
-						JPanel pnlCardapio = new CardapioPanel(this, restaurante, restaurante.cardapios);
-						tabbedPane.addTab("Cardápios", null, pnlCardapio, null);
-				
 				JPanel panel_3 = new IngredientePanel(restaurante);
 				tabbedPane.addTab("Ingredientes", null, panel_3, null);
 				
@@ -122,10 +118,10 @@ public class Main extends JFrame {
 				JPanel panel_2 = new PratoPanel(restaurante);
 				tabbedPane_1.addTab("Pratos", null, panel_2, null);
 				
-				JPanel panel_4 = new BebidaPanel();
+				JPanel panel_4 = new BebidaPanel(restaurante);
 				tabbedPane_1.addTab("Bebidas", null, panel_4, null);
 
-		JPanel pnlPedido = new PedidoPanel(this);
+		JPanel pnlPedido = new PedidoPanel(restaurante);
 		tabbedPane.addTab("Pedidos", null, pnlPedido, null);
 
 		JPanel pnlReserva = new ReservaPanel(restaurante);

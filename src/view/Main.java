@@ -3,11 +3,15 @@ package view;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
+
+import org.json.simple.JSONObject;
 
 import backend.Persiste;
 import backend.Restaurante;
@@ -27,6 +31,21 @@ public class Main extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		
+		FileWriter writefile = null;
+		JSONObject objetoJson = new JSONObject();
+		
+		//objetoJson.put("nome", "Jurandir");
+		
+		try {
+			writefile = new FileWriter("dadosimportantes.json");
+			writefile.write(objetoJson.toJSONString());
+			writefile.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println(objetoJson.toJSONString());
 //		try {
 //			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 //				if ("Nimbus".equals(info.getName())) {

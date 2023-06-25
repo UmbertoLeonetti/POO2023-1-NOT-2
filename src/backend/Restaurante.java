@@ -3,9 +3,8 @@ package backend;
 import java.io.Serializable;
 
 import backend.controller.Controller;
+import backend.controller.FuncionarioManager;
 import backend.model.Bebida;
-import backend.model.Cardapio;
-import backend.model.Funcionario;
 import backend.model.Ingrediente;
 import backend.model.Pedido;
 import backend.model.Prato;
@@ -20,6 +19,7 @@ public class Restaurante implements Serializable {
 	public Controller<Reserva>		reservas;
 	public Controller<Pedido>		pedidos;
 	public Controller<Bebida>		bebidas;
+	public FuncionarioManager funcionarios;
 	
 	public Restaurante() {
 		ingredientes	= new Controller<Ingrediente>();
@@ -28,5 +28,6 @@ public class Restaurante implements Serializable {
 		reservas 		= new Controller<Reserva>();
 		pedidos			= new Controller<Pedido>();
 		cardapio		= new Controller<Produto>();
+		funcionarios 	= new FuncionarioManager();
 	}
 }

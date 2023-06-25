@@ -26,18 +26,59 @@ import backend.model.Reserva;
 import javax.swing.JRadioButton;
 
 public class RelatorioPanel extends JPanel {
-
-	
+	private JComboBox<Integer> cbDia01;
+	private JComboBox<Integer> cbMes01;
+	private JComboBox<Integer> cbAno01;
+	private JComboBox<Integer> cbDia02;
+	private JComboBox<Integer> cbMes02;
+	private JComboBox<Integer> cbAno02;
 	private Controller<Reserva> reservas;
 	private Controller<Pedido> pedidos;
 	
-	private String displayDados(Controller controller) {
+	private String displayDadosPedido(Controller<Pedido> controller) {
 		
 		String output = "";
-		ArrayList<Object> elements = controller.getLista();
+		
+		int dia01 = cbDia01.getSelectedIndex() + 1;
+		int mes01 = cbMes01.getSelectedIndex() + 1;
+		int ano01 = cbAno01.getSelectedIndex() + 1900;
+		
+		int dia02 = cbDia02.getSelectedIndex() + 1;
+		int mes02 = cbMes02.getSelectedIndex() + 1;
+		int ano02 = cbAno02.getSelectedIndex() + 1900;
+		
+		LocalDate inicio = LocalDate.of(ano01, mes01, dia01);
+		LocalDate fim = LocalDate.of(ano02, mes02, dia02);
+		
+		ArrayList<Pedido> elements = controller.getPedidosData(inicio, fim);
 		
 		for (Object obj : elements) {
-			output = obj + "\n";
+			output += obj + "\n";
+		}
+		
+		return output;
+		
+	}
+	
+	private String displayDadosReserva(Controller<Reserva> controller) {
+		
+		String output = "";
+		
+		int dia01 = cbDia01.getSelectedIndex() + 1;
+		int mes01 = cbMes01.getSelectedIndex() + 1;
+		int ano01 = cbAno01.getSelectedIndex() + 1900;
+		
+		int dia02 = cbDia02.getSelectedIndex() + 1;
+		int mes02 = cbMes02.getSelectedIndex() + 1;
+		int ano02 = cbAno02.getSelectedIndex() + 1900;
+		
+		LocalDate inicio = LocalDate.of(ano01, mes01, dia01);
+		LocalDate fim = LocalDate.of(ano02, mes02, dia02);
+		
+		ArrayList<Reserva> elements = controller.getReservasData(inicio, fim);
+		
+		for (Object obj : elements) {
+			output += obj + "\n";
 		}
 		
 		return output;
@@ -126,7 +167,7 @@ public class RelatorioPanel extends JPanel {
 		gbc_lblNewLabel.gridy = 0;
 		panel_1.add(lblNewLabel, gbc_lblNewLabel);
 		
-		JComboBox cbDia01 = new JComboBox();
+		cbDia01 = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbDia01 = new GridBagConstraints();
 		gbc_cbDia01.insets = new Insets(0, 0, 5, 5);
 		gbc_cbDia01.fill = GridBagConstraints.HORIZONTAL;
@@ -134,7 +175,7 @@ public class RelatorioPanel extends JPanel {
 		gbc_cbDia01.gridy = 0;
 		panel_1.add(cbDia01, gbc_cbDia01);
 		
-		JComboBox cbMes01 = new JComboBox();
+		cbMes01 = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbMes01 = new GridBagConstraints();
 		gbc_cbMes01.insets = new Insets(0, 0, 5, 5);
 		gbc_cbMes01.fill = GridBagConstraints.HORIZONTAL;
@@ -142,7 +183,7 @@ public class RelatorioPanel extends JPanel {
 		gbc_cbMes01.gridy = 0;
 		panel_1.add(cbMes01, gbc_cbMes01);
 		
-		JComboBox cbAno01 = new JComboBox();
+		cbAno01 = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbAno01 = new GridBagConstraints();
 		gbc_cbAno01.insets = new Insets(0, 0, 5, 5);
 		gbc_cbAno01.fill = GridBagConstraints.HORIZONTAL;
@@ -158,7 +199,7 @@ public class RelatorioPanel extends JPanel {
 		gbc_lblNewLabel_1.gridy = 1;
 		panel_1.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		JComboBox cbDia02 = new JComboBox();
+		cbDia02 = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbDia02 = new GridBagConstraints();
 		gbc_cbDia02.insets = new Insets(0, 0, 0, 5);
 		gbc_cbDia02.fill = GridBagConstraints.HORIZONTAL;
@@ -166,7 +207,7 @@ public class RelatorioPanel extends JPanel {
 		gbc_cbDia02.gridy = 1;
 		panel_1.add(cbDia02, gbc_cbDia02);
 		
-		JComboBox cbMes02 = new JComboBox();
+		cbMes02 = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbMes02 = new GridBagConstraints();
 		gbc_cbMes02.insets = new Insets(0, 0, 0, 5);
 		gbc_cbMes02.fill = GridBagConstraints.HORIZONTAL;
@@ -174,7 +215,7 @@ public class RelatorioPanel extends JPanel {
 		gbc_cbMes02.gridy = 1;
 		panel_1.add(cbMes02, gbc_cbMes02);
 		
-		JComboBox cbAno02 = new JComboBox();
+		cbAno02 = new JComboBox<Integer>();
 		GridBagConstraints gbc_cbAno02 = new GridBagConstraints();
 		gbc_cbAno02.insets = new Insets(0, 0, 0, 5);
 		gbc_cbAno02.fill = GridBagConstraints.HORIZONTAL;
@@ -182,33 +223,41 @@ public class RelatorioPanel extends JPanel {
 		gbc_cbAno02.gridy = 1;
 		panel_1.add(cbAno02, gbc_cbAno02);
 		
-		DefaultComboBoxModel<Integer> dias = new DefaultComboBoxModel<Integer>();
+		DefaultComboBoxModel<Integer> dias01 = new DefaultComboBoxModel<Integer>();
+		DefaultComboBoxModel<Integer> dias02 = new DefaultComboBoxModel<Integer>();
 
 		for (int i = 1; i <= 31; i++) {
-			dias.addElement(i);
+			dias01.addElement(i);
+			dias02.addElement(i);
 		}
-		cbDia01.setModel(dias);
-		cbDia02.setModel(dias);
 		
-		DefaultComboBoxModel<Integer> meses = new DefaultComboBoxModel<Integer>();
+		
+		cbDia01.setModel(dias01);
+		cbDia02.setModel(dias02);
+		
+		DefaultComboBoxModel<Integer> meses01 = new DefaultComboBoxModel<Integer>();
+		DefaultComboBoxModel<Integer> meses02 = new DefaultComboBoxModel<Integer>();
 
 		for (int i = 1; i <= 12; i++) {
-			meses.addElement(i);
+			meses01.addElement(i);
+			meses02.addElement(i);
 		}
-		cbMes01.setModel(meses);
-		cbMes02.setModel(meses);
+		cbMes01.setModel(meses01);
+		cbMes02.setModel(meses02);
 		
-		DefaultComboBoxModel<Integer> anos = new DefaultComboBoxModel<Integer>();
+		DefaultComboBoxModel<Integer> anos01 = new DefaultComboBoxModel<Integer>();
+		DefaultComboBoxModel<Integer> anos02 = new DefaultComboBoxModel<Integer>();
 
 		int firstYear = 1900;
 		int anoAtual = hoje.getYear();
 
 		for (int i = firstYear; i <= anoAtual; i++) {
-			anos.addElement(i);
+			anos01.addElement(i);
+			anos02.addElement(i);
 		}
 		
-		cbAno01.setModel(anos);
-		cbAno02.setModel(anos);
+		cbAno01.setModel(anos01);
+		cbAno02.setModel(anos02);
 		
 		int diaIndex = hoje.getDayOfMonth() - 1;
 		int mesIndex = hoje.getMonthValue() - 1;
@@ -272,7 +321,12 @@ public class RelatorioPanel extends JPanel {
 
 		btnGerar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText(displayDados(reservas));
+				
+				if (rdbtnPedidos.isSelected())
+					textArea.setText(displayDadosPedido(pedidos));
+				else
+					textArea.setText(displayDadosReserva(reservas));
+				
 			}
 		});
 		

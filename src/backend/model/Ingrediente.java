@@ -46,6 +46,9 @@ public class Ingrediente implements Item {
 	}
 
 	public void setNome(String nome) {
+		if (nome.length() < 2)
+			throw new IllegalArgumentException("Nome de ingrediente deve ter pelo menos 2 letras");
+		
 		this.nome = nome;
 	}
 	
@@ -53,6 +56,4 @@ public class Ingrediente implements Item {
 	public String getClassName() {
 		return "Ingrediente";
 	}
-
-	
 }

@@ -7,11 +7,15 @@ import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import backend.Persiste;
 import backend.Restaurante;
 import view.panels.BebidaPanel;
+import view.panels.FuncionarioPanel;
 import view.panels.IngredientePanel;
 import view.panels.PedidoPanel;
 import view.panels.PratoPanel;
@@ -27,22 +31,19 @@ public class Main extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-//		try {
-//			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//				if ("Nimbus".equals(info.getName())) {
-//					UIManager.setLookAndFeel(info.getClassName());
-//					break;
-//				}
-//			}
-//		} catch (UnsupportedLookAndFeelException e) {
-//			// handle exception
-//		} catch (ClassNotFoundException e) {
-//			// handle exception
-//		} catch (InstantiationException e) {
-//			// handle exception
-//		} catch (IllegalAccessException e) {
-//			// handle exception
-//		}
+		
+		
+		try {
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+		         | UnsupportedLookAndFeelException ex) {
+		    ex.printStackTrace();
+		}
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -130,6 +131,9 @@ public class Main extends JFrame {
 
 		JPanel pnlRelatorios = new RelatorioPanel(restaurante);
 		tabbedPane.addTab("Relatórios", null, pnlRelatorios, null);
+		
+		JPanel pnlFuncionarios = new FuncionarioPanel(restaurante);
+		tabbedPane.addTab("Funcionários", null, pnlFuncionarios, null);
 	}
 
 }

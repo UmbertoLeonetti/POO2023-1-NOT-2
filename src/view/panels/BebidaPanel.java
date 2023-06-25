@@ -30,32 +30,43 @@ import backend.Restaurante;
 import backend.controller.Controller;
 import backend.model.Ingrediente;
 import backend.model.Bebida;
+import backend.model.Produto;
+
 import javax.swing.JEditorPane;
-import javax.swing.JCheckBox;
 import javax.swing.UIManager;
+import javax.swing.JCheckBox;
 
 public class BebidaPanel extends JPanel {
 	
-	private JPanel panel;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel panel01;
 	private JTextField tfNome;
 	private JTextField tfPreco;
-	private JEditorPane taObservacao;
-	private JList listBebida;
-	private JSpinner spmL;
+	private JEditorPane jeObservacao;
+	private JList<String> listBebida;
+	private JSpinner spinnerPeso;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
-	private JButton btnExcluir;
+	private JButton btnExcluir01;
+	private JButton btnAdd01;
+	private JButton btnAdd02;
+	private JButton btnExluir02;
 	private JList<String> listIngrediente;
-	private JList listBebidaIngrediente;
+	private JList<String> listBebidaIngrediente;
 	
 	private Restaurante restaurante;
 	private Controller<Bebida> bebidas;
+	private Controller<Produto> cardapio;
 	private Controller<Ingrediente> ingredientes;
-	private int pratoSelec = -1;
-	private int nomeCount = 0;
+	private JCheckBox chckbxAlcoolica;
 	
-	private void atualizaLista(ArrayList<String> elements, JList list) {
-		DefaultListModel model = new DefaultListModel();
+	private void atualizaLista(Controller<?> controller, JList<String> list) {
+		ArrayList<String> elements = controller.getNomes();
+		
+		DefaultListModel<String> model = new DefaultListModel<String>();
 		
 		for (String str : elements)
 			model.addElement(str);
@@ -63,24 +74,31 @@ public class BebidaPanel extends JPanel {
 		list.setModel(model);
 	}
 	
-	private void atualizaListaIngrediente(Bebida p) {
+	private void atualizaListaIngrediente(Bebida bebida) {
 		
-		DefaultListModel model = new DefaultListModel();
+		DefaultListModel<String> model01 = new DefaultListModel<String>();
+		DefaultListModel<String> model02 = new DefaultListModel<String>();
 		
-		for (String str : ingredientes.getNomes())
-			model.addElement(str);
+		for (String str : ingredientes.getNomes()) {
+			model01.addElement(str);
+		}
 		
-		for (String str : p.getIngredientes().getNomes()) 
-			model.removeElement(str);
+		for (String str : bebida.getIngredientes().getNomes()) {
+			model01.removeElement(str);
+			model02.addElement(str);
+		}
 		
-		listIngrediente.setModel(model);
+		listIngrediente.setModel(model01);
+		listBebidaIngrediente.setModel(model02);
 		
 	}
 
 	private void adicionaBebida() {
-		nomeCount++;
-		bebidas.add(new Bebida());
-		atualizaLista(bebidas.getNomes(), listBebida);
+		
+		Bebida bebida = new Bebida();
+		bebidas.add(bebida);
+		cardapio.add(bebida);
+		atualizaLista(bebidas, listBebida);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 
@@ -91,78 +109,72 @@ public class BebidaPanel extends JPanel {
 		int tamanho = selected.size();
 		
 		if (tamanho == 1)
-			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir o prato \"" + selected.get(0) + "\"?");
+			opcao = JOptionPane.showConfirmDialog(panel01, "Você realmente deseja excluir o bebida \"" + selected.get(0) + "\"?");
 		else
-			opcao = JOptionPane.showConfirmDialog(panel, "Você realmente deseja excluir os " + tamanho + " bebidas selecionados?");
+			opcao = JOptionPane.showConfirmDialog(panel01, "Você realmente deseja excluir os " + tamanho + " bebidas selecionados?");
 
 		if (opcao != 0)
 			return;
 	
-		for (String string : selected)
+		for (String string : selected) {
 			bebidas.remove(string);
+			cardapio.remove(string);
+		}
 		
-		atualizaLista(bebidas.getNomes(), listBebida);
+		atualizaLista(bebidas, listBebida);
 		limpaSelecao();
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
-	private int selecionaBebida() {
-		String nome = (String) listBebida.getSelectedValue();
-		if(nome == null)
-			return -1;
-		
-		Bebida selecionado = bebidas.get(nome);
-		
-		if(selecionado == null)
-			return -1;
+	private void selecionaBebida(Bebida selecionado) {
 		
 		tfNome.setText(selecionado.getNome());
 		tfPreco.setText(String.format("%.2f", selecionado.getValor()));
-		spmL.setValue(selecionado.getmL());
-		taObservacao.setText(selecionado.getDesc());
-		
-		return listBebida.getSelectedIndex();
+		spinnerPeso.setValue(selecionado.getmL());
+		jeObservacao.setText(selecionado.getDesc());
+		chckbxAlcoolica.setSelected(selecionado.isAlcoolica());
 	}
 	
-	private void adicionaIngrediente() {
+	private void adicionaIngrediente(Bebida bebida) {
 		int ingIndex = listIngrediente.getSelectedIndex();
-		int pratoIndex = listBebida.getSelectedIndex();
+		int bebidaIndex = listBebida.getSelectedIndex();
 		
-		if(ingIndex < 0 || pratoIndex < 0) {
-			JOptionPane.showMessageDialog(panel, "Ingrediente e prato devem ser selecionados.");
+		if(ingIndex < 0 || bebidaIndex < 0) {
+			JOptionPane.showMessageDialog(panel01, "Ingrediente e bebida devem ser selecionados.");
 			return;
 		}
 		
-		Bebida prato = bebidas.get(pratoIndex);
 		try {
-			prato.addIngrediente(ingredientes.get(listIngrediente.getSelectedValue()));
+			bebida.addIngrediente(ingredientes.get(listIngrediente.getSelectedValue()));
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(this, "O ingrediente '" + ingredientes.get(ingIndex).getNome() + "' Já está no prato '" + prato.getNome() + "'");
+			JOptionPane.showMessageDialog(this, "O ingrediente '" + ingredientes.get(ingIndex).getNome() + "' Já está no bebida '" + bebida.getNome() + "'");
 		}
-		atualizaLista(prato.getIngredientes().getNomes(), listBebidaIngrediente);
+		atualizaLista(bebida.getIngredientes(), listBebidaIngrediente);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
-	private void removeIngrediente() {
+	private void removeIngrediente(Bebida bebida) {
 		int ingIndex = listBebidaIngrediente.getSelectedIndex();
-		int pratoIndex = listBebida.getSelectedIndex();
+		int bebidaIndex = listBebida.getSelectedIndex();
 		
-		if(ingIndex < 0 || pratoIndex < 0) {
-			JOptionPane.showMessageDialog(panel, "Ingrediente e prato devem ser selecionados.");
+		if(ingIndex < 0 || bebidaIndex < 0) {
+			JOptionPane.showMessageDialog(panel01, "Ingrediente e bebida devem ser selecionados.");
 			return;
 		}
 		
-		Bebida prato = bebidas.get(pratoIndex);
-		prato.removeIngrediente(prato.getIngredientes().get(ingIndex).getNome());
-		atualizaLista(prato.getIngredientes().getNomes(), listBebidaIngrediente);
+		bebida.removeIngrediente(bebida.getIngredientes().get(ingIndex).getNome());
+		atualizaLista(bebida.getIngredientes(), listBebidaIngrediente);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
 	private void limpaCampos() {		
 		tfNome.setText("");
 		tfPreco.setText("");
-		spmL.setValue(0);
-		taObservacao.setText("");
+		spinnerPeso.setValue(0);
+		jeObservacao.setText("");
+		chckbxAlcoolica.setSelected(false);
+		listIngrediente.setModel(new DefaultListModel<String>());
+		listBebidaIngrediente.setModel(new DefaultListModel<String>());
 	}
 	
 	private void limpaSelecao() {
@@ -174,19 +186,63 @@ public class BebidaPanel extends JPanel {
 	private void mudaSalvarCancelar(boolean mod) {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
-		btnExcluir.setEnabled(mod);
+		btnExcluir01.setEnabled(mod);
+		btnExluir02.setEnabled(mod);
+		btnAdd01.setEnabled(!mod);
+		btnAdd02.setEnabled(mod);
+	}
+	
+	private void salvaBebida(Bebida bebida) {
+
+		Object mL = spinnerPeso.getValue();
+		int mLInt;
+		
+		if (mL instanceof Double) {
+			Double mLDouble = (Double) mL;
+			mLInt = mLDouble.intValue();
+
+		} else 
+			mLInt = (Integer) mL;
+		
+		
+		String precoString = tfPreco.getText();
+
+		precoString = precoString.replace(",", ".");
+		
+		try {
+			bebida.setNome(tfNome.getText());
+			bebida.setValor(Float.parseFloat(precoString));
+			bebida.setmL(mLInt);
+			bebida.setAlcoolica(chckbxAlcoolica.isSelected());
+			bebida.setDesc(jeObservacao.getText());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			limpaSelecao();
+			return;
+		}
+		
+		atualizaLista(bebidas, listBebida);
+		limpaSelecao();
+		Persiste.salva(restaurante, "restaurante.txt");
+		
 	}
 
 	public BebidaPanel(Restaurante restaurante) {
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
-				atualizaLista(ingredientes.getNomes(), listIngrediente);
+				atualizaLista(bebidas, listBebida);
+				Bebida bebida = bebidas.get(listBebida.getSelectedValue());
+				
+				if (bebida == null)
+					return;
+				
+				atualizaListaIngrediente(bebida);
 			}
 		});
 		
-		this.restaurante = restaurante;
 		this.bebidas = restaurante.bebidas;
+		this.cardapio = restaurante.cardapio;
 		this.ingredientes = restaurante.ingredientes;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -196,41 +252,41 @@ public class BebidaPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(8, 8, 8, 8);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
-		add(panel, gbc_panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 0};
-		gbl_panel.rowHeights = new int[]{0, 0};
-		gbl_panel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		panel.setLayout(gbl_panel);
+		panel01 = new JPanel();
+		GridBagConstraints gbc_panel01 = new GridBagConstraints();
+		gbc_panel01.insets = new Insets(8, 8, 8, 8);
+		gbc_panel01.fill = GridBagConstraints.BOTH;
+		gbc_panel01.gridx = 0;
+		gbc_panel01.gridy = 0;
+		add(panel01, gbc_panel01);
+		GridBagLayout gbl_panel01 = new GridBagLayout();
+		gbl_panel01.columnWidths = new int[]{0, 0, 0};
+		gbl_panel01.rowHeights = new int[]{0, 0};
+		gbl_panel01.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panel01.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		panel01.setLayout(gbl_panel01);
 		
-		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 0;
-		panel.add(panel_1, gbc_panel_1);
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_panel_1.rowHeights = new int[]{30, 30, 30, 200, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		panel_1.setLayout(gbl_panel_1);
+		JPanel panel02 = new JPanel();
+		GridBagConstraints gbc_panel02 = new GridBagConstraints();
+		gbc_panel02.insets = new Insets(0, 0, 0, 5);
+		gbc_panel02.fill = GridBagConstraints.BOTH;
+		gbc_panel02.gridx = 0;
+		gbc_panel02.gridy = 0;
+		panel01.add(panel02, gbc_panel02);
+		GridBagLayout gbl_panel02 = new GridBagLayout();
+		gbl_panel02.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
+		gbl_panel02.rowHeights = new int[]{30, 30, 30, 200, 0, 0};
+		gbl_panel02.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel02.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		panel02.setLayout(gbl_panel02);
 		
-		JLabel lblNewLabel = new JLabel("Nome:");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 0;
-		panel_1.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel lblNome = new JLabel("Nome:");
+		GridBagConstraints gbc_lblNome = new GridBagConstraints();
+		gbc_lblNome.anchor = GridBagConstraints.EAST;
+		gbc_lblNome.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNome.gridx = 0;
+		gbc_lblNome.gridy = 0;
+		panel02.add(lblNome, gbc_lblNome);
 		
 		tfNome = new JTextField();
 		GridBagConstraints gbc_tfNome = new GridBagConstraints();
@@ -239,16 +295,16 @@ public class BebidaPanel extends JPanel {
 		gbc_tfNome.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tfNome.gridx = 1;
 		gbc_tfNome.gridy = 0;
-		panel_1.add(tfNome, gbc_tfNome);
+		panel02.add(tfNome, gbc_tfNome);
 		tfNome.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Preço:");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 1;
-		panel_1.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel lblPreco = new JLabel("Preço:");
+		GridBagConstraints gbc_lblPreco = new GridBagConstraints();
+		gbc_lblPreco.anchor = GridBagConstraints.EAST;
+		gbc_lblPreco.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPreco.gridx = 0;
+		gbc_lblPreco.gridy = 1;
+		panel02.add(lblPreco, gbc_lblPreco);
 		
 		tfPreco = new JTextField();
 		GridBagConstraints gbc_tfPreco = new GridBagConstraints();
@@ -256,177 +312,160 @@ public class BebidaPanel extends JPanel {
 		gbc_tfPreco.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tfPreco.gridx = 1;
 		gbc_tfPreco.gridy = 1;
-		panel_1.add(tfPreco, gbc_tfPreco);
+		panel02.add(tfPreco, gbc_tfPreco);
 		tfPreco.setColumns(10);
 		
-		JLabel lblNewLabel_3 = new JLabel("mL:");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3.gridx = 2;
-		gbc_lblNewLabel_3.gridy = 1;
-		panel_1.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		JLabel lblPeso = new JLabel("mL:");
+		GridBagConstraints gbc_lblPeso = new GridBagConstraints();
+		gbc_lblPeso.anchor = GridBagConstraints.EAST;
+		gbc_lblPeso.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPeso.gridx = 2;
+		gbc_lblPeso.gridy = 1;
+		panel02.add(lblPeso, gbc_lblPeso);
 		
-		spmL = new JSpinner();
-		spmL.setModel(new SpinnerNumberModel(0, 0, 10000, 50));
-		GridBagConstraints gbc_spmL = new GridBagConstraints();
-		gbc_spmL.fill = GridBagConstraints.HORIZONTAL;
-		gbc_spmL.insets = new Insets(0, 0, 5, 5);
-		gbc_spmL.gridx = 3;
-		gbc_spmL.gridy = 1;
-		panel_1.add(spmL, gbc_spmL);
+		spinnerPeso = new JSpinner();
+		spinnerPeso.setModel(new SpinnerNumberModel(10, 10, 10000, 50));
+		GridBagConstraints gbc_spinnerPeso = new GridBagConstraints();
+		gbc_spinnerPeso.fill = GridBagConstraints.HORIZONTAL;
+		gbc_spinnerPeso.insets = new Insets(0, 0, 5, 5);
+		gbc_spinnerPeso.gridx = 3;
+		gbc_spinnerPeso.gridy = 1;
+		panel02.add(spinnerPeso, gbc_spinnerPeso);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Alcoólica");
-		GridBagConstraints gbc_chckbxNewCheckBox = new GridBagConstraints();
-		gbc_chckbxNewCheckBox.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxNewCheckBox.gridx = 4;
-		gbc_chckbxNewCheckBox.gridy = 1;
-		panel_1.add(chckbxNewCheckBox, gbc_chckbxNewCheckBox);
+		chckbxAlcoolica = new JCheckBox("Alcoólica");
+		GridBagConstraints gbc_chckbxAlcoolica = new GridBagConstraints();
+		gbc_chckbxAlcoolica.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxAlcoolica.gridx = 4;
+		gbc_chckbxAlcoolica.gridy = 1;
+		panel02.add(chckbxAlcoolica, gbc_chckbxAlcoolica);
 		
-		JLabel lblNewLabel_2 = new JLabel("Observações:");
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.anchor = GridBagConstraints.NORTH;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 0;
-		gbc_lblNewLabel_2.gridy = 2;
-		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		JLabel lblObs = new JLabel("Observações:");
+		GridBagConstraints gbc_lblObs = new GridBagConstraints();
+		gbc_lblObs.anchor = GridBagConstraints.NORTH;
+		gbc_lblObs.insets = new Insets(0, 0, 5, 5);
+		gbc_lblObs.gridx = 0;
+		gbc_lblObs.gridy = 2;
+		panel02.add(lblObs, gbc_lblObs);
 		
-		taObservacao = new JEditorPane();
-		taObservacao.setBorder(UIManager.getBorder("TextField.border"));
-		GridBagConstraints gbc_taObservacao = new GridBagConstraints();
-		gbc_taObservacao.gridwidth = 4;
-		gbc_taObservacao.insets = new Insets(0, 0, 5, 0);
-		gbc_taObservacao.fill = GridBagConstraints.BOTH;
-		gbc_taObservacao.gridx = 1;
-		gbc_taObservacao.gridy = 2;
-		panel_1.add(taObservacao, gbc_taObservacao);
+		jeObservacao = new JEditorPane();
+		jeObservacao.setBorder(UIManager.getBorder("TextField.border"));
+		GridBagConstraints gbc_jeObservacao = new GridBagConstraints();
+		gbc_jeObservacao.gridwidth = 4;
+		gbc_jeObservacao.insets = new Insets(0, 0, 5, 0);
+		gbc_jeObservacao.fill = GridBagConstraints.BOTH;
+		gbc_jeObservacao.gridx = 1;
+		gbc_jeObservacao.gridy = 2;
+		panel02.add(jeObservacao, gbc_jeObservacao);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)), "Ingredientes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
-		gbc_panel_4.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_4.gridwidth = 5;
-		gbc_panel_4.fill = GridBagConstraints.BOTH;
-		gbc_panel_4.gridx = 0;
-		gbc_panel_4.gridy = 3;
-		panel_1.add(panel_4, gbc_panel_4);
-		GridBagLayout gbl_panel_4 = new GridBagLayout();
-		gbl_panel_4.columnWidths = new int[]{0, 0, 0};
-		gbl_panel_4.rowHeights = new int[]{0, 0};
-		gbl_panel_4.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_4.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		panel_4.setLayout(gbl_panel_4);
+		JPanel panel03 = new JPanel();
+		panel03.setBorder(new TitledBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(128, 128, 128)), "Ingredientes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		GridBagConstraints gbc_panel03 = new GridBagConstraints();
+		gbc_panel03.insets = new Insets(0, 0, 5, 0);
+		gbc_panel03.gridwidth = 5;
+		gbc_panel03.fill = GridBagConstraints.BOTH;
+		gbc_panel03.gridx = 0;
+		gbc_panel03.gridy = 3;
+		panel02.add(panel03, gbc_panel03);
+		GridBagLayout gbl_panel03 = new GridBagLayout();
+		gbl_panel03.columnWidths = new int[]{0, 0, 0};
+		gbl_panel03.rowHeights = new int[]{0, 0};
+		gbl_panel03.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panel03.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		panel03.setLayout(gbl_panel03);
 		
-		JPanel panel_5 = new JPanel();
-		GridBagConstraints gbc_panel_5 = new GridBagConstraints();
-		gbc_panel_5.gridwidth = 2;
-		gbc_panel_5.insets = new Insets(5, 5, 0, 0);
-		gbc_panel_5.fill = GridBagConstraints.BOTH;
-		gbc_panel_5.gridx = 0;
-		gbc_panel_5.gridy = 0;
-		panel_4.add(panel_5, gbc_panel_5);
-		GridBagLayout gbl_panel_5 = new GridBagLayout();
-		gbl_panel_5.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_panel_5.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_5.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_5.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		panel_5.setLayout(gbl_panel_5);
+		JPanel panel04 = new JPanel();
+		GridBagConstraints gbc_panel04 = new GridBagConstraints();
+		gbc_panel04.gridwidth = 2;
+		gbc_panel04.insets = new Insets(5, 5, 0, 0);
+		gbc_panel04.fill = GridBagConstraints.BOTH;
+		gbc_panel04.gridx = 0;
+		gbc_panel04.gridy = 0;
+		panel03.add(panel04, gbc_panel04);
+		GridBagLayout gbl_panel04 = new GridBagLayout();
+		gbl_panel04.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_panel04.rowHeights = new int[]{0, 0, 0};
+		gbl_panel04.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel04.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		panel04.setLayout(gbl_panel04);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
-		gbc_scrollPane_1.gridheight = 2;
-		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_1.gridx = 0;
-		gbc_scrollPane_1.gridy = 0;
-		panel_5.add(scrollPane_1, gbc_scrollPane_1);
+		JScrollPane scrollPane02 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane02 = new GridBagConstraints();
+		gbc_scrollPane02.gridheight = 2;
+		gbc_scrollPane02.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane02.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane02.gridx = 0;
+		gbc_scrollPane02.gridy = 0;
+		panel04.add(scrollPane02, gbc_scrollPane02);
 		
-		listIngrediente = new JList();
-		scrollPane_1.setViewportView(listIngrediente);
+		listIngrediente = new JList<String>();
+		scrollPane02.setViewportView(listIngrediente);
 		
-		JButton btnNewButton_2 = new JButton(">>");
-		btnNewButton_2.addActionListener(new ActionListener() {
+		btnAdd02 = new JButton(">>");
+		btnAdd02.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				adicionaIngrediente();
-				atualizaListaIngrediente(bebidas.get(selecionaBebida()));
+				Bebida bebida = bebidas.get((String)listBebida.getSelectedValue());
+				if (bebida == null)
+					return;
+				adicionaIngrediente(bebida);
+				atualizaListaIngrediente(bebida);
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.anchor = GridBagConstraints.SOUTH;
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_2.gridx = 1;
-		gbc_btnNewButton_2.gridy = 0;
-		panel_5.add(btnNewButton_2, gbc_btnNewButton_2);
+		GridBagConstraints gbc_btnAdd02 = new GridBagConstraints();
+		gbc_btnAdd02.anchor = GridBagConstraints.SOUTH;
+		gbc_btnAdd02.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAdd02.gridx = 1;
+		gbc_btnAdd02.gridy = 0;
+		panel04.add(btnAdd02, gbc_btnAdd02);
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_2 = new GridBagConstraints();
-		gbc_scrollPane_2.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane_2.gridheight = 2;
-		gbc_scrollPane_2.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_2.gridx = 2;
-		gbc_scrollPane_2.gridy = 0;
-		panel_5.add(scrollPane_2, gbc_scrollPane_2);
+		JScrollPane scrollPane03 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane03 = new GridBagConstraints();
+		gbc_scrollPane03.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane03.gridheight = 2;
+		gbc_scrollPane03.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane03.gridx = 2;
+		gbc_scrollPane03.gridy = 0;
+		panel04.add(scrollPane03, gbc_scrollPane03);
 		
-		listBebidaIngrediente = new JList();
-		scrollPane_2.setViewportView(listBebidaIngrediente);
+		listBebidaIngrediente = new JList<String>();
+		scrollPane03.setViewportView(listBebidaIngrediente);
 		
-		JButton btnNewButton_3 = new JButton("<<");
-		btnNewButton_3.addActionListener(new ActionListener() {
+		btnExluir02 = new JButton("<<");
+		btnExluir02.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				removeIngrediente();
-				atualizaListaIngrediente(bebidas.get(selecionaBebida()));
+				Bebida bebida = bebidas.get((String)listBebida.getSelectedValue());
+				if (bebida == null)
+					return;
+				removeIngrediente(bebida);
+				atualizaListaIngrediente(bebida);
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_3.anchor = GridBagConstraints.NORTH;
-		gbc_btnNewButton_3.gridx = 1;
-		gbc_btnNewButton_3.gridy = 1;
-		panel_5.add(btnNewButton_3, gbc_btnNewButton_3);
+		GridBagConstraints gbc_btnExluir02 = new GridBagConstraints();
+		gbc_btnExluir02.insets = new Insets(0, 0, 0, 5);
+		gbc_btnExluir02.anchor = GridBagConstraints.NORTH;
+		gbc_btnExluir02.gridx = 1;
+		gbc_btnExluir02.gridy = 1;
+		panel04.add(btnExluir02, gbc_btnExluir02);
 		
-		JPanel panel_2 = new JPanel();
-		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		gbc_panel_2.gridwidth = 5;
-		gbc_panel_2.fill = GridBagConstraints.BOTH;
-		gbc_panel_2.gridx = 0;
-		gbc_panel_2.gridy = 4;
-		panel_1.add(panel_2, gbc_panel_2);
-		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{0, 0, 0};
-		gbl_panel_2.rowHeights = new int[]{0, 0};
-		gbl_panel_2.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_2.setLayout(gbl_panel_2);
+		JPanel panel05 = new JPanel();
+		GridBagConstraints gbc_panel05 = new GridBagConstraints();
+		gbc_panel05.gridwidth = 5;
+		gbc_panel05.fill = GridBagConstraints.BOTH;
+		gbc_panel05.gridx = 0;
+		gbc_panel05.gridy = 4;
+		panel02.add(panel05, gbc_panel05);
+		GridBagLayout gbl_panel05 = new GridBagLayout();
+		gbl_panel05.columnWidths = new int[]{0, 0, 0};
+		gbl_panel05.rowHeights = new int[]{0, 0};
+		gbl_panel05.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panel05.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel05.setLayout(gbl_panel05);
 		
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Bebida b = bebidas.get((String)listBebida.getSelectedValue());
-				
-				b.setNome(tfNome.getText());
-				b.setDesc(taObservacao.getText());
-				
-				Object mL = spmL.getValue();
-				int mLInt;
-				
-				if (mL instanceof Double) {
-					Double mLDouble = (Double) mL;
-					mLInt = mLDouble.intValue();
-		
-				} else 
-					mLInt = (Integer) mL;
-				
-				b.setmL(mLInt);
-				
-				String precoString = tfPreco.getText();
-
-				precoString = precoString.replace(",", ".");
-				b.setValor(Float.parseFloat(precoString));
-				atualizaLista(bebidas.getNomes(), listBebida);
-				limpaSelecao();
-				Persiste.salva(restaurante, "restaurante.txt");
+				salvaBebida(bebidas.get((String)listBebida.getSelectedValue()));
 			}
 		});
 		btnSalvar.setEnabled(false);
@@ -435,7 +474,7 @@ public class BebidaPanel extends JPanel {
 		gbc_btnSalvar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnSalvar.gridx = 0;
 		gbc_btnSalvar.gridy = 0;
-		panel_2.add(btnSalvar, gbc_btnSalvar);
+		panel05.add(btnSalvar, gbc_btnSalvar);
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
@@ -448,73 +487,70 @@ public class BebidaPanel extends JPanel {
 		gbc_btnCancelar.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCancelar.gridx = 1;
 		gbc_btnCancelar.gridy = 0;
-		panel_2.add(btnCancelar, gbc_btnCancelar);
+		panel05.add(btnCancelar, gbc_btnCancelar);
 		
-		JPanel panel_3 = new JPanel();
-		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
-		gbc_panel_3.fill = GridBagConstraints.BOTH;
-		gbc_panel_3.gridx = 1;
-		gbc_panel_3.gridy = 0;
-		panel.add(panel_3, gbc_panel_3);
-		GridBagLayout gbl_panel_3 = new GridBagLayout();
-		gbl_panel_3.columnWidths = new int[]{0, 0, 0};
-		gbl_panel_3.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_3.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_3.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		panel_3.setLayout(gbl_panel_3);
+		JPanel panel06 = new JPanel();
+		GridBagConstraints gbc_panel06 = new GridBagConstraints();
+		gbc_panel06.fill = GridBagConstraints.BOTH;
+		gbc_panel06.gridx = 1;
+		gbc_panel06.gridy = 0;
+		panel01.add(panel06, gbc_panel06);
+		GridBagLayout gbl_panel06 = new GridBagLayout();
+		gbl_panel06.columnWidths = new int[]{0, 0, 0};
+		gbl_panel06.rowHeights = new int[]{0, 0, 0};
+		gbl_panel06.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panel06.rowWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		panel06.setLayout(gbl_panel06);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 0;
-		panel_3.add(scrollPane, gbc_scrollPane);
+		JScrollPane scrollPane01 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane01 = new GridBagConstraints();
+		gbc_scrollPane01.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane01.gridwidth = 2;
+		gbc_scrollPane01.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane01.gridx = 0;
+		gbc_scrollPane01.gridy = 0;
+		panel06.add(scrollPane01, gbc_scrollPane01);
 		
-		listBebida = new JList();
-		atualizaLista(bebidas.getNomes(), listBebida);
-		atualizaLista(ingredientes.getNomes(), listIngrediente);
-		scrollPane.setViewportView(listBebida);
+		listBebida = new JList<String>();
+		scrollPane01.setViewportView(listBebida);
 		listBebida.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				pratoSelec = selecionaBebida();
-				mudaSalvarCancelar(true);
-				if(pratoSelec == -1)
+				Bebida selecionado = bebidas.get((String)listBebida.getSelectedValue());
+				if (selecionado == null) 
 					return;
-				
-				atualizaLista(bebidas.get(pratoSelec).getIngredientes().getNomes(), listBebidaIngrediente);
-				atualizaListaIngrediente(bebidas.get(pratoSelec));
+				selecionaBebida(selecionado);
+				atualizaListaIngrediente(selecionado);
+				mudaSalvarCancelar(true);
 			}
 		});
 		
-		JButton btnAdicionar = new JButton("Adicionar");
-		btnAdicionar.addActionListener(new ActionListener() {
+		btnAdd01 = new JButton("Adicionar");
+		btnAdd01.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				adicionaBebida();
 			}
 		});
-		GridBagConstraints gbc_btnAdicionar = new GridBagConstraints();
-		gbc_btnAdicionar.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnAdicionar.insets = new Insets(0, 0, 0, 5);
-		gbc_btnAdicionar.gridx = 0;
-		gbc_btnAdicionar.gridy = 1;
-		panel_3.add(btnAdicionar, gbc_btnAdicionar);
+		GridBagConstraints gbc_btnAdd01 = new GridBagConstraints();
+		gbc_btnAdd01.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnAdd01.insets = new Insets(0, 0, 0, 5);
+		gbc_btnAdd01.gridx = 0;
+		gbc_btnAdd01.gridy = 1;
+		panel06.add(btnAdd01, gbc_btnAdd01);
 		
-		btnExcluir = new JButton("Excluir");
-		btnExcluir.addActionListener(new ActionListener() {
+		btnExcluir01 = new JButton("Excluir");
+		btnExcluir01.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeBebida();
 			}
 		});
-		btnExcluir.setEnabled(false);
-		GridBagConstraints gbc_btnExcluir = new GridBagConstraints();
-		gbc_btnExcluir.insets = new Insets(0, 0, 0, 1);
-		gbc_btnExcluir.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnExcluir.gridx = 1;
-		gbc_btnExcluir.gridy = 1;
-		panel_3.add(btnExcluir, gbc_btnExcluir);
+		btnExcluir01.setEnabled(false);
+		GridBagConstraints gbc_btnExcluir01 = new GridBagConstraints();
+		gbc_btnExcluir01.insets = new Insets(0, 0, 0, 1);
+		gbc_btnExcluir01.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnExcluir01.gridx = 1;
+		gbc_btnExcluir01.gridy = 1;
+		panel06.add(btnExcluir01, gbc_btnExcluir01);
 
 	}
 

@@ -1,6 +1,7 @@
 package backend.controller;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import backend.model.Item;
@@ -110,6 +111,58 @@ public class Controller<T extends Item> implements Serializable {
 	
 	public String[] getNomesArray() {
 		return getNomes().toArray(new String[getNomes().size()]);
+	}
+	
+	public ArrayList<Pedido> getPedidosData(LocalDate inicio, LocalDate fim) {
+		
+		if (list.size() == 0) 
+			return null;
+		
+		
+		if (!(list.get(0) instanceof Pedido)) 
+			return null;
+		
+		if (inicio.isBefore(fim))
+			throw new IllegalArgumentException("Intervalo inválido.");
+		
+		ArrayList<Pedido> pedidoList = new ArrayList<Pedido>();
+		
+		
+		
+		for (T obj : list) {
+			
+			Pedido pedido = (Pedido) obj;
+			LocalDate data = pedido.getData();
+			
+			if(!(data.isBefore(inicio) || data.isAfter(fim))) 
+				pedidoList.add(pedido);
+		}
+		return pedidoList;
+	}
+	
+	
+	public ArrayList<Reserva> getReservasData(LocalDate inicio, LocalDate fim) {
+		
+		if (list.size() == 0) 
+			return null;
+		
+		if (!(list.get(0) instanceof Reserva)) 
+			return null;
+		
+		if (inicio.isAfter(fim))
+			throw new IllegalArgumentException("Intervalo inválido.");
+		
+		ArrayList<Reserva> reservaList = new ArrayList<Reserva>();
+		
+		for (T obj : list) {
+			
+			Reserva reserva = (Reserva) obj;
+			LocalDate data = reserva.getData();
+			
+			if(!(data.isBefore(inicio) || data.isAfter(fim))) 
+				reservaList.add(reserva);
+		}
+		return reservaList;
 	}
 	
 	public void remove(String nome) {

@@ -18,6 +18,9 @@ public class Prato extends Produto {
 	}
 
 	public void setGramas(double gramas) {
+		if (gramas <= 0) 
+			throw new IllegalArgumentException("Valor em gramas deve ser positivo.");
+		
 		this.gramas = gramas;
 	}
 

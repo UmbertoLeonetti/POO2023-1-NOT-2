@@ -2,21 +2,22 @@ package backend.model;
 
 public class Bebida extends Produto {
 	
-	private float mL;
+	private double mL;
 	private boolean alcoolica;
 	
 	 public Bebida() {
 		 super();
+		 mL = 10;
 	}
 	
-	public Bebida(String nome, String desc, float valor, float mL, boolean alcoolica) {
+	public Bebida(String nome, String desc, double valor, double mL, boolean alcoolica) {
 		
 		super(nome, desc, valor);
 		setmL(mL);
 		this.alcoolica = alcoolica;
 	}
 	
-	public void setmL(float mL) {
+	public void setmL(double mL) {
 		if (mL <= 0) {
 			throw new IllegalArgumentException("Valor em mL deve ser positivo.");
 		}
@@ -31,7 +32,7 @@ public class Bebida extends Produto {
 		//return getNome() + ": " + mL + " mL, " + alcoolicaString();
 	}
 	
-	public float getmL() {
+	public double getmL() {
 		return mL;
 	}
 	

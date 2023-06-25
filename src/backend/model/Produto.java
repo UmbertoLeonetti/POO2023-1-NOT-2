@@ -61,6 +61,9 @@ public abstract class Produto implements Item{
 	}
 
 	public void setNome(String nome) {
+		if (nome.length() < 2)
+			throw new IllegalArgumentException("Nome de produto deve ter pelo menos 2 letras");
+		
 		this.nome = nome;		
 	}
 	

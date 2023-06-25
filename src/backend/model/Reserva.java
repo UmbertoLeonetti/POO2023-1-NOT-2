@@ -77,6 +77,9 @@ public class Reserva implements Item {
 	
 	@Override
 	public void setNome(String nome) {
+		if (nome.length() < 2)
+			throw new IllegalArgumentException("Nome de cliente deve ter pelo menos 2 letras");
+		
 		this.nomeCliente = nome;
 	}
 

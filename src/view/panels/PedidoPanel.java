@@ -111,8 +111,6 @@ public class PedidoPanel extends JPanel {
 		}
 	
 	public PedidoPanel(Restaurante restaurante) {
-		
-		this.restaurante = restaurante;
 		this.cardapio = restaurante.cardapio;
 		this.pedidos = restaurante.pedidos;
 		

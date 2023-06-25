@@ -1,10 +1,8 @@
 package backend.model;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.io.Serializable;
 
-public class Funcionario {
+public class Funcionario implements Serializable {
     private String nome;
     private String cargo;
     private String horarioTrabalho;
@@ -15,23 +13,31 @@ public class Funcionario {
         this.horarioTrabalho = horarioTrabalho;
     }
 
-    public String getNome() {
+	public String getNome() {
         return nome;
     }
 
     public String getCargo() {
         return cargo;
     }
-    
+
     public String getHorarioTrabalho() {
 		return horarioTrabalho;
+    }
+
+    public void setCargo(String cargo) {
+		if (nome.length() < 2)
+			throw new IllegalArgumentException("Nome de funcionário deve ter pelo menos 2 letras");
+        this.cargo = cargo;
+    }
+
+	public String getClassName() {
+		return "Funcionário";
 	}
 
 	public void exibirInformacoes() {
 		System.out.println("Nome: " + nome);
         System.out.println("Cargo: " + cargo);
         System.out.println("Horário de Trabalho: " + horarioTrabalho);
-
-		
 	}
 }

@@ -7,12 +7,15 @@ import backend.model.Funcionario;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
-public class FuncionarioManager {
-    private List<Funcionario> funcionarios;
+public class FuncionarioManager implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Funcionario> funcionarios;
 
     public FuncionarioManager() {
         funcionarios = new ArrayList<>();
@@ -48,10 +51,17 @@ public class FuncionarioManager {
             System.out.println();
         }
     }
-
-    public static void main(String[] args) {
-        FuncionarioManager manager = new FuncionarioManager();
-        manager.adicionarFuncionarioFromJSON("funcionario.json");
-        manager.exibirFuncionarios();
+    
+    public ArrayList<Funcionario> getFuncionarios() {
+		return funcionarios;
+	}
+    
+    public ArrayList<String> getNomes() {
+    	ArrayList<String> str = new ArrayList<String>();
+    	
+    	for (Funcionario funcionario : funcionarios) 
+			str.add(funcionario.getNome());
+		
+    	return str;
     }
 }

@@ -6,15 +6,37 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
+
+import backend.Persiste;
+import backend.controller.Controller;
+import backend.model.Funcionario;
+import backend.model.Reserva;
+
 import javax.swing.JSpinner;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
 
 public class FuncionarioPanel extends JPanel {
+	private Controller<Funcionario> funcionarios;
 	private JTextField textNome;
 	private JTextField textSobrenome;
 	private JTextField textCargo;
+	
+	private void atualizaLista(Controller controller, JList list) {
+		
+		ArrayList<String> elements = controller.getNomes();
+		
+		DefaultListModel model = new DefaultListModel();
 
+		for (String str : elements)
+			model.addElement(str);
+
+		list.setModel(model);
+	}
 
 	public FuncionarioPanel() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -116,6 +138,13 @@ public class FuncionarioPanel extends JPanel {
 		add(list, gbc_list);
 		
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				funcionarios.add(new Funcionario(textNome, textCargo, name));
+				atualizaLista(funcionarios, list);
+				Persiste.salva(funcionarios, "restaurante.txt");
+			}
+		});
 		GridBagConstraints gbc_btnSalvar = new GridBagConstraints();
 		gbc_btnSalvar.insets = new Insets(0, 0, 0, 5);
 		gbc_btnSalvar.gridx = 0;

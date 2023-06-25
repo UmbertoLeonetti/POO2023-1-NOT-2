@@ -7,9 +7,9 @@ import java.time.format.DateTimeFormatter;
 public class Funcionario {
     private String nome;
     private String cargo;
-    private LocalDateTime horarioTrabalho;
+    private String horarioTrabalho;
 
-    public Funcionario(String nome, String cargo, LocalDateTime horarioTrabalho) {
+    public Funcionario(String nome, String cargo, String horarioTrabalho) {
         this.nome = nome;
         this.cargo = cargo;
         this.horarioTrabalho = horarioTrabalho;
@@ -22,19 +22,15 @@ public class Funcionario {
     public String getCargo() {
         return cargo;
     }
-
-    public LocalDateTime getHorarioTrabalho() {
-        return horarioTrabalho;
-    }
-
-    public LocalTime getHorarioTrabalhoAsLocalTime() {
-        return horarioTrabalho.toLocalTime();
-    }
+    
+    public String getHorarioTrabalho() {
+		return horarioTrabalho;
+	}
 
 	public void exibirInformacoes() {
 		System.out.println("Nome: " + nome);
         System.out.println("Cargo: " + cargo);
-        System.out.println("Horário de Trabalho: " + horarioTrabalho.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        System.out.println("Horário de Trabalho: " + horarioTrabalho);
 
 		
 	}

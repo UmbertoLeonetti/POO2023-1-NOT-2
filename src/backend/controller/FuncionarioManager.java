@@ -18,7 +18,7 @@ public class FuncionarioManager {
         funcionarios = new ArrayList<>();
     }
 
-    public void adicionarFuncionario(String nome, String cargo, LocalDateTime horarioTrabalho) {
+    public void adicionarFuncionario(String nome, String cargo, String horarioTrabalho) {
         Funcionario funcionario = new Funcionario(nome, cargo, horarioTrabalho);
         funcionarios.add(funcionario);
     }
@@ -33,7 +33,7 @@ public class FuncionarioManager {
             for (Funcionario funcionario : funcionariosArray) {
                 String nome = funcionario.getNome();
                 String cargo = funcionario.getCargo();
-                LocalDateTime horarioTrabalho = funcionario.getHorarioTrabalho();
+                String horarioTrabalho = funcionario.getHorarioTrabalho();
 
                 adicionarFuncionario(nome, cargo, horarioTrabalho);
             }

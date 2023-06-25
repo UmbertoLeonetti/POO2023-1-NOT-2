@@ -20,7 +20,6 @@ public class Restaurante implements Serializable {
 	public Controller<Reserva>		reservas;
 	public Controller<Pedido>		pedidos;
 	public Controller<Bebida>		bebidas;
-	public Controller<Funcionario>	funcionarios;
 	
 	public Restaurante() {
 		ingredientes	= new Controller<Ingrediente>();

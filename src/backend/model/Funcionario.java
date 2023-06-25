@@ -31,9 +31,11 @@ public class Funcionario {
         return horarioTrabalho.toLocalTime();
     }
 
-    public void exibirInformacoes() {
-        System.out.println("Nome: " + nome);
+	public void exibirInformacoes() {
+		System.out.println("Nome: " + nome);
         System.out.println("Cargo: " + cargo);
         System.out.println("Horário de Trabalho: " + horarioTrabalho.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
-    }
+
+		
+	}
 }

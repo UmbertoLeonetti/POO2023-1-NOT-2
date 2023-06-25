@@ -27,6 +27,7 @@ public class FuncionarioManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             Gson gson = new Gson();
             
+            
             Funcionario[] funcionariosArray = gson.fromJson(reader, Funcionario[].class);
 
             for (Funcionario funcionario : funcionariosArray) {

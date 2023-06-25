@@ -1,61 +1,39 @@
-
 package backend.model;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
-public class Funcionario implements Item {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private String nome;
+public class Funcionario {
+    private String nome;
     private String cargo;
-    private String horarioTrabalho;
+    private LocalDateTime horarioTrabalho;
 
-    public Funcionario(String nome, String cargo, String horarioTrabalho) {
-        setNome(nome);
-        setCargo(cargo);
-        setHorarioTrabalho(horarioTrabalho);
-    }
-
-    public void exibirInformacoes() {
-        System.out.println("Nome: " + nome);
-        System.out.println("Cargo: " + cargo);
-        System.out.println("Horário de Trabalho: " + horarioTrabalho);
+    public Funcionario(String nome, String cargo, LocalDateTime horarioTrabalho) {
+        this.nome = nome;
+        this.cargo = cargo;
+        this.horarioTrabalho = horarioTrabalho;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getHorarioTrabalho() {
+    public LocalDateTime getHorarioTrabalho() {
         return horarioTrabalho;
     }
 
-    public void setHorarioTrabalho(String horarioTrabalho2) {
-        this.horarioTrabalho = horarioTrabalho2;
-    }
-    
-    @Override
-    public String toString() {
-    	return super.toString();
+    public LocalTime getHorarioTrabalhoAsLocalTime() {
+        return horarioTrabalho.toLocalTime();
     }
 
-	@Override
-	public String getClassName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void exibirInformacoes() {
+        System.out.println("Nome: " + nome);
+        System.out.println("Cargo: " + cargo);
+        System.out.println("Horário de Trabalho: " + horarioTrabalho.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+    }
 }

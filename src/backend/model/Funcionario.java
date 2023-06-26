@@ -1,11 +1,15 @@
 package backend.model;
 
-import java.io.Serializable;
-
-public class Funcionario implements Serializable {
+public class Funcionario implements Item {
     private String nome;
     private String cargo;
     private String horarioTrabalho;
+    
+    public Funcionario() {
+    	nome = "";
+    	cargo = "";
+    	horarioTrabalho = "00:00";
+	}
 
     public Funcionario(String nome, String cargo, String horarioTrabalho) {
         this.nome = nome;

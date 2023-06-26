@@ -55,13 +55,5 @@ public class FuncionarioManager implements Serializable {
     public ArrayList<Funcionario> getFuncionarios() {
 		return funcionarios;
 	}
-    
-    public ArrayList<String> getNomes() {
-    	ArrayList<String> str = new ArrayList<String>();
-    	
-    	for (Funcionario funcionario : funcionarios) 
-			str.add(funcionario.getNome());
-		
-    	return str;
-    }
+   
 }

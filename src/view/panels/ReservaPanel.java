@@ -190,6 +190,13 @@ public class ReservaPanel extends JPanel {
 	private void mudaSalvarCancelar(boolean mod) {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
+		tfCliente.setEnabled(mod);
+		tfMesa.setEnabled(mod);
+		cbDia.setEnabled(mod);
+		cbMes.setEnabled(mod);
+		cbAno.setEnabled(mod);
+		spinnerHora.setEnabled(mod);
+		spinnerMinuto.setEnabled(mod);
 		btnExcluir.setEnabled(mod);
 		btnAdd.setEnabled(!mod);
 	}

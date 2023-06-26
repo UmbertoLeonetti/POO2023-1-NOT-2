@@ -194,6 +194,10 @@ public class FuncionarioPanel extends JPanel {
 	private void mudaSalvarCancelar(boolean mod) {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
+		tfNome.setEnabled(mod);
+		tfCargo.setEnabled(mod);
+		spinnerHora.setEnabled(mod);
+		spinnerMinuto.setEnabled(mod);
 		btnExcluir.setEnabled(mod);
 		btnAdd.setEnabled(!mod);
 		btnImportar.setEnabled(!mod);

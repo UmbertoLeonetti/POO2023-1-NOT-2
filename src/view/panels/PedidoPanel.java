@@ -207,6 +207,9 @@ public class PedidoPanel extends JPanel {
 		private void mudaSalvarCancelar(boolean mod) {
 			btnSalvar.setEnabled(mod);
 			btnCancelar.setEnabled(mod);
+			tfNomeCliente.setEnabled(mod);
+			tfMesa.setEnabled(mod);
+			cbProdutos.setEnabled(mod);
 			btnExcluir01.setEnabled(mod);
 			btnExcluir02.setEnabled(mod);
 			btnAdd01.setEnabled(mod);

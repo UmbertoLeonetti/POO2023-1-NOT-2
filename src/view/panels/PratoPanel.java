@@ -183,6 +183,10 @@ public class PratoPanel extends JPanel {
 	private void mudaSalvarCancelar(boolean mod) {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
+		tfNome.setEnabled(mod);
+		tfPreco.setEnabled(mod);
+		jeObservacao.setEnabled(mod);
+		spinnerPeso.setEnabled(mod);
 		btnExcluir01.setEnabled(mod);
 		btnExcluir02.setEnabled(mod);
 		btnAdd01.setEnabled(!mod);

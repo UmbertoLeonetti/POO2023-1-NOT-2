@@ -189,6 +189,11 @@ public class BebidaPanel extends JPanel {
 		btnCancelar.setEnabled(mod);
 		btnExcluir01.setEnabled(mod);
 		btnExcluir02.setEnabled(mod);
+		tfNome.setEnabled(mod);
+		tfPreco.setEnabled(mod);
+		jeObservacao.setEnabled(mod);
+		spinnerPeso.setEnabled(mod);
+		chckbxAlcoolica.setEnabled(mod);
 		btnAdd01.setEnabled(!mod);
 		btnAdd02.setEnabled(mod);
 	}

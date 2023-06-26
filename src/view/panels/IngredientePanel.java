@@ -156,6 +156,9 @@ public class IngredientePanel extends JPanel {
 	private void mudaSalvarCancelar(boolean mod) {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
+		tfNome.setEnabled(mod);
+		tfPreco.setEnabled(mod);
+		spinnerQuantidade.setEnabled(mod);
 		btnExcluir.setEnabled(mod);
 		btnAdd.setEnabled(!mod);
 	}
@@ -372,6 +375,7 @@ public class IngredientePanel extends JPanel {
 		panel06.add(lblNome, gbc_lblNome);
 
 		tfNome = new JTextField();
+		tfNome.setEnabled(false);
 		GridBagConstraints gbc_tfNome = new GridBagConstraints();
 		gbc_tfNome.gridwidth = 3;
 		gbc_tfNome.insets = new Insets(0, 0, 5, 0);
@@ -390,6 +394,7 @@ public class IngredientePanel extends JPanel {
 		panel06.add(lblPreco, gbc_lblPreco);
 
 		tfPreco = new JTextField();
+		tfPreco.setEnabled(false);
 		GridBagConstraints gbc_tfPreco = new GridBagConstraints();
 		gbc_tfPreco.insets = new Insets(0, 0, 0, 5);
 		gbc_tfPreco.fill = GridBagConstraints.HORIZONTAL;
@@ -407,6 +412,7 @@ public class IngredientePanel extends JPanel {
 		panel06.add(lblQuantidade, gbc_lblQuantidade);
 
 		spinnerQuantidade = new JSpinner();
+		spinnerQuantidade.setEnabled(false);
 		spinnerQuantidade.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
 		GridBagConstraints gbc_spinnerQuantidade = new GridBagConstraints();
 		gbc_spinnerQuantidade.fill = GridBagConstraints.HORIZONTAL;

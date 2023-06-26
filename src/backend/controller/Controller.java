@@ -90,7 +90,7 @@ public class Controller<T extends Item> implements Serializable {
 		if(get(obj.getNome()) == null || obj instanceof Reserva || obj instanceof Pedido)
 			list.add(obj);
 		else
-			throw new IllegalArgumentException("Item com nome '" + obj.getNome() + "' já existe");
+			throw new IllegalArgumentException(obj.getClassName() + " com nome '" + obj.getNome() + "' já existe");
 	}
 	
 	public void add(T obj, int index) {
@@ -122,7 +122,7 @@ public class Controller<T extends Item> implements Serializable {
 		if (!(list.get(0) instanceof Pedido)) 
 			return null;
 		
-		if (inicio.isBefore(fim))
+		if (inicio.isAfter(fim))
 			throw new IllegalArgumentException("Intervalo inválido.");
 		
 		ArrayList<Pedido> pedidoList = new ArrayList<Pedido>();
@@ -171,6 +171,10 @@ public class Controller<T extends Item> implements Serializable {
 	
 	public void remove(int index) {
 		list.remove(index);
+	}
+	
+	public void clear() {
+		list.clear();
 	}
 	
 	@Override

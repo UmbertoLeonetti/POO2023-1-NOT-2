@@ -23,7 +23,6 @@ import backend.Persiste;
 import backend.Restaurante;
 import backend.controller.Controller;
 import backend.model.Pedido;
-import backend.model.Prato;
 import backend.model.Produto;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -119,7 +118,6 @@ public class PedidoPanel extends JPanel {
 		}
 		
 		private void selecionaPedido(Pedido selecionado) {
-			
 			tfNomeCliente.setText(selecionado.getNome());
 			tfMesa.setText("" + selecionado.getMesa());
 			atualizaComboBox(selecionado.getProdutos());
@@ -180,13 +178,17 @@ public class PedidoPanel extends JPanel {
 				JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
 			}
 			atualizaComboBox(pedido.getProdutos());
+			limpaSelecao();
 			Persiste.salva(restaurante, "restaurante.txt");
 		}
 		
-		private void removeProduto(String produto, Pedido pedido) {
-			pedido.getProdutos().remove(produto);
+		private void removeProdutos(Pedido pedido) {
+
+			int opcao = JOptionPane.showConfirmDialog(this, "Você realmente deseja retirar os produtos de \"" + pedido.getNome() + "\"?");
+			if (opcao != 0)
+				return;
+			pedido.getProdutos().clear();
 			atualizaComboBox(pedido.getProdutos());
-			Persiste.salva(restaurante, "restaurante.txt");
 		}
 		
 		private void limpaCampos() {		
@@ -342,9 +344,9 @@ public class PedidoPanel extends JPanel {
 		gbc_panel_2.gridy = 0;
 		pnlList.add(panel_2, gbc_panel_2);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{0, 0, 0};
+		gbl_panel_2.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_panel_2.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_2.columnWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_2.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_2.setLayout(gbl_panel_2);
 		
@@ -358,7 +360,8 @@ public class PedidoPanel extends JPanel {
 		
 		tfNomeCliente = new JTextField();
 		GridBagConstraints gbc_tfNomeCliente = new GridBagConstraints();
-		gbc_tfNomeCliente.insets = new Insets(0, 0, 5, 0);
+		gbc_tfNomeCliente.gridwidth = 2;
+		gbc_tfNomeCliente.insets = new Insets(0, 0, 5, 5);
 		gbc_tfNomeCliente.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tfNomeCliente.gridx = 1;
 		gbc_tfNomeCliente.gridy = 0;
@@ -375,7 +378,8 @@ public class PedidoPanel extends JPanel {
 		
 		tfMesa = new JTextField();
 		GridBagConstraints gbc_tfMesa = new GridBagConstraints();
-		gbc_tfMesa.insets = new Insets(0, 0, 5, 0);
+		gbc_tfMesa.gridwidth = 2;
+		gbc_tfMesa.insets = new Insets(0, 0, 5, 5);
 		gbc_tfMesa.fill = GridBagConstraints.HORIZONTAL;
 		gbc_tfMesa.gridx = 1;
 		gbc_tfMesa.gridy = 1;
@@ -392,10 +396,24 @@ public class PedidoPanel extends JPanel {
 		
 		cbProdutos = new JComboBox<String>(new DefaultComboBoxModel<String>());
 		GridBagConstraints gbc_cbProdutos = new GridBagConstraints();
+		gbc_cbProdutos.insets = new Insets(0, 0, 0, 5);
 		gbc_cbProdutos.fill = GridBagConstraints.HORIZONTAL;
 		gbc_cbProdutos.gridx = 1;
 		gbc_cbProdutos.gridy = 2;
 		panel_2.add(cbProdutos, gbc_cbProdutos);
+		
+		btnExcluir01 = new JButton("X");
+		GridBagConstraints gbc_btnExcluir01 = new GridBagConstraints();
+		gbc_btnExcluir01.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnExcluir01.gridx = 2;
+		gbc_btnExcluir01.gridy = 2;
+		panel_2.add(btnExcluir01, gbc_btnExcluir01);
+		btnExcluir01.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				removeProdutos(pedidos.get(listPedidos.getSelectedIndex()));
+			}
+		});
+		btnExcluir01.setEnabled(false);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewportBorder(null);
@@ -461,27 +479,6 @@ public class PedidoPanel extends JPanel {
 		gbc_btnAdd01.gridx = 0;
 		gbc_btnAdd01.gridy = 0;
 		panel_1.add(btnAdd01, gbc_btnAdd01);
-		
-		btnExcluir01 = new JButton("Remover produto");
-		btnExcluir01.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				String produtoNome = listCardapio.getSelectedValue();
-				Pedido pedido = pedidos.get(listPedidos.getSelectedIndex());
-				
-				if (produtoNome == null || pedido == null)
-					return;
-				
-				removeProduto(produtoNome, pedido);
-				
-			}
-		});
-		btnExcluir01.setEnabled(false);
-		GridBagConstraints gbc_btnExcluir01 = new GridBagConstraints();
-		gbc_btnExcluir01.anchor = GridBagConstraints.WEST;
-		gbc_btnExcluir01.gridx = 1;
-		gbc_btnExcluir01.gridy = 0;
-		panel_1.add(btnExcluir01, gbc_btnExcluir01);
 		
 		JPanel panel_3 = new JPanel();
 		GridBagConstraints gbc_panel_3 = new GridBagConstraints();

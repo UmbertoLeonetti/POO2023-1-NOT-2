@@ -4,12 +4,17 @@ import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
@@ -26,6 +31,10 @@ import backend.model.Reserva;
 import javax.swing.JRadioButton;
 
 public class RelatorioPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JComboBox<Integer> cbDia01;
 	private JComboBox<Integer> cbMes01;
 	private JComboBox<Integer> cbAno01;
@@ -50,14 +59,28 @@ public class RelatorioPanel extends JPanel {
 		LocalDate inicio = LocalDate.of(ano01, mes01, dia01);
 		LocalDate fim = LocalDate.of(ano02, mes02, dia02);
 		
-		ArrayList<Pedido> elements = controller.getPedidosData(inicio, fim);
-		
-		for (Object obj : elements) {
-			output += obj + "\n";
+		ArrayList<Pedido> elements = null;
+		try {
+			elements = controller.getPedidosData(inicio, fim);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			return "";
 		}
 		
-		return output;
+		if (elements == null) {
+			JOptionPane.showMessageDialog(this, "Não há pedidos cadastrados.");
+			return "";
+		}
 		
+		for (Pedido pedido : elements) {
+			LocalTime horario = pedido.getHorario();
+			output +=  "Nome cliente: " + pedido.getNome() +
+						"\nMesa: " + pedido.getMesa() +
+						"\nData: " + pedido.getData() +
+						"\nHorário: " + horario.getHour() +
+						":" + horario.getMinute() + "\n\n";
+		}
+		return output;
 	}
 	
 	private String displayDadosReserva(Controller<Reserva> controller) {
@@ -75,14 +98,35 @@ public class RelatorioPanel extends JPanel {
 		LocalDate inicio = LocalDate.of(ano01, mes01, dia01);
 		LocalDate fim = LocalDate.of(ano02, mes02, dia02);
 		
-		ArrayList<Reserva> elements = controller.getReservasData(inicio, fim);
-		
-		for (Object obj : elements) {
-			output += obj + "\n";
+		ArrayList<Reserva> elements = null;
+		try {
+			elements = controller.getReservasData(inicio, fim);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+			return "";
 		}
 		
-		return output;
+		if (elements == null) {
+			JOptionPane.showMessageDialog(this, "Não há reservas cadastradas.");
+			return "";
+		}
 		
+		for (Reserva reserva : elements) {
+			LocalTime horario = reserva.getHorario();
+			output +=  "Nome cliente: " + reserva.getNome() +
+						"\nMesa: " + reserva.getMesa() +
+						"\nData: " + reserva.getData() +
+						"\nHorário: " + horario.getHour() +
+						":" + horario.getMinute() + "\n\n";
+		}
+		return output;
+	}
+	
+	private void copiaDados(String dados) {
+		StringSelection selection = new StringSelection(dados);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
+		JOptionPane.showMessageDialog(this, "Copiado para a área de transferência.");
 	}
 	
 	public RelatorioPanel(Restaurante restaurante) {
@@ -344,6 +388,12 @@ public class RelatorioPanel extends JPanel {
 		panel_3.setLayout(gbl_panel_3);
 		
 		JButton btnCopiar = new JButton("Copiar");
+		btnCopiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				copiaDados(textArea.getText());
+			}
+		});
 		GridBagConstraints gbc_btnCopiar = new GridBagConstraints();
 		gbc_btnCopiar.anchor = GridBagConstraints.EAST;
 		gbc_btnCopiar.gridx = 0;

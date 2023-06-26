@@ -11,35 +11,25 @@ public class Reserva implements Item {
 	private String nomeCliente;
 	private int mesa;
 	private LocalDateTime dataHorario;
-
-	private Controller<Produto> produtos;
-	
-	public Controller<Produto> getProdutos(){
-		return produtos;
-	}
 	
 	public Reserva() {
-		produtos = new Controller<Produto>();
 		mesa = 1;
 		nomeCliente = "";
 		dataHorario = LocalDateTime.now();
 	}
     
     public Reserva(String nomeCliente) {
-    	produtos = new Controller<Produto>();
     	setNome(nomeCliente);
 		dataHorario = LocalDateTime.now();
     }
 
 
 	public Reserva(String nomeCliente, LocalDateTime dataHorario) {
-    	produtos = new Controller<Produto>();
 		setNome(nomeCliente);
 		setDataHorario(dataHorario);
 	}
 	
 	public Reserva(String nomeCliente, LocalDate data, LocalTime horario) {
-		produtos = new Controller<Produto>();
 		setNome(nomeCliente);
 		setDataHorario(dataHorario);
 	}
@@ -93,7 +83,7 @@ public class Reserva implements Item {
 	public String toString() {
 		
 		return "Reserva [getNome()=" + getNome() + ", getData()=" + getData() + ", getHorario()="
-		+ getHorario() + ", getProdutos()=" + getProdutos() + "]";
+		+ getHorario() + "]";
 		//return nomeCliente + ", " + getData() + " às " + getHorario();
 	}
 	

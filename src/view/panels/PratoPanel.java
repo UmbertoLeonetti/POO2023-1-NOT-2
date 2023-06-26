@@ -107,9 +107,9 @@ public class PratoPanel extends JPanel {
 		int tamanho = selected.size();
 		
 		if (tamanho == 1)
-			opcao = JOptionPane.showConfirmDialog(panel01, "Você realmente deseja excluir o prato \"" + selected.get(0) + "\"?");
+			opcao = JOptionPane.showConfirmDialog(this, "Você realmente deseja excluir o prato \"" + selected.get(0) + "\"?");
 		else
-			opcao = JOptionPane.showConfirmDialog(panel01, "Você realmente deseja excluir os " + tamanho + " pratos selecionados?");
+			opcao = JOptionPane.showConfirmDialog(this, "Você realmente deseja excluir os " + tamanho + " pratos selecionados?");
 
 		if (opcao != 0)
 			return;

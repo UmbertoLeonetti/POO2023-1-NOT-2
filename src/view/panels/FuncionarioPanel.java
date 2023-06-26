@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 
-import java.awt.Dimension;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
@@ -18,27 +18,26 @@ import backend.Restaurante;
 import backend.controller.Controller;
 import backend.controller.FuncionarioManager;
 import backend.model.Funcionario;
-import backend.model.Pedido;
-import backend.model.Prato;
-import backend.model.Reserva;
 
 import javax.swing.JSpinner;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
 public class FuncionarioPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Controller<Funcionario> funcionarios;
 	private FuncionarioManager importData;
 	private JPanel panel;
@@ -126,7 +125,7 @@ public class FuncionarioPanel extends JPanel {
 	}
 	
 	private void importaFuncionarios() {
-		
+		importData = new FuncionarioManager();
 		JFileChooser fc = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("JavaScript Object Notation (*.json)", "json");
 		fc.setFileFilter(filter);
@@ -203,7 +202,6 @@ public class FuncionarioPanel extends JPanel {
 	public FuncionarioPanel(Restaurante restaurante) {
 		this.restaurante = restaurante;
 		this.funcionarios = restaurante.funcionarios;
-		importData = new FuncionarioManager();
 		
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -382,6 +380,7 @@ public class FuncionarioPanel extends JPanel {
 		btnCancelar.setEnabled(false);
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				limpaSelecao();
 			}
 		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();

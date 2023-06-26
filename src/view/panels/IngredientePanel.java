@@ -6,8 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -163,10 +161,10 @@ public class IngredientePanel extends JPanel {
 	}
 
 	private void salvaIngrediente(Ingrediente selecionado) {
-		String nome = tfNome.getText();
-		float preco = Float.parseFloat(tfPreco.getText().replace(',', '.'));
-		int qtd = Integer.parseInt(spinnerQuantidade.getValue().toString());
 		try {
+			String nome = tfNome.getText();
+			float preco = Float.parseFloat(tfPreco.getText().replace(',', '.'));
+			int qtd = Integer.parseInt(spinnerQuantidade.getValue().toString());
 			selecionado.setNome(nome);
 			selecionado.setPreco(preco);
 			selecionado.setQuantidade(qtd);	

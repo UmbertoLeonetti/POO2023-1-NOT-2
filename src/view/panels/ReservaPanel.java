@@ -1,28 +1,18 @@
 package view.panels;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import backend.Persiste;
 import backend.Restaurante;
 import backend.controller.Controller;
-import backend.model.Prato;
 import backend.model.Reserva;
-
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
@@ -38,13 +28,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ActionEvent;
-import javax.swing.SpinnerModel;
-
-//Para finalizar.
-// adicionar salvamento 
-// adicionar um controller de reserva no restaurante 
 
 public class ReservaPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Restaurante restaurante;
 	private Controller<Reserva> reservas;
 	private JPanel panel01;

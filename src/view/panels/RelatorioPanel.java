@@ -56,8 +56,15 @@ public class RelatorioPanel extends JPanel {
 		int mes02 = cbMes02.getSelectedIndex() + 1;
 		int ano02 = cbAno02.getSelectedIndex() + 1900;
 		
-		LocalDate inicio = LocalDate.of(ano01, mes01, dia01);
-		LocalDate fim = LocalDate.of(ano02, mes02, dia02);
+		LocalDate inicio;
+		LocalDate fim;
+		try {
+			inicio = LocalDate.of(ano01, mes01, dia01);
+			fim = LocalDate.of(ano02, mes02, dia02);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Data inválida", "ERRO", JOptionPane.ERROR_MESSAGE);
+			return "";
+		}
 		
 		ArrayList<Pedido> elements = null;
 		try {

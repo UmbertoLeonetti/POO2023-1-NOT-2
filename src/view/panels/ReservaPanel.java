@@ -104,7 +104,14 @@ public class ReservaPanel extends JPanel {
 	}
 	
 	private void salvaReserva(Reserva reserva) {
-		LocalDate data = LocalDate.of((int) cbAno.getSelectedItem(), cbMes.getSelectedIndex() + 1, cbDia.getSelectedIndex() + 1);
+		LocalDate data;
+		try {
+			data = LocalDate.of((int) cbAno.getSelectedItem(), cbMes.getSelectedIndex() + 1, cbDia.getSelectedIndex() + 1);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, "Data inválida.", "ERRO", JOptionPane.ERROR_MESSAGE);
+			limpaSelecao();
+			return;
+		}
 		Object hora = spinnerHora.getValue();
 		int horaInt;
 		
@@ -125,8 +132,8 @@ public class ReservaPanel extends JPanel {
 		} else 
 			minutoInt = (Integer) minuto;
 		
-		
 		LocalTime horaLocalTime = LocalTime.of(horaInt, minutoInt);
+
 		
 		try {
 			reserva.setDataHorario(data, horaLocalTime);

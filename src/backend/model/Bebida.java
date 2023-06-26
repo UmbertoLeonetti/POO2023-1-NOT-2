@@ -7,7 +7,7 @@ public class Bebida extends Produto {
 	
 	 public Bebida() {
 		 super();
-		 mL = 10;
+		 mL = 50;
 	}
 	
 	public Bebida(String nome, String desc, double valor, double mL, boolean alcoolica) {

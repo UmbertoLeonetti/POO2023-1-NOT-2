@@ -8,10 +8,21 @@ import backend.controller.Controller;
 
 public class Pedido implements Item {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nomeCliente;
 	private int mesa;
 	LocalDateTime dataHorario;
 	private Controller<Produto> produtos;
+	
+	public Pedido() {
+		nomeCliente = "";
+		mesa = 1;
+		dataHorario = LocalDateTime.now().withSecond(0).withNano(0);
+		produtos = new Controller<Produto>();
+	}
 
 	public Pedido(String nomeCliente, int mesa) {
 		setNome(nomeCliente);

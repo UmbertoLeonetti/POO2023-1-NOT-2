@@ -5,7 +5,7 @@ public class Prato extends Produto {
 	
 	public Prato() {
 		super();
-		gramas = 0.00f;
+		gramas = 50f;
 	}
 	
 	public Prato(String nome, String desc, double valor, double gramas) {

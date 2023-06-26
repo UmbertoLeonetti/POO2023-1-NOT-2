@@ -6,7 +6,7 @@ public class Ingrediente implements Item {
 	private float preco;
 
 	public Ingrediente() {
-		setNome("");
+		nome = "";
 		quantidade = 0;
 		preco = 0.00f;
 	}

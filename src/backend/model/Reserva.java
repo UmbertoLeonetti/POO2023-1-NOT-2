@@ -20,7 +20,8 @@ public class Reserva implements Item {
 	
 	public Reserva() {
 		produtos = new Controller<Produto>();
-		setNome("");
+		mesa = 1;
+		nomeCliente = "";
 		dataHorario = LocalDateTime.now();
 	}
     
@@ -106,6 +107,9 @@ public class Reserva implements Item {
 	}
 	
 	public void setMesa(int mesa) {
+		if (mesa <= 0) {
+			throw new IllegalArgumentException("Número de mesa deve ser positivo");
+		}
 		this.mesa = mesa;
 	}
 	

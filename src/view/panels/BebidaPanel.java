@@ -53,7 +53,7 @@ public class BebidaPanel extends JPanel {
 	private JButton btnExcluir01;
 	private JButton btnAdd01;
 	private JButton btnAdd02;
-	private JButton btnExluir02;
+	private JButton btnExcluir02;
 	private JList<String> listIngrediente;
 	private JList<String> listBebidaIngrediente;
 	
@@ -133,6 +133,7 @@ public class BebidaPanel extends JPanel {
 		spinnerPeso.setValue(selecionado.getmL());
 		jeObservacao.setText(selecionado.getDesc());
 		chckbxAlcoolica.setSelected(selecionado.isAlcoolica());
+		atualizaListaIngrediente(selecionado);
 	}
 	
 	private void adicionaIngrediente(Bebida bebida) {
@@ -149,7 +150,7 @@ public class BebidaPanel extends JPanel {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "O ingrediente '" + ingredientes.get(ingIndex).getNome() + "' Já está no bebida '" + bebida.getNome() + "'");
 		}
-		atualizaLista(bebida.getIngredientes(), listBebidaIngrediente);
+		atualizaListaIngrediente(bebida);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
@@ -163,14 +164,14 @@ public class BebidaPanel extends JPanel {
 		}
 		
 		bebida.removeIngrediente(bebida.getIngredientes().get(ingIndex).getNome());
-		atualizaLista(bebida.getIngredientes(), listBebidaIngrediente);
+		atualizaListaIngrediente(bebida);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
 	private void limpaCampos() {		
 		tfNome.setText("");
 		tfPreco.setText("");
-		spinnerPeso.setValue(0);
+		spinnerPeso.setValue(50);
 		jeObservacao.setText("");
 		chckbxAlcoolica.setSelected(false);
 		listIngrediente.setModel(new DefaultListModel<String>());
@@ -187,7 +188,7 @@ public class BebidaPanel extends JPanel {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
 		btnExcluir01.setEnabled(mod);
-		btnExluir02.setEnabled(mod);
+		btnExcluir02.setEnabled(mod);
 		btnAdd01.setEnabled(!mod);
 		btnAdd02.setEnabled(mod);
 	}
@@ -232,18 +233,14 @@ public class BebidaPanel extends JPanel {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				atualizaLista(bebidas, listBebida);
-				Bebida bebida = bebidas.get(listBebida.getSelectedValue());
-				
-				if (bebida == null)
-					return;
-				
-				atualizaListaIngrediente(bebida);
+				limpaSelecao();
 			}
 		});
 		
 		this.bebidas = restaurante.bebidas;
 		this.cardapio = restaurante.cardapio;
 		this.ingredientes = restaurante.ingredientes;
+		this.restaurante = restaurante;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
@@ -324,7 +321,7 @@ public class BebidaPanel extends JPanel {
 		panel02.add(lblPeso, gbc_lblPeso);
 		
 		spinnerPeso = new JSpinner();
-		spinnerPeso.setModel(new SpinnerNumberModel(10, 10, 10000, 50));
+		spinnerPeso.setModel(new SpinnerNumberModel(50, 50, 10000, 50));
 		GridBagConstraints gbc_spinnerPeso = new GridBagConstraints();
 		gbc_spinnerPeso.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spinnerPeso.insets = new Insets(0, 0, 5, 5);
@@ -407,7 +404,6 @@ public class BebidaPanel extends JPanel {
 				if (bebida == null)
 					return;
 				adicionaIngrediente(bebida);
-				atualizaListaIngrediente(bebida);
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
@@ -430,23 +426,22 @@ public class BebidaPanel extends JPanel {
 		listBebidaIngrediente = new JList<String>();
 		scrollPane03.setViewportView(listBebidaIngrediente);
 		
-		btnExluir02 = new JButton("<<");
-		btnExluir02.addActionListener(new ActionListener() {
+		btnExcluir02 = new JButton("<<");
+		btnExcluir02.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Bebida bebida = bebidas.get((String)listBebida.getSelectedValue());
 				if (bebida == null)
 					return;
 				removeIngrediente(bebida);
-				atualizaListaIngrediente(bebida);
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
-		GridBagConstraints gbc_btnExluir02 = new GridBagConstraints();
-		gbc_btnExluir02.insets = new Insets(0, 0, 0, 5);
-		gbc_btnExluir02.anchor = GridBagConstraints.NORTH;
-		gbc_btnExluir02.gridx = 1;
-		gbc_btnExluir02.gridy = 1;
-		panel04.add(btnExluir02, gbc_btnExluir02);
+		GridBagConstraints gbc_btnExcluir02 = new GridBagConstraints();
+		gbc_btnExcluir02.insets = new Insets(0, 0, 0, 5);
+		gbc_btnExcluir02.anchor = GridBagConstraints.NORTH;
+		gbc_btnExcluir02.gridx = 1;
+		gbc_btnExcluir02.gridy = 1;
+		panel04.add(btnExcluir02, gbc_btnExcluir02);
 		
 		JPanel panel05 = new JPanel();
 		GridBagConstraints gbc_panel05 = new GridBagConstraints();

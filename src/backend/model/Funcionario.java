@@ -12,6 +12,16 @@ public class Funcionario implements Serializable {
         this.cargo = cargo;
         this.horarioTrabalho = horarioTrabalho;
     }
+    
+	public void setNome(String nome) {
+		if (nome.length() < 2)
+			throw new IllegalArgumentException("Nome de funcionário deve ter pelo menos 2 letras");
+		this.nome = nome;
+	}
+
+	public void setHorarioTrabalho(String horarioTrabalho) {
+		this.horarioTrabalho = horarioTrabalho;
+	}
 
 	public String getNome() {
         return nome;
@@ -26,8 +36,6 @@ public class Funcionario implements Serializable {
     }
 
     public void setCargo(String cargo) {
-		if (nome.length() < 2)
-			throw new IllegalArgumentException("Nome de funcionário deve ter pelo menos 2 letras");
         this.cargo = cargo;
     }
 

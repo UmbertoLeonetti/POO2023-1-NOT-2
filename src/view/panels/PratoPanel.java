@@ -52,7 +52,7 @@ public class PratoPanel extends JPanel {
 	private JButton btnExcluir01;
 	private JButton btnAdd01;
 	private JButton btnAdd02;
-	private JButton btnExluir02;
+	private JButton btnExcluir02;
 	private JList<String> listIngrediente;
 	private JList<String> listPratoIngrediente;
 	
@@ -130,6 +130,7 @@ public class PratoPanel extends JPanel {
 		tfPreco.setText(String.format("%.2f", selecionado.getValor()));
 		spinnerPeso.setValue(selecionado.getGramas());
 		jeObservacao.setText(selecionado.getDesc());
+		atualizaListaIngrediente(selecionado);
 	}
 	
 	private void adicionaIngrediente(Prato prato) {
@@ -146,7 +147,7 @@ public class PratoPanel extends JPanel {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(this, "O ingrediente '" + ingredientes.get(ingIndex).getNome() + "' Já está no prato '" + prato.getNome() + "'");
 		}
-		atualizaLista(prato.getIngredientes(), listPratoIngrediente);
+		atualizaListaIngrediente(prato);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
@@ -160,14 +161,14 @@ public class PratoPanel extends JPanel {
 		}
 		
 		prato.removeIngrediente(prato.getIngredientes().get(ingIndex).getNome());
-		atualizaLista(prato.getIngredientes(), listPratoIngrediente);
+		atualizaListaIngrediente(prato);
 		Persiste.salva(restaurante, "restaurante.txt");
 	}
 	
 	private void limpaCampos() {		
 		tfNome.setText("");
 		tfPreco.setText("");
-		spinnerPeso.setValue(0);
+		spinnerPeso.setValue(50);
 		jeObservacao.setText("");
 		listIngrediente.setModel(new DefaultListModel<String>());
 		listPratoIngrediente.setModel(new DefaultListModel<String>());
@@ -183,7 +184,7 @@ public class PratoPanel extends JPanel {
 		btnSalvar.setEnabled(mod);
 		btnCancelar.setEnabled(mod);
 		btnExcluir01.setEnabled(mod);
-		btnExluir02.setEnabled(mod);
+		btnExcluir02.setEnabled(mod);
 		btnAdd01.setEnabled(!mod);
 		btnAdd02.setEnabled(mod);
 	}
@@ -227,18 +228,14 @@ public class PratoPanel extends JPanel {
 			@Override
 			public void componentShown(ComponentEvent e) {
 				atualizaLista(pratos, listPrato);
-				Prato prato = pratos.get(listPrato.getSelectedValue());
-				
-				if (prato == null)
-					return;
-				
-				atualizaListaIngrediente(prato);
+				limpaSelecao();
 			}
 		});
 		
 		this.pratos = restaurante.pratos;
 		this.cardapio = restaurante.cardapio;
 		this.ingredientes = restaurante.ingredientes;
+		this.restaurante = restaurante;
 
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
@@ -319,7 +316,7 @@ public class PratoPanel extends JPanel {
 		panel02.add(lblPeso, gbc_lblPeso);
 		
 		spinnerPeso = new JSpinner();
-		spinnerPeso.setModel(new SpinnerNumberModel(10, 10, 10000, 50));
+		spinnerPeso.setModel(new SpinnerNumberModel(50, 50, 10000, 50));
 		GridBagConstraints gbc_spinnerPeso = new GridBagConstraints();
 		gbc_spinnerPeso.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spinnerPeso.insets = new Insets(0, 0, 5, 5);
@@ -395,7 +392,6 @@ public class PratoPanel extends JPanel {
 				if (prato == null)
 					return;
 				adicionaIngrediente(prato);
-				atualizaListaIngrediente(prato);
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
@@ -418,23 +414,22 @@ public class PratoPanel extends JPanel {
 		listPratoIngrediente = new JList<String>();
 		scrollPane03.setViewportView(listPratoIngrediente);
 		
-		btnExluir02 = new JButton("<<");
-		btnExluir02.addActionListener(new ActionListener() {
+		btnExcluir02 = new JButton("<<");
+		btnExcluir02.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Prato prato = pratos.get((String)listPrato.getSelectedValue());
 				if (prato == null)
 					return;
 				removeIngrediente(prato);
-				atualizaListaIngrediente(prato);
 				Persiste.salva(restaurante, "restaurante.txt");
 			}
 		});
-		GridBagConstraints gbc_btnExluir02 = new GridBagConstraints();
-		gbc_btnExluir02.insets = new Insets(0, 0, 0, 5);
-		gbc_btnExluir02.anchor = GridBagConstraints.NORTH;
-		gbc_btnExluir02.gridx = 1;
-		gbc_btnExluir02.gridy = 1;
-		panel04.add(btnExluir02, gbc_btnExluir02);
+		GridBagConstraints gbc_btnExcluir02 = new GridBagConstraints();
+		gbc_btnExcluir02.insets = new Insets(0, 0, 0, 5);
+		gbc_btnExcluir02.anchor = GridBagConstraints.NORTH;
+		gbc_btnExcluir02.gridx = 1;
+		gbc_btnExcluir02.gridy = 1;
+		panel04.add(btnExcluir02, gbc_btnExcluir02);
 		
 		JPanel panel05 = new JPanel();
 		GridBagConstraints gbc_panel05 = new GridBagConstraints();
@@ -504,11 +499,10 @@ public class PratoPanel extends JPanel {
 		listPrato.addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				Prato selecionado = pratos.get((String)listPrato.getSelectedValue());
+				Prato selecionado = pratos.get(listPrato.getSelectedValue());
 				if (selecionado == null) 
 					return;
 				selecionaPrato(selecionado);
-				atualizaListaIngrediente(selecionado);
 				mudaSalvarCancelar(true);
 			}
 		});

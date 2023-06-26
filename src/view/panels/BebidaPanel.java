@@ -127,7 +127,7 @@ public class BebidaPanel extends JPanel {
 	}
 	
 	private void selecionaBebida(Bebida selecionado) {
-		
+		mudaSalvarCancelar(true);
 		tfNome.setText(selecionado.getNome());
 		tfPreco.setText(String.format("%.2f", selecionado.getValor()));
 		spinnerPeso.setValue(selecionado.getmL());
@@ -521,7 +521,6 @@ public class BebidaPanel extends JPanel {
 					return;
 				selecionaBebida(selecionado);
 				atualizaListaIngrediente(selecionado);
-				mudaSalvarCancelar(true);
 			}
 		});
 		

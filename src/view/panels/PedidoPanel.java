@@ -439,7 +439,6 @@ public class PedidoPanel extends JPanel {
 				Pedido pedido = pedidos.get(pedidoNome);
 				if (pedido == null)
 					return;
-				
 				selecionaPedido(pedido);
 			}
 		});

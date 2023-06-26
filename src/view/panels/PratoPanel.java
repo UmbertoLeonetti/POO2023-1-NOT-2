@@ -125,7 +125,7 @@ public class PratoPanel extends JPanel {
 	}
 	
 	private void selecionaPrato(Prato selecionado) {
-		
+		mudaSalvarCancelar(true);
 		tfNome.setText(selecionado.getNome());
 		tfPreco.setText(String.format("%.2f", selecionado.getValor()));
 		spinnerPeso.setValue(selecionado.getGramas());
@@ -504,10 +504,9 @@ public class PratoPanel extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				Prato selecionado = pratos.get(listPrato.getSelectedValue());
-				if (selecionado == null) 
-					return;
+
 				selecionaPrato(selecionado);
-				mudaSalvarCancelar(true);
+
 			}
 		});
 		

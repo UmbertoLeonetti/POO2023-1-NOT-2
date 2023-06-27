@@ -504,7 +504,8 @@ public class PratoPanel extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				Prato selecionado = pratos.get(listPrato.getSelectedValue());
-
+				if (selecionado == null)
+					return;
 				selecionaPrato(selecionado);
 
 			}
